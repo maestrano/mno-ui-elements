@@ -9,10 +9,14 @@ angular.module('mnoUiElements.config', [])
     });
 
 // Modules
-angular.module('mnoUiElements.core', []);
+angular.module('mnoUiElements.components',
+    [
+        'mnoUiElements.components.loading'
+    ]);
 angular.module('mnoUiElements.services', []);
 angular.module('mnoUiElements',
     [
         'mnoUiElements.config',
-        'mnoUiElements.services'
+        'mnoUiElements.services',
+        'mnoUiElements.components'
     ]);
