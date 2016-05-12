@@ -13,6 +13,7 @@ angular.module('mnoUiElements.config', [])
     });
 
 // Modules
+angular.module('mnoUiElements.core', []);
 angular.module('mnoUiElements.services', []);
 angular.module('mnoUiElements',
     [
