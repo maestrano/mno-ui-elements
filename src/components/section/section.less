@@ -1,0 +1,39 @@
+/* App row component style */
+mno-section {
+  display: block;
+  border-bottom: 1px solid @mno-section-border-bottom-color;
+  padding-top: @mno-section-padding-top;
+  padding-bottom: @mno-section-padding-bottom;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .left-column {
+    /* If the screen is sm and - */
+    @media screen and (max-width: @screen-sm-max) {
+      margin-bottom: 15px;
+    }
+
+    .title {
+      color: @mno-section-title-color;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: @mno-section-description-color;
+      line-height: 24px;
+      font-size: 13px;
+      padding-right: 33%;
+    }
+  }
+
+  .form-control {
+    /* If the screen is md+ */
+    @media screen and (min-width: @screen-md-min) {
+      width: 60%;
+    }
+  }
+}

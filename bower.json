@@ -1,0 +1,24 @@
+{
+  "name": "mno-ui-elements",
+  "version": "0.0.0",
+  "authors": [
+    {
+      "name": "Clement Berti",
+      "email": "clement.berti@maestrano.com"
+    }
+  ],
+  "main": ["dist/mno-ui-elements.js"],
+  "ignore": [
+    "src",
+    "test",
+    "Gruntfile.js",
+    "**/.*"
+  ],
+  "dependencies": {
+    "angular": "~1.2.21"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.21",
+    "angular-scenario": "~1.2.21"
+  }
+}

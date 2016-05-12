@@ -1,0 +1,29 @@
+{
+  "generator-angularjs-gulp-library": {
+    "props": {
+      "author": {
+        "name": "Clement Berti",
+        "email": "clement.berti@maestrano.com"
+      },
+      "libraryName": {
+        "original": "mno-ui-elements",
+        "camelized": "mnoUiElements",
+        "dasherized": "mno-ui-elements",
+        "slugified": "mno-ui-elements",
+        "parts": [
+          "mno",
+          "ui",
+          "elements"
+        ]
+      },
+      "includeModuleDirectives": false,
+      "includeModuleFilters": false,
+      "includeModuleServices": true,
+      "includeAngularModuleResource": false,
+      "includeAngularModuleCookies": false,
+      "includeAngularModuleSanitize": false,
+      "librarySrcDirectory": "src/",
+      "libraryUnitTestDirectory": "src/"
+    }
+  }
+}
