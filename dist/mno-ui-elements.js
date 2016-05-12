@@ -18,5 +18,6 @@ angular.module('mnoUiElements.services', []);
 angular.module('mnoUiElements',
     [
         'mnoUiElements.config',
-        'mnoUiElements.services'
+        'mnoUiElements.services',
+        'mnoUiElements.core'
     ]);
