@@ -15,4 +15,7 @@ libpeerconnection.log
 .DS_Store
 
 # Bower components
-bower
+bower_components
+
+# Temp files
+.tmp/

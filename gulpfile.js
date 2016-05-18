@@ -1,65 +1,30 @@
-var gulp = require('gulp'),
-    karma = require('karma').server,
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    rename = require('gulp-rename'),
-    ngAnnotate = require('gulp-ng-annotate'),
-    sourceFiles = [
-      'src/mnoUiElements.prefix',
-      'src/mnoUiElements.suffix',
-      'src/mnoUiElements.js',
-      'src/components/**/*.js',
-      'src/filters/**/*.js',
-      'src/services/**/*.js'
-    ];
+/**
+ *  Welcome to your gulpfile!
+ *  The gulp tasks are splitted in several files in the gulp directory
+ *  because putting all here was really too long
+ */
+'use strict';
 
-gulp.task('build', function() {
-  gulp.src(sourceFiles)
-    .pipe(concat('mno-ui-elements.js'))
-    .pipe(ngAnnotate())
-    .pipe(gulp.dest('./dist/'))
-    .pipe(uglify())
-    .pipe(rename('mno-ui-elements.min.js'))
-    .pipe(gulp.dest('./dist'))
+var gulp = require('gulp');
+var wrench = require('wrench');
+var run = require('run-sequence');
+
+/**
+ *  This will load all js or coffee files in the gulp directory
+ *  in order to load all gulp tasks
+ */
+wrench.readdirSyncRecursive('./gulp').filter(function(file) {
+  return (/\.(js|coffee)$/i).test(file);
+}).map(function(file) {
+  require('./gulp/' + file);
 });
 
 /**
- * Run test once and exit
+ *  Default task clean temporaries directories and launch the
+ *  main optimization build task
  */
-gulp.task('test', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma-src.conf.js',
-    singleRun: true
-  }, done);
+gulp.task('default', ['clean'], function (callback) {
+  run(['build'], function () {
+    callback();
+  });
 });
-
-gulp.task('test-debug', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma-src.conf.js',
-    singleRun: false,
-    autoWatch: true
-  }, done);
-});
-
-/**
- * Run test once and exit
- */
-gulp.task('test-dist-concatenated', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma-dist-concatenated.conf.js',
-    singleRun: true
-  }, done);
-});
-
-/**
- * Run test once and exit
- */
-gulp.task('test-dist-minified', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma-dist-minified.conf.js',
-    singleRun: true
-  }, done);
-});
-
-gulp.task('default', ['test', 'build']);
-gulp.task('dist', ['test','test-dist-concatenated', 'test-dist-minified']);
