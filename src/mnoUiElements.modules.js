@@ -24,7 +24,7 @@ angular.module('mnoUiElements.config', [])
 */
 angular.module('mnoUiElements.components',
     [
-        'mnoUiElements.components.loading'
+        'mnoUiElements.components.loadingEllipsis'
     ]);
 
 angular.module('mnoUiElements.services', []);

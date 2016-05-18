@@ -7,7 +7,7 @@ var conf = require('./conf');
 var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep').stream;
 
-// Compile dist/impac-angular.css from src/impac-angular.less
+// Compile dist/mno-ui-elements.css from src/mno-ui-elements.less
 // TODO: Do not work, should be fixed
 gulp.task('styles-compile', function () {
   var lessOptions = {
@@ -42,7 +42,7 @@ gulp.task('styles-compile', function () {
     .pipe(gulp.dest(path.join(conf.paths.dist)));
 });
 
-// Concat all less files to generate dist/impac-angular.less
+// Concat all less files to generate dist/mno-ui-elements.less
 gulp.task('styles-concat', function () {
   return gulp.src([
       path.join(conf.paths.src, '/**/*.less')

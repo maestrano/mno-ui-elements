@@ -14,7 +14,7 @@ gulp.task('partials', function () {
     path.join(conf.paths.src, '/components/**/*.html')
   ])
     // TODO: No combination of below's options work; all break the templates.
-    //       Look into how to successfully minify impac-angulars templates.
+    //       Look into how to successfully minify mno-ui-elements templates.
     // .pipe($.minifyHtml({
     //   empty: true,
     //   spare: true,
@@ -69,7 +69,7 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     // .pipe($.sourcemaps.write())
     .pipe($.concat('mno-ui-elements.js'))
     .pipe($.ngAnnotate())
-    .pipe(gulp.dest(conf.paths.dist)) // Output impac-angular.js
+    .pipe(gulp.dest(conf.paths.dist)) // Output mno-ui-elements.js
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }))
     .pipe($.ngAnnotate())
     .pipe($.uglify()).on('error', conf.errorHandler('Uglify'))

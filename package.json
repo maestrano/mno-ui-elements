@@ -5,6 +5,7 @@
     "name": "Clement Berti",
     "email": "clement.berti@maestrano.com"
   },
+  "main": "dist/mno-ui-elements.js",
   "dependencies": {},
   "devDependencies": {
     "bower": "^1.6.5",
