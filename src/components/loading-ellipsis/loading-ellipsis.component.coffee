@@ -1,7 +1,7 @@
 #
 # Loader ellipsis component
 #
-angular.module('mnoUiElements.components.loadingEllipsis').component('mnoLoadingEllipsis', {
+angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
   template: '''
     <div class="mno-three-bounce">
       <div class="mno-bounce1"></div>

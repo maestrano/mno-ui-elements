@@ -55,11 +55,11 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     path.join(conf.paths.tmp, 'partials/*.js'),
     path.join(conf.paths.src, 'mnoUiElements.suffix'),
     path.join(conf.paths.tmp, 'scripts/**/*.js'),
-    path.join(conf.paths.lib, '*.js'),
-    path.join(conf.paths.dist, 'mnoUiElements.css'),
+    path.join(conf.paths.lib, '*.js')
+    //path.join(conf.paths.dist, 'mnoUiElements.css'),
   ];
 
-  var jsFilter = $.filter(['**/*', '!**/*.css'], { restore: true });
+  var jsFilter = $.filter(['**/*.js', '**/*.prefix', '**/*.suffix', '!**/*.spec.js']);
   var cssFilter = $.filter('**/*.css', { restore: true });
 
   return gulp.src(buildSourceFiles)
@@ -71,14 +71,13 @@ gulp.task('build', ['scripts', 'styles', 'partials'], function() {
     .pipe($.ngAnnotate())
     .pipe(gulp.dest(conf.paths.dist)) // Output mno-ui-elements.js
     .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }))
-    .pipe($.ngAnnotate())
     .pipe($.uglify()).on('error', conf.errorHandler('Uglify'))
     .pipe($.rename('mno-ui-elements.min.js'))
-    .pipe(jsFilter.restore)
-    .pipe(cssFilter)
-    .pipe($.minifyCss({ processImport: false, compatibility: 'ie8' }))
-    .pipe($.rename('mno-ui-elements.min.css'))
-    .pipe(cssFilter.restore)
-    .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
-    .pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
+    // .pipe(jsFilter.restore)
+    // .pipe(cssFilter)
+    // .pipe($.minifyCss({ processImport: false, compatibility: 'ie8' }))
+    // .pipe($.rename('mno-ui-elements.min.css'))
+    // .pipe(cssFilter.restore)
+    .pipe(gulp.dest(conf.paths.dist))
+    //.pipe($.size({ title: path.join(conf.paths.dist, '/'), showFiles: true }));
 });
