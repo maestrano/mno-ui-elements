@@ -1,7 +1,7 @@
 #
 # Section
 #
-@App.component('mnoSection', {
+angular.module('section', []).component('mnoSection', {
   bindings: {
     title: '@',
     description: '@'

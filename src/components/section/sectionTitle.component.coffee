@@ -1,7 +1,7 @@
 #
 # Section Title
 #
-@App.component('mnoSectionTitle', {
+angular.module('sectionTitle', []).component('mnoSectionTitle', {
   transclude: true
   require: '^mnoSection'
   template: '''

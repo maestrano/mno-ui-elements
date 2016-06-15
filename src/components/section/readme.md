@@ -1,5 +1,7 @@
-The **section**  provides the layout of a section.
-It is splitted in two columns. The left column includes the title of the section and a small description.
+The **section**  provides the layout of a distinct group.
+It is splitted in two columns. The left column includes the title as well as
+a small description explaining the section at a glance.
+The right column includes the content specified in the element itself.
 
 ### mno-section settings
 
@@ -7,4 +9,4 @@ It is splitted in two columns. The left column includes the title of the section
   A fancy title for your section
 
 * `description` -
-  A useful description explaining your section
+  A quick sentence describing your section

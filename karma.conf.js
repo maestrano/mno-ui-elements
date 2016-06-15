@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai'],
 
     plugins: [
       'karma-mocha',
@@ -18,17 +18,7 @@ module.exports = function(config) {
       'karma-sinon-chai',
       'karma-chrome-launcher',
       'karma-phantomjs-launcher',
-      'karma-jquery',
-      'karma-chai-jquery',
       'karma-mocha-reporter'
-    ],
-
-    // list of files / patterns to load in the browser
-    files: [
-      'bower/angular/angular.js',
-      'bower/angular-mocks/angular-mocks.js',
-      'dist/mno-ui-elements.min.js',
-      'src/components/**/*.spec.coffee'
     ],
 
 
@@ -42,11 +32,18 @@ module.exports = function(config) {
     preprocessors: {
     },
 
+    // list of files / patterns to load in the browser
+    files: [
+      'bower_components/angular/angular.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'src/components/**/*.spec.js'
+    ],
+
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-      reporters: ['mocha'],
+    reporters: ['mocha'],
 
 
     // web server port
@@ -73,6 +70,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true
   });
 };

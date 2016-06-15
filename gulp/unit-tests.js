@@ -9,21 +9,23 @@ var $ = require('gulp-load-plugins')({
 
 gulp.task('unit-tests', function (done) {
   $.karma.server.start({
-    configFile: path.join(__dirname, '/../karma.conf.js'),
+    configFile: path.join(__dirname, './../karma.conf.js'),
     singleRun: true
-  }, done);
+  }, function() {
+    done();
+  });
   $.util.log($.util.colors.yellow('[ STARTING UNIT TESTS ]'));
 });
 
-gulp.task('unit-tests-min', function (done) {
-  $.karma.server.start({
-    configFile: path.join(__dirname, '/../karma-min.conf.js'),
-    singleRun: true
-  }, done);
-  $.util.log($.util.colors.yellow('[ STARTING UNIT TESTS ON MINIFIED FILES ]'));
-});
+// gulp.task('unit-tests-min', function (done) {
+//   $.karma.server.start({
+//     configFile: path.join(__dirname, '/../karma-min.conf.js'),
+//     singleRun: true
+//   }, done);
+//   $.util.log($.util.colors.yellow('[ STARTING UNIT TESTS ON MINIFIED FILES ]'));
+// });
 
 
 gulp.task('test', function (cb) {
-  $.runSequence('unit-tests', ['unit-tests-min'], cb);
+  $.runSequence('unit-tests', /*['unit-tests-min'],*/ cb);
 });

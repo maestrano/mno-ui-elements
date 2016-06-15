@@ -17,9 +17,9 @@
  *  all your less files automatically
  */
 /* inject:imports */
-//@import "components/loading/loading-ellipsis.less";
+// @import "components/loading/loadingEllipsis.less";
 // @import "components/section/section.less";
-// @import "components/apps/app-row.less";
+// @import "components/row/row.less";
 // @import "components/navigation-header/navigation-header.less";
 
 /* endinject */
@@ -81,12 +81,12 @@
 @footer-background-color: @mno-purple;
 @footer-links-color: @mno-light-grey;
 
-/* mno-app-row vars */
-@mno-app-row-height: 40px;
-@mno-app-row-name-font-color: @mno-light-blue;
-@mno-app-row-status-font-color: @mno-light-blue;
-@mno-app-row-borders-color: @mno-light-blue;
-@mno-app-row-hover-bg-color: @mno-light-grey;
+/* mno-row vars */
+@mno-row-height: 40px;
+@mno-row-name-font-color: @mno-light-blue;
+@mno-row-status-font-color: @mno-light-blue;
+@mno-row-borders-color: @mno-light-blue;
+@mno-row-hover-bg-color: @mno-light-grey;
 
 /* mno-loading-ellipsis vars */
 @mno-loading-ellipsis-size: 20px;
@@ -131,6 +131,73 @@ mno-loading-ellipsis {
       transform: scale(0);
     } 40% {
         transform: scale(1.0);
+    }
+  }
+}
+
+/* App row component style */
+mno-row {
+  display: block;
+  border-bottom: 1px solid @mno-row-borders-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a.row-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: @mno-row-height;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: @mno-row-hover-bg-color;
+    }
+
+
+  }
+}
+
+/* App row component style */
+mno-section {
+  display: block;
+  border-bottom: 1px solid @mno-section-border-bottom-color;
+  padding-top: @mno-section-padding-top;
+  padding-bottom: @mno-section-padding-bottom;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .left-column {
+
+    /* If the screen is sm and - */
+    @media screen and (max-width: @screen-sm-max) {
+      margin-bottom: 15px;
+    }
+
+    .title {
+      color: @mno-section-title-color;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: @mno-section-description-color;
+      line-height: 24px;
+      font-size: 13px;
+      padding-right: 33%;
+    }
+  }
+
+  .form-control {
+    /* If the screen is md+ */
+    @media screen and (min-width: @screen-md-min) {
+      width: 60%;
     }
   }
 }

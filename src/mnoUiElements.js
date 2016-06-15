@@ -1,1 +1,6 @@
-angular.module('mnoUiElements', []);
+angular.module('mnoUiElements', [
+  'loadingEllipsis',
+  'section',
+  'sectionTitle',
+  'row'
+]);
