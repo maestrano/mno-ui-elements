@@ -1,0 +1,109 @@
+/* Wrap the whole page */
+mno-admin {
+  height: 100%;
+  overflow-x: hidden;
+
+  /* Animation between states */
+  #sidebar-wrapper, #content-wrapper {
+    transition: all .4s ease;
+  }
+
+  /* Sidebar wrapper */
+  #sidebar-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @sidebar-full-width;
+    z-index: 1;
+
+    &.reduced {
+      left: @sidebar-reduced-width - @sidebar-full-width;
+    }
+  }
+
+  /* Header, page content & footer */
+  #content-wrapper {
+    position: relative;
+    overflow-x: hidden;
+    background: @content-background-color;
+    height: 100%;
+    z-index: 100;
+
+    /* If the screen is md+ the sidebar is always visible */
+    @media screen and (min-width: @screen-md-min) {
+      position: absolute;
+      left: @sidebar-full-width;
+      right: 0;
+
+      &.reduced {
+        left: @sidebar-reduced-width;
+      }
+    }
+
+    /* Fix the container width if the screen is md+ */
+    /* depending on if the sidebar is reduced or not */
+    @media screen and (min-width: @screen-md-min) {
+      .container {
+        width: @container-md - @sidebar-full-width;
+      }
+
+      &.reduced .container {
+        width: @container-md - @sidebar-reduced-width;
+      }
+    }
+
+    /* Fix the container width if the screen is lg+ */
+    /* depending on if the sidebar is reduced or not */
+    @media screen and (min-width: @screen-lg-min) {
+      .container {
+        width: @container-lg - @sidebar-full-width;
+      }
+
+      &.reduced .container {
+        width: @container-lg - @sidebar-reduced-width;
+      }
+    }
+
+    /* Open the sidebar on sm and sm devices */
+    &.open {
+      transform: translate3d(@sidebar-full-width, 0px, 0px);
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @header-height;
+      background: @header-background-color;
+      background: linear-gradient(to right, lighten(@header-background-color, 2%) 0%, @header-background-color 41%, darken(@header-background-color, 10%) 100%);
+      color: @header-font-color;
+      text-transform: capitalize;
+      z-index: 100;
+
+      .header-sidebar-toggle {
+        width: @header-height;
+        padding-left: 12px;
+      }
+    }
+
+    /* Page content */
+    .page-content {
+      position: relative;
+      min-height: ~"calc(100% -" (@header-height + @footer-height) ~")";
+      background: @content-background-color;
+      z-index: 100;
+    }
+
+    /* Footer */
+    mno-admin-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @footer-height;
+      background: @footer-background-color;
+      background: linear-gradient(to left, lighten(@footer-background-color, 2%) 0%, @footer-background-color 41%, darken(@footer-background-color, 10%) 100%);
+    }
+  }
+}

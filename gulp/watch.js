@@ -12,7 +12,5 @@ var browserSync = require('browser-sync');
 
 gulp.task('watch', function () {
   gulp.watch('src/**/*', ['build', browserSync.reload]);
-  // gulp.watch('workspace/**/*', function (event) {
-  //   browserSync.reload(event.path);
-  // });
+  gulp.watch('src/*', ['build', browserSync.reload]);
 });

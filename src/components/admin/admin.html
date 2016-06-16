@@ -1,0 +1,38 @@
+<div id="sidebar-wrapper" ng-class="{'reduced': $ctrl.reduced}">
+  <ul class="sidebar">
+    <li class="sidebar-main">
+      <a ng-click="$ctrl.reduceSidebar()">
+        <img class="sidebar-logo visible-sm visible-xs" src="{$ctrl.logo}">
+        <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span>
+      </a>
+    </li>
+    <div ng-transclude="navigation"></div>
+  </ul>
+  <div class="sidebar-footer"></div>
+</div><!-- End Sidebar -->
+
+<div id="content-wrapper" ng-class="{'open': $ctrl.toggled, 'reduced': $ctrl.reduced}">
+  <!-- Header Bar -->
+  <header class="header">
+    <!-- Hamburger -->
+    <a class="header-sidebar-toggle visible-sm visible-xs" href="" ng-click="$ctrl.toggleSidebar()">
+      <div id="hamburger-toggle" ng-class="{'open': $ctrl.toggled}">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </a>
+
+    <div ng-transclude="header"></div>
+
+  </header><!-- End Header Bar -->
+
+  <!-- Page Content -->
+  <div ui-view class="page-content container">
+    <div ng-transclude="content"></div>
+  </div>
+
+  <footer>
+    <div ng-transclude="footer"/>
+  </footer>
+</div><!-- End Content Wrapper -->
