@@ -474,6 +474,8 @@ mno-row {
       text-decoration: none;
       background-color: @mno-row-hover-bg-color;
     }
+
+
   }
 }
 
@@ -489,13 +491,17 @@ mno-section {
   }
 
   .left-column {
-
     /* If the screen is sm and - */
     @media screen and (max-width: @screen-sm-max) {
       margin-bottom: 15px;
     }
 
-    .title {
+    /* If the screen is sm and - */
+    &.col-xs-12 {
+      margin-bottom: 15px;
+    }
+
+    .heading {
       color: @mno-section-title-color;
       font-size: 16px;
       font-weight: bold;
@@ -510,10 +516,25 @@ mno-section {
     }
   }
 
-  .form-control {
-    /* If the screen is md+ */
-    @media screen and (min-width: @screen-md-min) {
+  /* If the screen is md+ */
+  @media screen and (min-width: @screen-sm-min) {
+    .form-inline .form-control, .form-control {
       width: 60%;
     }
+  }
+
+  .form-inline {
+    /* If the screen is sm- */
+    @media screen and (max-width: @screen-xs-max) {
+      button.btn {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .section-right-button {
+    position: absolute;
+    top: -70px;
+    right: 15px;
   }
 }

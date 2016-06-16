@@ -10,15 +10,8 @@ angular.module('mnoUiElements', [
 
 }());
 (function() {
-  angular.module('loadingEllipsis', []).component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
   angular.module('admin', []).component('mnoAdmin', {
-    template:'<div id=sidebar-wrapper ng-class="{\'reduced\': $ctrl.reduced}"><ul class=sidebar><li class=sidebar-main><a ng-click=$ctrl.reduceSidebar()><img class="sidebar-logo visible-sm visible-xs" src=$ctrl.logo> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude=navigation></div></ul><div class=sidebar-footer></div></div><div id=content-wrapper ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class=header><a class="header-sidebar-toggle visible-sm visible-xs" ng-click=$ctrl.toggleSidebar()><div id=hamburger-toggle ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude=header></div></header><div class=page-content ng-transclude=content></div><footer><div ng-transclude=footer></div></footer></div>',
+    template:'<div id=sidebar-wrapper ng-class="{\'reduced\': $ctrl.reduced}"><ul class=sidebar><li class=sidebar-main><a ng-click=$ctrl.reduceSidebar()><img class="sidebar-logo visible-sm visible-xs" src={{$ctrl.logo}}> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude=navigation></div></ul><div class=sidebar-footer></div></div><div id=content-wrapper ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class=header><a class="header-sidebar-toggle visible-sm visible-xs" ng-click=$ctrl.toggleSidebar()><div id=hamburger-toggle ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude=header></div></header><div class=page-content ng-transclude=content></div><footer><div ng-transclude=footer></div></footer></div>',
     transclude: {
       header: 'mnoAdminHeader',
       navigation: 'mnoAdminNav',
@@ -47,7 +40,6 @@ angular.module('mnoUiElements', [
         return window.innerWidth;
       }), function(newValue) {
         if (newValue) {
-          console.log(window.innerWidth);
           vm.toggled = false;
           return vm.reduced = window.innerWidth > 992 ? true : false;
         }
@@ -56,6 +48,13 @@ angular.module('mnoUiElements', [
         return $scope.$apply();
       };
     }]
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('loadingEllipsis', []).component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);

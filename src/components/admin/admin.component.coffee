@@ -26,7 +26,6 @@ angular.module('admin', [])
 
       $scope.$watch (() -> window.innerWidth), (newValue) ->
         if newValue
-          console.log window.innerWidth
           vm.toggled = false
           vm.reduced = if window.innerWidth > 992 then true else false
 
