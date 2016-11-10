@@ -2,6 +2,9 @@
 mno-admin {
   height: 100%;
   overflow-x: hidden;
+  width: 100%;
+  display: block;
+  position: absolute;
 
   /* Animation between states */
   #sidebar-wrapper, #content-wrapper {
@@ -77,7 +80,6 @@ mno-admin {
       align-items: center;
       height: @header-height;
       background: @header-background-color;
-      background: linear-gradient(to right, lighten(@header-background-color, 2%) 0%, @header-background-color 41%, darken(@header-background-color, 10%) 100%);
       color: @header-font-color;
       text-transform: capitalize;
       z-index: 100;

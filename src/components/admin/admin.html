@@ -32,7 +32,7 @@
   <!-- Page Content -->
   <div class="page-content" ng-transclude="content"></div><!-- End Page Content -->
 
-  <footer>
+  <footer ng-if="!$ctrl.hideFooter">
     <div ng-transclude="footer"></div>
   </footer>
 </div><!-- End Content Wrapper -->

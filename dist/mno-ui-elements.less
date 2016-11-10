@@ -162,8 +162,9 @@ ul.sidebar {
     }
     a:hover, a.active {
       color: @sidebar-menu-item-font-hover-color;
-      border-left: 3px solid @sidebar-menu-item-hover-color;
+      border-left: 3px solid @sidebar-menu-item-hover-border-color;
       text-indent: 22px;
+      background: @sidebar-menu-item-hover-background-color;
       .menu-icon {
         text-indent: 25px;
       }
@@ -261,9 +262,10 @@ ul.sidebar {
 @sidebar-header-color: darken(@sidebar-base-color, 3%);
 @sidebar-footer-color: darken(@sidebar-base-color, 3%);
 @sidebar-title-color: lighten(@sidebar-base-color, 50%);
-@sidebar-menu-item-hover-color: @mno-green;
 @sidebar-menu-item-font-color: darken(@mno-light-grey, 10%);
 @sidebar-menu-item-font-hover-color: @mno-light-grey;
+@sidebar-menu-item-hover-border-color: @mno-green;
+@sidebar-menu-item-hover-background-color: @sidebar-header-color;
 @sidebar-full-width: 250px;
 @sidebar-reduced-width: 70px;
 
@@ -311,6 +313,9 @@ ul.sidebar {
 mno-admin {
   height: 100%;
   overflow-x: hidden;
+  width: 100%;
+  display: block;
+  position: absolute;
 
   /* Animation between states */
   #sidebar-wrapper, #content-wrapper {
@@ -386,7 +391,6 @@ mno-admin {
       align-items: center;
       height: @header-height;
       background: @header-background-color;
-      background: linear-gradient(to right, lighten(@header-background-color, 2%) 0%, @header-background-color 41%, darken(@header-background-color, 10%) 100%);
       color: @header-font-color;
       text-transform: capitalize;
       z-index: 100;
