@@ -5,18 +5,19 @@ angular.module('mnoUiElements', [
   'loadingEllipsis',
   'section',
   'sectionTitle',
-  'row'
+  'row',
+  'kpi'
 ]);
 
 }());
 (function() {
   angular.module('admin', []).component('mnoAdmin', {
-    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content" ng-transclude="content"></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
+    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
     transclude: {
       header: 'mnoAdminHeader',
       navigation: 'mnoAdminNav',
       content: 'mnoAdminContent',
-      footer: 'mnoAdminFooter'
+      footer: '?mnoAdminFooter'
     },
     bindings: {
       logo: '@',
@@ -54,8 +55,28 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('loadingEllipsis', []).component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
+  angular.module('kpi', []).component('mnoKpi', {
+    template:'<div ng-style="{\'background-color\': vm.bgColor, \'color\': vm.color}"><div class="visual"><i class="fa" ng-class="vm.icon || \'fa-file-text-o\'"></i></div><div class="details"><div class="loader" ng-show="vm.loading" aria-hidden="true"><i class="fa fa-2x fa-spin fa-refresh"></i></div><div class="body" ng-hide="vm.loading">{{vm.unit}} {{vm.value}}</div><div class="desc">{{vm.description}}</div></div><div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more" ng-style="{\'background-color\': vm.bgColor, \'color\': vm.color}"><a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoUiSref" ui-sref="{{vm.mnoUiSref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoClick" ng-click="vm.mnoClick()">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a></div></div>',
+    transclude: true,
+    controllerAs: "vm",
+    bindings: {
+      description: '@',
+      loading: '=',
+      value: '@',
+      icon: '@?',
+      unit: '@?',
+      bgColor: '@?',
+      color: '@?',
+      mnoClick: '&?',
+      mnoHref: '@?',
+      mnoUiSref: '@?',
+      linkText: '@?'
+    },
+    controller: ["$scope", function($scope) {
+      var vm;
+      vm = this;
+      vm.$onInit = function() {};
+    }]
   });
 
 }).call(this);
@@ -110,6 +131,13 @@ angular.module('mnoUiElements', [
     transclude: true,
     require: '^mnoSection',
     template: '<div class="mno-section-title" ng-transclude></div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('loadingEllipsis', []).component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);
