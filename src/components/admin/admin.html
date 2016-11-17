@@ -30,7 +30,9 @@
   </header><!-- End Header Bar -->
 
   <!-- Page Content -->
-  <div class="page-content" ng-transclude="content"></div><!-- End Page Content -->
+  <div class="page-content">
+    <div class="container" ng-transclude="content"></div>
+  </div><!-- End Page Content -->
 
   <footer ng-if="!$ctrl.hideFooter">
     <div ng-transclude="footer"></div>
