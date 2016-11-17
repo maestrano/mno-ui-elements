@@ -3,5 +3,6 @@ angular.module('mnoUiElements', [
   'loadingEllipsis',
   'section',
   'sectionTitle',
-  'row'
+  'row',
+  'kpi'
 ]);
