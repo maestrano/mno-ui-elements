@@ -4,5 +4,6 @@ angular.module('mnoUiElements', [
   'section',
   'sectionTitle',
   'row',
-  'kpi'
+  'kpi',
+  'validation'
 ]);
