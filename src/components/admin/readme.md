@@ -75,7 +75,14 @@ You can modify the style of mno-admin by changing the following less variables.
 - @header-font-color
 - @header-height
 
-### Navigation (sidebar)
+
+#### Content
+You can modify bootstrap variables to change the width of your page
+- @container-large-desktop
+- @container-desktop
+- @container-tablet
+
+#### Navigation (sidebar)
 - @sidebar-base-color
 - @sidebar-menu-item-font-color
 - @sidebar-menu-item-font-hover-color

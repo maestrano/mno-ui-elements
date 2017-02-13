@@ -4,6 +4,7 @@
   <ul class="sidebar">
     <li class="sidebar-main">
       <a ng-click="$ctrl.reduceSidebar()">
+        <span ng-if="!$ctrl.logo">{{$ctrl.name}}</span>
         <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}">
         <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span>
       </a>
@@ -25,7 +26,7 @@
       </div>
     </a>
 
-    <div ng-transclude="header"/>
+    <div ng-transclude="header"></div>
 
   </header><!-- End Header Bar -->
 

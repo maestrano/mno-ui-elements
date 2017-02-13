@@ -48,23 +48,7 @@ mno-admin {
     /* depending on if the sidebar is reduced or not */
     @media screen and (min-width: @screen-md-min) {
       .container {
-        width: @container-md - @sidebar-full-width;
-      }
-
-      &.reduced .container {
-        width: @container-md - @sidebar-reduced-width;
-      }
-    }
-
-    /* Fix the container width if the screen is lg+ */
-    /* depending on if the sidebar is reduced or not */
-    @media screen and (min-width: @screen-lg-min) {
-      .container {
-        width: @container-lg - @sidebar-full-width;
-      }
-
-      &.reduced .container {
-        width: @container-lg - @sidebar-reduced-width;
+        width: @container-md;
       }
     }
 

@@ -8,14 +8,15 @@ angular.module('admin', [])
     footer: '?mnoAdminFooter'
   },
   bindings: {
-    logo: '@',
+    logo: '@?',
+    name: '@?',
     hideFooter: '='
   }
   controller: ($scope) ->
     vm = this
     vm.$onInit = () ->
       vm.toggled = false
-      vm.reduced = if window.innerWidth > 992 then true else false
+      vm.reduced = if window.innerWidth > 992 then false else true
 
     vm.reduceSidebar = () ->
       if !vm.toggled
@@ -24,12 +25,13 @@ angular.module('admin', [])
     # toggle the sidebar
     vm.toggleSidebar = () ->
       vm.toggled = !vm.toggled
+      vm.reduced = !vm.toggled
 
     # Watch window width and reset the layout to default if changed
     $scope.$watch (() -> window.innerWidth), (newValue) ->
       if newValue
         vm.toggled = false
-        vm.reduced = (window.innerWidth > 992)
+        vm.reduced = (window.innerWidth < 1200)
 
     window.onresize = () ->
       $scope.$apply()

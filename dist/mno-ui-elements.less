@@ -24,6 +24,7 @@
 // @import "components/row/row.less";
 // @import "components/admin/admin.less";
 // @import "components/kpi/kpi.less";
+// @import "components/validation/validation.less";
 
 /* endinject */
 
@@ -152,6 +153,7 @@ ul.sidebar {
     line-height: 40px;
     text-transform: uppercase;
     transition: all .6s ease 0s;
+    font-weight: 600;
   }
   .sidebar-list {
     height: 40px;
@@ -306,6 +308,10 @@ ul.sidebar {
 @mno-section-padding-top: 30px;
 @mno-section-padding-bottom: 30px;
 
+/* mno-validation */
+@mno-validation-unchecked-color: @mno-grey;
+@mno-validation-checked-color: @mno-green;
+
 /* user menu vars */
 @mno-user-menu-background-color: @mno-dark;
 @mno-user-menu-link-hover-color: lighten(@mno-dark, 5%);
@@ -362,23 +368,7 @@ mno-admin {
     /* depending on if the sidebar is reduced or not */
     @media screen and (min-width: @screen-md-min) {
       .container {
-        width: @container-md - @sidebar-full-width;
-      }
-
-      &.reduced .container {
-        width: @container-md - @sidebar-reduced-width;
-      }
-    }
-
-    /* Fix the container width if the screen is lg+ */
-    /* depending on if the sidebar is reduced or not */
-    @media screen and (min-width: @screen-lg-min) {
-      .container {
-        width: @container-lg - @sidebar-full-width;
-      }
-
-      &.reduced .container {
-        width: @container-lg - @sidebar-reduced-width;
+        width: @container-md;
       }
     }
 
@@ -517,6 +507,39 @@ mno-kpi {
   }
 }
 
+/* Loading ellipsis component style */
+mno-loading-ellipsis {
+  .mno-three-bounce {
+    @animation-duration: 1.4s;
+    @delay-range: 0.32s;
+    width: @mno-loading-ellipsis-size * 2;
+    margin-left: auto;
+    margin-right: auto;
+
+    & > div {
+      width: @mno-loading-ellipsis-size / 2;
+      height: @mno-loading-ellipsis-size / 2;
+      background-color: @mno-loading-ellipsis-color;
+
+      border-radius: 50%;
+      display: inline-block;
+      animation: mno-three-bounce @animation-duration ease-in-out 0s infinite both;
+    }
+
+    .mno-bounce1 { animation-delay: -@delay-range; }
+    .mno-bounce2 { animation-delay: -@delay-range / 2; }
+  }
+
+  @keyframes mno-three-bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    } 40% {
+        transform: scale(1.0);
+    }
+  }
+}
+
+
 /* App row component style */
 mno-row {
   display: block;
@@ -540,6 +563,16 @@ mno-row {
     }
 
 
+  }
+}
+
+mno-validation {
+  .checked {
+    color: @mno-validation-checked-color;
+  }
+
+  .unchecked {
+    color: @mno-validation-unchecked-color;
   }
 }
 
@@ -600,37 +633,5 @@ mno-section {
     position: absolute;
     top: -70px;
     right: 15px;
-  }
-}
-
-/* Loading ellipsis component style */
-mno-loading-ellipsis {
-  .mno-three-bounce {
-    @animation-duration: 1.4s;
-    @delay-range: 0.32s;
-    width: @mno-loading-ellipsis-size * 2;
-    margin-left: auto;
-    margin-right: auto;
-
-    & > div {
-      width: @mno-loading-ellipsis-size / 2;
-      height: @mno-loading-ellipsis-size / 2;
-      background-color: @mno-loading-ellipsis-color;
-
-      border-radius: 50%;
-      display: inline-block;
-      animation: mno-three-bounce @animation-duration ease-in-out 0s infinite both;
-    }
-
-    .mno-bounce1 { animation-delay: -@delay-range; }
-    .mno-bounce2 { animation-delay: -@delay-range / 2; }
-  }
-
-  @keyframes mno-three-bounce {
-    0%, 80%, 100% {
-      transform: scale(0);
-    } 40% {
-        transform: scale(1.0);
-    }
   }
 }

@@ -10,3 +10,13 @@ The right column includes the content specified in the element itself.
 
 * `description` -
   A quick sentence describing your section
+
+### Style personalization
+You can modify the style of mno-admin by changing the following less variables.
+
+#### Header
+- @header-title-text-color
+- @header-title-text-size
+- @header-background-color
+- @header-font-color
+- @header-height
