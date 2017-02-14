@@ -35,28 +35,46 @@ These fields are optional:
   The text to be displayed on the link.
      
 ### mno-kpi layout
-You can customize your kpi by specifying the following values:
+You can customize your kpi by specifying the following classes/values:
 
-* `color` -
-  _(Default: `white`)_ -
-  The color of the KPI text
-
-* `bg-color` -
-  _(Default: `transparent`)_ -
-  The background color of your KPI
-
+* class:
+  * `kpi-color-1` -
+    _(Default: `red`)_ -
+    A red design of a KPI
+  * `kpi-color-2` -
+    _(Default: `orange`)_ -
+    An orange design of a KPI
+  * `kpi-color-3` -
+    _(Default: `green`)_ -
+    A green design of a KPI
+  * `kpi-color-4` -
+    _(Default: `dark green`)_ -
+    A dark green design of a KPI
+    
 * `icon` -
   _(Default: `fa-file-text-o`)_ -
   The font awesome icon to display on the KPI
 
 * If you do not specify any link (see mno-kpi settings), it won't be displayed.
-     
+
+### Style personalization
+You can modify the style of mno-kpi by modifying the following less variables.
+The @kpi-color-[x] will modify the text color while @kpi-bg-color-[x] will modify the background color.
+
+- @kpi-color-1
+- @kpi-bg-color-1
+- @kpi-color-2
+- @kpi-bg-color-2
+- @kpi-color-3
+- @kpi-bg-color-3
+- @kpi-color-4
+- @kpi-bg-color-4
+
 ### mno-kpi demo
 ``` html
 <mno-kpi
+  class="kpi-color-3"
   icon="fa-money" 
-  bg-color="#ffcb40"
-  color="#000"
   description="Still to be paid"
   unit="EUR" 
   value="15"

@@ -1,5 +1,5 @@
 
-<div ng-style="{'background-color': vm.bgColor, 'color': vm.color}">
+<div>
   <div class="visual">
     <i class="fa" ng-class="vm.icon || 'fa-file-text-o'" ng-class="icon"></i>
   </div>
@@ -12,8 +12,7 @@
     </div>
     <div class="desc">{{vm.description}}</div>
   </div>
-  <div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick"
-    class="more" ng-style="{'background-color': vm.bgColor, 'color': vm.color}">
+  <div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more">
     <a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">
       {{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i>
     </a>

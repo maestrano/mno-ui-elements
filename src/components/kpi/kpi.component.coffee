@@ -1,4 +1,4 @@
-angular.module('kpi', [])
+angular.module('mnoUiElements')
 .component('mnoKpi', {
   templateUrl: 'kpi.html',
   transclude: true,
@@ -9,8 +9,6 @@ angular.module('kpi', [])
     value: '@',
     icon: '@?',
     unit: '@?',
-    bgColor: '@?',
-    color:'@?',
     mnoClick: '&?',
     mnoHref: '@?',
     mnoUiSref: '@?',

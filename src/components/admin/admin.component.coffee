@@ -1,4 +1,4 @@
-angular.module('admin', [])
+angular.module('mnoUiElements')
 .component('mnoAdmin', {
   templateUrl: 'admin.html',
   transclude: {

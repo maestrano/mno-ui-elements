@@ -1,7 +1,5 @@
-#
-# Section
-#
-angular.module('section', []).component('mnoSection', {
+angular.module('mnoUiElements')
+.component('mnoSection', {
   bindings: {
     title: '@',
     description: '@'

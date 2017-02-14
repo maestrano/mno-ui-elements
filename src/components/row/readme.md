@@ -10,7 +10,7 @@ It is usually used as a list of links providing additional details at a glance.
   Additional information available at a glance.
 
 * `mno-row-href` or `mno-row-click` -
-  Exactly one of the mnoRowClick, mnoRowHref attributes are required to be specified.
+  Only one of the mnoRowClick or mnoRowHref attributes are required to be specified.
   * `mno-row-click`
     mnoRowClick function which will be called when the link is clicked to change
     the page. Renders as an `ng-click`.

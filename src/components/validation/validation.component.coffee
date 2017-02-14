@@ -1,4 +1,4 @@
-angular.module('validation', [])
+angular.module('mnoUiElements')
 .component('mnoValidation', {
   templateUrl: 'validation.html',
   bindings: {

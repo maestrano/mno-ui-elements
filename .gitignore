@@ -11,11 +11,11 @@ node_modules/
 npm-debug.log
 libpeerconnection.log
 
-# OS-specific
-.DS_Store
-
 # Bower components
 bower_components
 
 # Temp files
 .tmp/
+
+# Dist files
+dist/
