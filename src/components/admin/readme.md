@@ -69,31 +69,35 @@ E.g:
 You can modify the style of mno-admin by changing the following less variables.
 
 #### Header
-- @header-title-text-color
-- @header-title-text-size
-- @header-background-color
-- @header-font-color
-- @header-height
+- @mno-admin-header-title-text-color
+- @mno-admin-header-title-text-size
+- @mno-admin-header-background-color
+- @mno-admin-header-font-color
+- @mno-admin-header-height
 
 
 #### Content
 You can modify bootstrap variables to change the width of your page
-- @container-large-desktop
-- @container-desktop
-- @container-tablet
+- @mno-admin-container-large-desktop
+- @mno-admin-container-desktop
+- @mno-admin-container-tablet
 
 #### Navigation (sidebar)
-- @sidebar-base-color
-- @sidebar-menu-item-font-color
-- @sidebar-menu-item-font-hover-color
-- @sidebar-menu-item-hover-color
-- @sidebar-menu-item-hover-border-color
-- @sidebar-menu-item-hover-background-color
-- @sidebar-title-color
+- @mno-admin-sidebar-base-color
+- @mno-admin-sidebar-header-color
+- @mno-admin-sidebar-footer-color
+- @mno-admin-sidebar-title-color
+- @mno-admin-sidebar-menu-item-font-color
+- @mno-admin-sidebar-menu-item-font-hover-color
+- @mno-admin-sidebar-menu-item-hover-color
+- @mno-admin-sidebar-menu-item-hover-border-color
+- @mno-admin-sidebar-menu-item-hover-background-color
+- @mno-admin-sidebar-full-width
+- @mno-admin-sidebar-reduced-width
 
 #### Footer
-- @footer-background-color
-- @footer-height
+- @mno-admin-footer-background-color
+- @mno-admin-footer-height
 
 
 ### Demo
