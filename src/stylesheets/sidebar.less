@@ -77,10 +77,16 @@ ul.sidebar {
       color: @mno-admin-sidebar-menu-item-font-hover-color;
       border-left: 3px solid @mno-admin-sidebar-menu-item-hover-border-color;
       text-indent: 22px;
-      background: @mno-admin-sidebar-menu-item-hover-background-color;
+      background: @mno-admin-sidebar-menu-item-hover-bg-color;
       .menu-icon {
         text-indent: 25px;
       }
+    }
+    &.active a {
+      text-indent: 25px;
+      color: @mno-admin-sidebar-menu-active-item-font-color;
+      border-left: 3px solid @mno-admin-sidebar-menu-active-item-border-color;
+      background: @mno-admin-sidebar-menu-active-item-bg-color;
     }
     .menu-icon {
       float: right;

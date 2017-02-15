@@ -29,7 +29,7 @@ mno-admin {
   #content-wrapper {
     position: relative;
     overflow-x: hidden;
-    background: @mno-admin-content-background-color;
+    background: @mno-admin-content-bg-color;
     height: 100%;
     z-index: 100;
 
@@ -63,7 +63,7 @@ mno-admin {
       justify-content: space-between;
       align-items: center;
       height: @mno-admin-header-height;
-      background: @mno-admin-header-background-color;
+      background: @mno-admin-header-bg-color;
       color: @mno-admin-header-font-color;
       text-transform: capitalize;
       z-index: 100;
@@ -91,7 +91,7 @@ mno-admin {
     .page-content {
       position: relative;
       min-height: ~"calc(100% -" (@mno-admin-header-height + @mno-admin-footer-height) ~")";
-      background: @mno-admin-content-background-color;
+      background: @mno-admin-content-bg-color;
       z-index: 100;
     }
 
@@ -101,8 +101,8 @@ mno-admin {
       justify-content: space-between;
       align-items: center;
       height: @mno-admin-footer-height;
-      background: @mno-admin-footer-background-color;
-      background: linear-gradient(to left, lighten(@mno-admin-footer-background-color, 2%) 0%, @mno-admin-footer-background-color 41%, darken(@mno-admin-footer-background-color, 10%) 100%);
+      background: @mno-admin-footer-bg-color;
+      background: linear-gradient(to left, lighten(@mno-admin-footer-bg-color, 2%) 0%, @mno-admin-footer-bg-color 41%, darken(@mno-admin-footer-bg-color, 10%) 100%);
     }
   }
 }

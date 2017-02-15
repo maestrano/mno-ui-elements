@@ -71,7 +71,7 @@ You can modify the style of mno-admin by changing the following less variables.
 #### Header
 - @mno-admin-header-title-text-color
 - @mno-admin-header-title-text-size
-- @mno-admin-header-background-color
+- @mno-admin-header-bg-color
 - @mno-admin-header-font-color
 - @mno-admin-header-height
 
@@ -91,12 +91,12 @@ You can modify bootstrap variables to change the width of your page
 - @mno-admin-sidebar-menu-item-font-hover-color
 - @mno-admin-sidebar-menu-item-hover-color
 - @mno-admin-sidebar-menu-item-hover-border-color
-- @mno-admin-sidebar-menu-item-hover-background-color
+- @mno-admin-sidebar-menu-item-hover-bg-color
 - @mno-admin-sidebar-full-width
 - @mno-admin-sidebar-reduced-width
 
 #### Footer
-- @mno-admin-footer-background-color
+- @mno-admin-footer-bg-color
 - @mno-admin-footer-height
 
 

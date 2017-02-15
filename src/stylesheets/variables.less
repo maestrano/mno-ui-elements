@@ -42,23 +42,27 @@
 @mno-admin-sidebar-menu-item-font-hover-color: @mno-light-grey;
 @mno-admin-sidebar-menu-item-hover-color: @mno-green;
 @mno-admin-sidebar-menu-item-hover-border-color: @mno-green;
-@mno-admin-sidebar-menu-item-hover-background-color: @mno-admin-sidebar-header-color;
+@mno-admin-sidebar-menu-item-hover-bg-color: @mno-admin-sidebar-header-color;
+@mno-admin-sidebar-menu-active-item-font-color: @mno-admin-sidebar-menu-item-font-hover-color;
+@mno-admin-sidebar-menu-active-item-border-color: @mno-admin-sidebar-menu-item-hover-border-color;
+@mno-admin-sidebar-menu-active-item-bg-color: @mno-admin-sidebar-menu-item-hover-bg-color;
+
 @mno-admin-sidebar-full-width: 250px;
 @mno-admin-sidebar-reduced-width: 70px;
 
 /* mno-admin */
 @mno-admin-header-height: 60px;
-@mno-admin-header-background-color: @mno-dark;
+@mno-admin-header-bg-color: @mno-dark;
 @mno-admin-header-font-color: white;
 @mno-admin-header-title-text-size: 18px;
 @mno-admin-header-title-text-color: @mno-admin-header-font-color;
 
 @mno-admin-hamburger-color: @mno-admin-header-font-color;
 
-@mno-admin-content-background-color: white;
+@mno-admin-content-bg-color: white;
 
 @mno-admin-footer-height: 40px;
-@mno-admin-footer-background-color: @mno-purple;
+@mno-admin-footer-bg-color: @mno-purple;
 @mno-admin-footer-links-color: @mno-light-grey;
 
 /* mno-row vars */
@@ -83,8 +87,11 @@
 @mno-validation-unchecked-color: @mno-grey;
 @mno-validation-checked-color: @mno-green;
 
-/* user menu vars */
-@mno-user-menu-background-color: @mno-dark;
-@mno-user-menu-link-hover-color: lighten(@mno-dark, 5%);
-@mno-user-menu-header-font-color: white;
-@mno-user-menu-font-color: white;
+@mno-widget-bg-color: @mno-white;
+@mno-widget-border-color: @mno-light-grey;
+@mno-widget-header-font-color: @mno-grey;
+@mno-widget-header-bg-color: lighten(@mno-light-grey, 5%);
+@mno-widget-header-border-bottom-color: @mno-light-grey;
+@mno-widget-body-loader-color: @mno-purple;
+@mno-widget-footer-border-top-color: lighten(@mno-light-grey, 5%);
+@mno-widget-footer-bg-color: @mno-widget-bg-color;

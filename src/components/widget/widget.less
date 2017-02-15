@@ -1,0 +1,98 @@
+mno-widget {
+  display: block;
+  margin-top: 15px;
+  width: 100%;
+  height: 100%;
+
+  > .widget {
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    background-color: @mno-widget-bg-color;
+    border: 1px solid @mno-widget-border-color;
+    border-radius: 2px;
+
+    > .header {
+      width: inherit;
+      display: block;
+      color: @mno-widget-header-font-color;
+      background-color: @mno-widget-header-bg-color;
+      padding: 10px 15px;
+      border-bottom: 1px solid @mno-widget-header-border-bottom-color;
+      line-height: 30px;
+
+      > .row > div {
+        i {
+          display: inline-block;
+          padding-right: 5px;
+        }
+
+        .heading {
+          display: inline-block;
+          padding-right: 5px;
+        }
+      }
+
+      > .row > div {
+        display: block;
+
+        mno-widget-header {
+          input.search-bar {
+            width: inherit;
+            float: right;
+          }
+        }
+      }
+    }
+
+    > .body {
+      width: inherit;
+
+      > .row > .loading {
+        position: relative;
+        margin: 160px auto;
+        height: 30px;
+
+        mno-loading-ellipsis .mno-three-bounce > div {
+          background-color: @mno-widget-body-loader-color;
+        }
+      }
+
+      mno-widget-body {
+        &.large {
+          display: block;
+          height: 350px;
+          overflow-y: auto;
+        }
+
+        &.medium {
+          height: 250px;
+          display: block;
+          overflow-y: auto;
+        }
+
+        &.no-padding {
+          padding: 0;
+          display: block;
+        }
+
+        &:not(.no-padding) {
+          padding: 15px;
+          display: block;
+        }
+      }
+    }
+
+    > .footer {
+      width: 100%;
+
+      mno-widget-footer {
+        width: 100%;
+        background: @mno-widget-footer-bg-color;
+        border-top: 1px solid #e9e9e9;
+        display: block;
+        position: relative;
+        float: left;
+        padding: 10px;
+      }
+    }
+  }
+}
