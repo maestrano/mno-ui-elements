@@ -1,0 +1,59 @@
+/**
+ * Hamburg Menu
+ * When the class of 'hamburg' is applied to the body tag of the document,
+ * the sidebar changes it's style to attempt to mimic a menu on a phone app,
+ * where the content is overlaying the content, rather than push it.
+ */
+#hamburger-toggle {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+
+  span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 36px;
+    background: @mno-admin-hamburger-color;
+    border-radius: 6px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+  }
+
+  span:nth-child(1) {
+    top: 0px;
+    transform-origin: left center;
+  }
+
+  span:nth-child(2) {
+    top: 10px;
+    transform-origin: left center;
+  }
+
+  span:nth-child(3) {
+    top: 20px;
+    transform-origin: left center;
+  }
+
+  &.open span:nth-child(1) {
+    transform: rotate(45deg);
+    top: -2px;
+    left: 6px;
+  }
+
+  &.open span:nth-child(2) {
+    width: 0%;
+    opacity: 0;
+  }
+
+  &.open span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 24px;
+    left: 6px;
+  }
+}

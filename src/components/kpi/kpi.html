@@ -1,0 +1,26 @@
+
+<div>
+  <div class="visual">
+    <i class="fa" ng-class="vm.icon || 'fa-file-text-o'" ng-class="icon"></i>
+  </div>
+  <div class="details">
+    <div class="loader" ng-show="vm.loading" aria-hidden="true">
+      <i class="fa fa-2x fa-spin fa-refresh"></i>
+    </div>
+    <div class="body" ng-hide="vm.loading">
+      {{vm.unit}} {{vm.value}}
+    </div>
+    <div class="desc">{{vm.description}}</div>
+  </div>
+  <div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more">
+    <a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">
+      {{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i>
+    </a>
+    <a ng-if="vm.mnoUiSref" ui-sref="{{vm.mnoUiSref}}">
+      {{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i>
+    </a>
+    <a ng-if="vm.mnoClick" ng-click="vm.mnoClick()">
+      {{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i>
+    </a>
+  </div>
+</div>

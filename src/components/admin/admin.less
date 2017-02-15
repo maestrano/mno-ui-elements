@@ -1,0 +1,108 @@
+/* Wrap the whole page */
+mno-admin {
+  height: 100%;
+  overflow-x: hidden;
+  width: 100%;
+  display: block;
+  position: absolute;
+
+  /* Animation between states */
+  #sidebar-wrapper, #content-wrapper {
+    transition: all .4s ease;
+  }
+
+  /* Sidebar wrapper */
+  #sidebar-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @mno-admin-sidebar-full-width;
+    z-index: 1;
+
+    &.reduced {
+      left: @mno-admin-sidebar-reduced-width - @mno-admin-sidebar-full-width;
+    }
+  }
+
+  /* Header, page content & footer */
+  #content-wrapper {
+    position: relative;
+    overflow-x: hidden;
+    background: @mno-admin-content-bg-color;
+    height: 100%;
+    z-index: 100;
+
+    /* If the screen is md+ the sidebar is always visible */
+    @media screen and (min-width: @screen-md-min) {
+      position: absolute;
+      left: @mno-admin-sidebar-full-width;
+      right: 0;
+
+      &.reduced {
+        left: @mno-admin-sidebar-reduced-width;
+      }
+    }
+
+    /* Fix the container width if the screen is md+ */
+    /* depending on if the sidebar is reduced or not */
+    @media screen and (min-width: @screen-md-min) {
+      .container {
+        width: @container-md;
+      }
+    }
+
+    /* Open the sidebar on sm and sm devices */
+    &.open {
+      transform: translate3d(@mno-admin-sidebar-full-width, 0px, 0px);
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @mno-admin-header-height;
+      background: @mno-admin-header-bg-color;
+      color: @mno-admin-header-font-color;
+      text-transform: capitalize;
+      z-index: 100;
+
+      .header-sidebar-toggle {
+        width: @mno-admin-header-height;
+        padding-left: 12px;
+      }
+
+      > div {
+        width:100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .title {
+        text-align: center;
+        font-size: @mno-admin-header-title-text-size;
+        color: @mno-admin-header-title-text-color;
+        line-height: @mno-admin-header-height;
+      }
+    }
+
+    /* Page content */
+    .page-content {
+      position: relative;
+      min-height: ~"calc(100% -" (@mno-admin-header-height + @mno-admin-footer-height) ~")";
+      background: @mno-admin-content-bg-color;
+      z-index: 100;
+    }
+
+    /* Footer */
+    mno-admin-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @mno-admin-footer-height;
+      background: @mno-admin-footer-bg-color;
+      background: linear-gradient(to left, lighten(@mno-admin-footer-bg-color, 2%) 0%, @mno-admin-footer-bg-color 41%, darken(@mno-admin-footer-bg-color, 10%) 100%);
+    }
+  }
+}

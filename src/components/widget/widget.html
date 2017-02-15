@@ -1,0 +1,32 @@
+<div class="widget">
+  <div class="header">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="pull-left">
+          <i class="fa" ng-class="$ctrl.icon"></i>
+          <span class="heading">{{$ctrl.heading}}</span>
+        </div>
+        <div ng-transclude="header"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="row">
+      <div class="col-xs-12 loading" ng-show="$ctrl.isLoading">
+        <mno-loading-ellipsis></mno-loading-ellipsis>
+      </div>
+      <div class="col-xs-12"  ng-hide="$ctrl.isLoading">
+        <div ng-transclude="body"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="row">
+      <div class="col-xs-12">
+        <div ng-transclude="footer"></div>
+      </div>
+    </div>
+  </div>
+</div>

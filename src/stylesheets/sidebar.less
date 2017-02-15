@@ -1,0 +1,147 @@
+/**
+ * Sidebar
+ */
+ul.sidebar .sidebar-main a,
+ul.sidebar .sidebar-list a:hover,
+#sidebar-wrapper.reduced ul.sidebar .sidebar-title.separator {
+  /* Sidebar header and footer color */
+  background: @mno-admin-sidebar-header-color;
+}
+
+.sidebar-footer {
+  background: @mno-admin-sidebar-footer-color;
+}
+
+ul.sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-indent: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: @mno-admin-sidebar-base-color;
+
+  li {
+    a {
+      color: #fff;
+      display: block;
+      float: left;
+      text-decoration: none;
+      width: 250px;
+    }
+  }
+  .sidebar-main {
+    height: 65px;
+    a {
+      font-size: 18px;
+      line-height: @mno-admin-header-height;
+      height: @mno-admin-header-height;
+    }
+    a:hover {
+      cursor: pointer;
+    }
+    .menu-icon {
+      float: right;
+      font-size: 18px;
+      padding-right: 28px;
+      line-height: @mno-admin-header-height;
+    }
+    .sidebar-logo {
+      height: @mno-admin-header-height - 20px;
+      margin-top: 10px;
+      margin-left: 10px;
+      float: left;
+    }
+  }
+  .sidebar-title {
+    color: @mno-admin-sidebar-title-color;
+    font-size: 12px;
+    height: 35px;
+    line-height: 40px;
+    text-transform: uppercase;
+    transition: all .6s ease 0s;
+    font-weight: 600;
+  }
+  .sidebar-list {
+    height: 40px;
+    a {
+      text-indent: 25px;
+      font-size: 15px;
+      color: @mno-admin-sidebar-menu-item-font-color;
+      line-height: 40px;
+    }
+    a:hover, a.active {
+      color: @mno-admin-sidebar-menu-item-font-hover-color;
+      border-left: 3px solid @mno-admin-sidebar-menu-item-hover-border-color;
+      text-indent: 22px;
+      background: @mno-admin-sidebar-menu-item-hover-bg-color;
+      .menu-icon {
+        text-indent: 25px;
+      }
+    }
+    &.active a {
+      text-indent: 25px;
+      color: @mno-admin-sidebar-menu-active-item-font-color;
+      border-left: 3px solid @mno-admin-sidebar-menu-active-item-border-color;
+      background: @mno-admin-sidebar-menu-active-item-bg-color;
+    }
+    .menu-icon {
+      float: right;
+      padding-right: 29px;
+      line-height: 40px;
+      width: 70px;
+    }
+  }
+}
+
+#sidebar-wrapper.reduced {
+  ul.sidebar {
+    bottom: 0;
+    .sidebar-title {
+      display: none;
+      height: 0px;
+      text-indent: -100px;
+    }
+    .sidebar-title.separator {
+      display: block;
+      height: 2px;
+      margin: 13px 0;
+    }
+    .sidebar-list {
+      a:hover, a.active {
+        span {
+          border-left: 3px solid @mno-admin-sidebar-menu-item-hover-color;
+          text-indent: 22px;
+        }
+      }
+    }
+    .sidebar-footer {
+      display: none;
+    }
+  }
+}
+
+.sidebar-footer {
+  position: absolute;
+  height: 40px;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  transition: all .6s ease 0s;
+  text-align: center;
+  div {
+    a {
+      color: #b2bfdc;
+      font-size: 12px;
+      line-height: 43px;
+    }
+    a:hover {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}
