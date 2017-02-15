@@ -1,7 +1,11 @@
 {
   "name": "mno-ui-elements",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "authors": [
+    {
+      "name": "Alex Jarnoux",
+      "email": "alexandre.jarnoux@maestrano.com"
+    },
     {
       "name": "Clement Berti",
       "email": "clement.berti@maestrano.com"
