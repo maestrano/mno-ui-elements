@@ -1,0 +1,790 @@
+/*
+** All @import's should live in this file!
+*/
+
+/**
+ *  Do not remove this comments bellow. It's the markers used by wiredep to inject
+ *  less dependencies when defined in the bower.json of your dependencies
+ */
+// bower:less
+// endbower
+
+// Make sure that styles-concat in gulp/styles.js is updated
+//@import 'stylesheets/variables.less';
+//@import 'stylesheets/sidebar.less';
+//@import 'stylesheets/hamburger.less';
+
+/**
+ *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
+ *  all your less files automatically
+ */
+/* inject:imports */
+// @import "components/loading/loadingEllipsis.less";
+// @import "components/section/section.less";
+// @import "components/row/row.less";
+// @import "components/admin/admin.less";
+// @import "components/kpi/kpi.less";
+// @import "components/validation/validation.less";
+// @import "components/widget/widget.less";
+
+/* endinject */
+
+/**
+ * Hamburg Menu
+ * When the class of 'hamburg' is applied to the body tag of the document,
+ * the sidebar changes it's style to attempt to mimic a menu on a phone app,
+ * where the content is overlaying the content, rather than push it.
+ */
+#hamburger-toggle {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+
+  span {
+    display: block;
+    position: absolute;
+    height: 4px;
+    width: 36px;
+    background: @mno-admin-hamburger-color;
+    border-radius: 6px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+  }
+
+  span:nth-child(1) {
+    top: 0px;
+    transform-origin: left center;
+  }
+
+  span:nth-child(2) {
+    top: 10px;
+    transform-origin: left center;
+  }
+
+  span:nth-child(3) {
+    top: 20px;
+    transform-origin: left center;
+  }
+
+  &.open span:nth-child(1) {
+    transform: rotate(45deg);
+    top: -2px;
+    left: 6px;
+  }
+
+  &.open span:nth-child(2) {
+    width: 0%;
+    opacity: 0;
+  }
+
+  &.open span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 24px;
+    left: 6px;
+  }
+}
+
+/**
+ * Sidebar
+ */
+ul.sidebar .sidebar-main a,
+ul.sidebar .sidebar-list a:hover,
+#sidebar-wrapper.reduced ul.sidebar .sidebar-title.separator {
+  /* Sidebar header and footer color */
+  background: @mno-admin-sidebar-header-color;
+}
+
+.sidebar-footer {
+  background: @mno-admin-sidebar-footer-color;
+}
+
+ul.sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-indent: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: @mno-admin-sidebar-base-color;
+
+  li {
+    a {
+      color: #fff;
+      display: block;
+      float: left;
+      text-decoration: none;
+      width: 250px;
+    }
+  }
+  .sidebar-main {
+    height: 65px;
+    a {
+      font-size: 18px;
+      line-height: @mno-admin-header-height;
+      height: @mno-admin-header-height;
+    }
+    a:hover {
+      cursor: pointer;
+    }
+    .menu-icon {
+      float: right;
+      font-size: 18px;
+      padding-right: 28px;
+      line-height: @mno-admin-header-height;
+    }
+    .sidebar-logo {
+      height: @mno-admin-header-height - 20px;
+      margin-top: 10px;
+      margin-left: 10px;
+      float: left;
+    }
+  }
+  .sidebar-title {
+    color: @mno-admin-sidebar-title-color;
+    font-size: 12px;
+    height: 35px;
+    line-height: 40px;
+    text-transform: uppercase;
+    transition: all .6s ease 0s;
+    font-weight: 600;
+  }
+  .sidebar-list {
+    height: 40px;
+    a {
+      text-indent: 25px;
+      font-size: 15px;
+      color: @mno-admin-sidebar-menu-item-font-color;
+      line-height: 40px;
+    }
+    a:hover, a.active {
+      color: @mno-admin-sidebar-menu-item-font-hover-color;
+      border-left: 3px solid @mno-admin-sidebar-menu-item-hover-border-color;
+      text-indent: 22px;
+      background: @mno-admin-sidebar-menu-item-hover-bg-color;
+      .menu-icon {
+        text-indent: 25px;
+      }
+    }
+    &.active a {
+      text-indent: 25px;
+      color: @mno-admin-sidebar-menu-active-item-font-color;
+      border-left: 3px solid @mno-admin-sidebar-menu-active-item-border-color;
+      background: @mno-admin-sidebar-menu-active-item-bg-color;
+    }
+    .menu-icon {
+      float: right;
+      padding-right: 29px;
+      line-height: 40px;
+      width: 70px;
+    }
+  }
+}
+
+#sidebar-wrapper.reduced {
+  ul.sidebar {
+    bottom: 0;
+    .sidebar-title {
+      display: none;
+      height: 0px;
+      text-indent: -100px;
+    }
+    .sidebar-title.separator {
+      display: block;
+      height: 2px;
+      margin: 13px 0;
+    }
+    .sidebar-list {
+      a:hover, a.active {
+        span {
+          border-left: 3px solid @mno-admin-sidebar-menu-item-hover-color;
+          text-indent: 22px;
+        }
+      }
+    }
+    .sidebar-footer {
+      display: none;
+    }
+  }
+}
+
+.sidebar-footer {
+  position: absolute;
+  height: 40px;
+  bottom: 0;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  transition: all .6s ease 0s;
+  text-align: center;
+  div {
+    a {
+      color: #b2bfdc;
+      font-size: 12px;
+      line-height: 43px;
+    }
+    a:hover {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  }
+}
+
+/* #592727 RED */
+/* #2f5927 GREEN */
+/* #30426a BLUE (default)*/
+
+// Color theme (https://color.adobe.com/Elemental-color-theme-7207545/)
+@elemental-pink: #E54661;
+@elemental-orange: #FFA644;
+@elemental-green: #998A2F;
+@elemental-aqua: #2C594F;
+@elemental-blue: #002D40;
+
+@mno-dark: #17262d;
+@mno-green: #d1e55c;
+@mno-blue: #00e5f0;
+@mno-purple: #977bf0;
+@mno-grey: #626d6d;
+@mno-white: #fff;
+@mno-light-blue: #abc4c6;
+@mno-light-grey: #e6edee;
+
+@mno-web-green: #47ff00;
+@mno-web-yellow: #fbd925;
+@mno-web-orange: #ff7300;
+@mno-web-pink: #ed1e79;
+
+/* KPIs vars */
+@mno-kpi-color-1: @mno-white;
+@mno-kpi-bg-color-1: @elemental-pink;
+@mno-kpi-color-2: @mno-white;
+@mno-kpi-bg-color-2: @elemental-orange;
+@mno-kpi-color-3: @mno-white;
+@mno-kpi-bg-color-3: @elemental-green;
+@mno-kpi-color-4: @mno-white;
+@mno-kpi-bg-color-4: @elemental-aqua;
+
+/* Sidebar vars */
+@mno-admin-sidebar-base-color: @mno-dark;
+@mno-admin-sidebar-header-color: darken(@mno-admin-sidebar-base-color, 3%);
+@mno-admin-sidebar-footer-color: darken(@mno-admin-sidebar-base-color, 3%);
+@mno-admin-sidebar-title-color: lighten(@mno-admin-sidebar-base-color, 50%);
+@mno-admin-sidebar-menu-item-font-color: darken(@mno-light-grey, 10%);
+@mno-admin-sidebar-menu-item-font-hover-color: @mno-light-grey;
+@mno-admin-sidebar-menu-item-hover-color: @mno-green;
+@mno-admin-sidebar-menu-item-hover-border-color: @mno-green;
+@mno-admin-sidebar-menu-item-hover-bg-color: @mno-admin-sidebar-header-color;
+@mno-admin-sidebar-menu-active-item-font-color: @mno-admin-sidebar-menu-item-font-hover-color;
+@mno-admin-sidebar-menu-active-item-border-color: @mno-admin-sidebar-menu-item-hover-border-color;
+@mno-admin-sidebar-menu-active-item-bg-color: @mno-admin-sidebar-menu-item-hover-bg-color;
+
+@mno-admin-sidebar-full-width: 250px;
+@mno-admin-sidebar-reduced-width: 70px;
+
+/* mno-admin */
+@mno-admin-header-height: 60px;
+@mno-admin-header-bg-color: @mno-dark;
+@mno-admin-header-font-color: white;
+@mno-admin-header-title-text-size: 18px;
+@mno-admin-header-title-text-color: @mno-admin-header-font-color;
+
+@mno-admin-hamburger-color: @mno-admin-header-font-color;
+
+@mno-admin-content-bg-color: white;
+
+@mno-admin-footer-height: 40px;
+@mno-admin-footer-bg-color: @mno-purple;
+@mno-admin-footer-links-color: @mno-light-grey;
+
+/* mno-row vars */
+@mno-row-height: 40px;
+@mno-row-name-font-color: @mno-light-blue;
+@mno-row-status-font-color: @mno-light-blue;
+@mno-row-borders-color: @mno-light-blue;
+@mno-row-hover-bg-color: @mno-light-grey;
+
+/* mno-loading-ellipsis vars */
+@mno-loading-ellipsis-size: 20px;
+@mno-loading-ellipsis-color: @mno-light-grey;
+
+/* mno-section vars */
+@mno-section-title-color: @mno-dark;
+@mno-section-description-color: @mno-grey;
+@mno-section-border-bottom-color: @mno-light-blue;
+@mno-section-padding-top: 30px;
+@mno-section-padding-bottom: 30px;
+
+/* mno-validation */
+@mno-validation-unchecked-color: @mno-grey;
+@mno-validation-checked-color: @mno-green;
+
+@mno-widget-bg-color: @mno-white;
+@mno-widget-border-color: @mno-light-grey;
+@mno-widget-header-font-color: @mno-grey;
+@mno-widget-header-bg-color: lighten(@mno-light-grey, 5%);
+@mno-widget-header-border-bottom-color: @mno-light-grey;
+@mno-widget-body-loader-color: @mno-purple;
+@mno-widget-footer-border-top-color: lighten(@mno-light-grey, 5%);
+@mno-widget-footer-bg-color: @mno-widget-bg-color;
+
+/* Wrap the whole page */
+mno-admin {
+  height: 100%;
+  overflow-x: hidden;
+  width: 100%;
+  display: block;
+  position: absolute;
+
+  /* Animation between states */
+  #sidebar-wrapper, #content-wrapper {
+    transition: all .4s ease;
+  }
+
+  /* Sidebar wrapper */
+  #sidebar-wrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: @mno-admin-sidebar-full-width;
+    z-index: 1;
+
+    &.reduced {
+      left: @mno-admin-sidebar-reduced-width - @mno-admin-sidebar-full-width;
+    }
+  }
+
+  /* Header, page content & footer */
+  #content-wrapper {
+    position: relative;
+    overflow-x: hidden;
+    background: @mno-admin-content-bg-color;
+    height: 100%;
+    z-index: 100;
+
+    /* If the screen is md+ the sidebar is always visible */
+    @media screen and (min-width: @screen-md-min) {
+      position: absolute;
+      left: @mno-admin-sidebar-full-width;
+      right: 0;
+
+      &.reduced {
+        left: @mno-admin-sidebar-reduced-width;
+      }
+    }
+
+    /* Fix the container width if the screen is md+ */
+    /* depending on if the sidebar is reduced or not */
+    @media screen and (min-width: @screen-md-min) {
+      .container {
+        width: @container-md;
+      }
+    }
+
+    /* Open the sidebar on sm and sm devices */
+    &.open {
+      transform: translate3d(@mno-admin-sidebar-full-width, 0px, 0px);
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @mno-admin-header-height;
+      background: @mno-admin-header-bg-color;
+      color: @mno-admin-header-font-color;
+      text-transform: capitalize;
+      z-index: 100;
+
+      .header-sidebar-toggle {
+        width: @mno-admin-header-height;
+        padding-left: 12px;
+      }
+
+      > div {
+        width:100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .title {
+        text-align: center;
+        font-size: @mno-admin-header-title-text-size;
+        color: @mno-admin-header-title-text-color;
+        line-height: @mno-admin-header-height;
+      }
+    }
+
+    /* Page content */
+    .page-content {
+      position: relative;
+      min-height: ~"calc(100% -" (@mno-admin-header-height + @mno-admin-footer-height) ~")";
+      background: @mno-admin-content-bg-color;
+      z-index: 100;
+    }
+
+    /* Footer */
+    mno-admin-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: @mno-admin-footer-height;
+      background: @mno-admin-footer-bg-color;
+      background: linear-gradient(to left, lighten(@mno-admin-footer-bg-color, 2%) 0%, @mno-admin-footer-bg-color 41%, darken(@mno-admin-footer-bg-color, 10%) 100%);
+    }
+  }
+}
+
+mno-kpi {
+  display: block;
+  overflow: hidden;
+  margin-top: 15px;
+  position: relative;
+  color: #FFF;
+
+  &.kpi-color-1 {
+    color: @mno-kpi-color-1;
+    background: @mno-kpi-bg-color-1;
+
+    .more {
+      color: @mno-kpi-color-1;
+      background: @mno-kpi-bg-color-1;
+    }
+  }
+  &.kpi-color-2 {
+    color: @mno-kpi-color-2;
+    background: @mno-kpi-bg-color-2;
+
+    .more {
+      color: @mno-kpi-color-2;
+      background: @mno-kpi-bg-color-2;
+    }
+  }
+  &.kpi-color-3 {
+    color: @mno-kpi-color-3;
+    background: @mno-kpi-bg-color-3;
+
+    .more {
+      color: @mno-kpi-color-3;
+      background: @mno-kpi-bg-color-3;
+    }
+  }
+
+  &.kpi-color-4 {
+    color: @mno-kpi-color-4;
+    background: @mno-kpi-bg-color-4;
+
+    .more {
+      color: @mno-kpi-color-4;
+      background: @mno-kpi-bg-color-4;
+    }
+  }
+
+  > div {
+    width: 100%;
+    display: inline-block;
+  }
+
+  .visual {
+    width: 65px;
+    height: 65px;
+    float: left;
+    padding-top: 5px;
+    padding-left: 15px;
+    margin-bottom: 10px;
+    font-size: 35px;
+    line-height: 35px;
+    opacity: .1;
+    > i {
+      margin-left: -35px;
+      font-size: 90px;
+      line-height: 90px;
+    }
+  }
+
+  .details {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 15px;
+    left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    text-align: right;
+    margin-bottom: 0;
+
+    .body {
+      font-size: 30px;
+      line-height: 36px;
+      letter-spacing: -1px;
+      font-weight: 200;
+    }
+  }
+
+  .more {
+    clear: both;
+    position: relative;
+    opacity: .7;
+    box-shadow: inset 0 0 0 99999px rgba(0, 0, 0, 0.2);
+    filter: contrast(150%);
+    color: inherit;
+    cursor: pointer;
+
+    a {
+      width:100%;
+      height:100%;
+      display: block;
+      padding: 6px 10px;
+      text-transform: uppercase;
+      font-weight: 300;
+      font-size: 11px;
+      color: inherit;
+      filter: alpha(opacity=70);
+
+      i {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+        font-size: 15px;
+        line-height: 15px;
+      }
+    }
+  }
+}
+
+/* Loading ellipsis component style */
+mno-loading-ellipsis {
+  .mno-three-bounce {
+    @animation-duration: 1.4s;
+    @delay-range: 0.32s;
+    width: @mno-loading-ellipsis-size * 2;
+    margin-left: auto;
+    margin-right: auto;
+
+    & > div {
+      width: @mno-loading-ellipsis-size / 2;
+      height: @mno-loading-ellipsis-size / 2;
+      background-color: @mno-loading-ellipsis-color;
+
+      border-radius: 50%;
+      display: inline-block;
+      animation: mno-three-bounce @animation-duration ease-in-out 0s infinite both;
+    }
+
+    .mno-bounce1 { animation-delay: -@delay-range; }
+    .mno-bounce2 { animation-delay: -@delay-range / 2; }
+  }
+
+  @keyframes mno-three-bounce {
+    0%, 80%, 100% {
+      transform: scale(0);
+    } 40% {
+        transform: scale(1.0);
+    }
+  }
+}
+
+
+/* App row component style */
+mno-row {
+  display: block;
+  border-bottom: 1px solid @mno-row-borders-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a.row-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: @mno-row-height;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: @mno-row-hover-bg-color;
+    }
+
+
+  }
+}
+
+/* App row component style */
+mno-section {
+  display: block;
+  border-bottom: 1px solid @mno-section-border-bottom-color;
+  padding-top: @mno-section-padding-top;
+  padding-bottom: @mno-section-padding-bottom;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .left-column {
+    /* If the screen is sm and - */
+    @media screen and (max-width: @screen-sm-max) {
+      margin-bottom: 15px;
+    }
+
+    /* If the screen is sm and - */
+    &.col-xs-12 {
+      margin-bottom: 15px;
+    }
+
+    .heading {
+      color: @mno-section-title-color;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: @mno-section-description-color;
+      line-height: 24px;
+      font-size: 13px;
+      padding-right: 33%;
+    }
+  }
+
+  /* If the screen is md+ */
+  @media screen and (min-width: @screen-sm-min) {
+    .form-inline .form-control, .form-control {
+      width: 60%;
+    }
+  }
+
+  .form-inline {
+    /* If the screen is sm- */
+    @media screen and (max-width: @screen-xs-max) {
+      button.btn {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .section-right-button {
+    position: absolute;
+    top: -70px;
+    right: 15px;
+  }
+}
+
+mno-validation {
+  .checked {
+    color: @mno-validation-checked-color;
+  }
+
+  .unchecked {
+    color: @mno-validation-unchecked-color;
+  }
+}
+
+mno-widget {
+  display: block;
+  margin-top: 15px;
+  width: 100%;
+  height: 100%;
+
+  > .widget {
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    background-color: @mno-widget-bg-color;
+    border: 1px solid @mno-widget-border-color;
+    border-radius: 2px;
+
+    > .header {
+      width: inherit;
+      display: block;
+      color: @mno-widget-header-font-color;
+      background-color: @mno-widget-header-bg-color;
+      padding: 10px 15px;
+      border-bottom: 1px solid @mno-widget-header-border-bottom-color;
+      line-height: 30px;
+
+      > .row > div {
+        i {
+          display: inline-block;
+          padding-right: 5px;
+        }
+
+        .heading {
+          display: inline-block;
+          padding-right: 5px;
+        }
+      }
+
+      > .row > div {
+        display: block;
+
+        mno-widget-header {
+          input.search-bar {
+            width: inherit;
+            float: right;
+          }
+        }
+      }
+    }
+
+    > .body {
+      width: inherit;
+
+      > .row > .loading {
+        position: relative;
+        margin: 160px auto;
+        height: 30px;
+
+        mno-loading-ellipsis .mno-three-bounce > div {
+          background-color: @mno-widget-body-loader-color;
+        }
+      }
+
+      mno-widget-body {
+        &.large {
+          display: block;
+          height: 350px;
+          overflow-y: auto;
+        }
+
+        &.medium {
+          height: 250px;
+          display: block;
+          overflow-y: auto;
+        }
+
+        &.no-padding {
+          padding: 0;
+          display: block;
+        }
+
+        &:not(.no-padding) {
+          padding: 15px;
+          display: block;
+        }
+      }
+    }
+
+    > .footer {
+      width: 100%;
+
+      mno-widget-footer {
+        width: 100%;
+        background: @mno-widget-footer-bg-color;
+        border-top: 1px solid @mno-widget-footer-border-top-color;
+        display: block;
+        position: relative;
+        float: left;
+        padding: 10px;
+      }
+    }
+  }
+}
