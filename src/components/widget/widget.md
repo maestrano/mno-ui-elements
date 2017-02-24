@@ -1,4 +1,4 @@
-The **widget** component provides the complex layout of a widget.
+The **mno-widget** component provides the complex layout of a widget.
 This component is composed by three parts:
 
 * `mno-widget-header` which sets the header of the widget
@@ -10,7 +10,7 @@ The parts `mno-widget-header` and `mno-widget-body` are compulsory while `mno-wi
 ### mno-widget settings
 
 * `icon`
-  _(ie: `fa-file`)_ -
+  _(E.g: `fa-file`)_ -
   Add a font awesome icon class to your widget header to help identifying its content.
 
 * `heading`
