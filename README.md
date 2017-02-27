@@ -28,11 +28,13 @@ angular.module('myModule', ['mnoUiElements']);
 At the moment the following components have been tested and documented.
 * mno-admin
 * mno-kpi
+* mno-widget
+* mno-loading-ellipsis
+* mno-validation
 
 ## Work in progress
 
 The following components have been started and need to be tested
 * mno-row
-* mno-loading-ellipsis
 * mno-section
 
