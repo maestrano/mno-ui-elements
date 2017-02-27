@@ -10,7 +10,7 @@ The parts `mno-widget-header` and `mno-widget-body` are compulsory while `mno-wi
 ### mno-widget settings
 
 * `icon`
-  _(E.g: `fa-file`)_ -
+  _(eg. `fa-file`)_ -
   Add a font awesome icon class to your widget header to help identifying its content.
 
 * `heading`
