@@ -14,9 +14,8 @@ angular.module('mnoUiElements')
     mnoUiSref: '@?',
     linkText: '@?'
   }
-  controller: ($scope) ->
+  controller: ->
     vm = this
-    vm.$onInit = () ->
 
     return
 })
