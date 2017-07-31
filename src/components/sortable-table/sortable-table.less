@@ -1,0 +1,30 @@
+mno-sortable-table {
+  .column-header {
+    display: flex;
+
+    .sort-icon i {
+      color: #e6e6e6;
+    }
+
+    &.mno-sort-asc .fa-sort-desc,
+    &.mno-sort-desc .fa-sort-asc {
+      color: black;
+    }
+  }
+
+  .icon-section {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-end;
+  }
+
+  .sort-icon {
+    display: flex;
+    flex-direction: column;
+    height: 20px;
+    width: 13px;
+    font-size: 17px;
+    padding: 1px;
+    i { height: 0; }
+  }
+}

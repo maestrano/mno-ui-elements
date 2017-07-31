@@ -1,0 +1,22 @@
+<table class="table table-hover table-responsive table-striped">
+  <thead>
+    <tr>
+      <th ng-repeat="field in $ctrl.fields" ng-click="$ctrl.changeSorting(field.attr)">
+        <div class="column-header" ng-class="$ctrl.selectedSortClass(field.attr)">
+          <span ng-bind="field.header"></span>
+          <div class="icon-section">
+            <div class="sort-icon">
+              <i class="fa fa-sort-asc" aria-hidden="true"></i>
+              <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="data in $ctrl.dataset | orderBy:$ctrl.sort.column:$ctrl.sort.descending">
+      <td ng-repeat="field in $ctrl.fields" mno-render-dynamic-attr data="data" field="field"></td>
+    </tr>
+  </tbody>
+</table>
