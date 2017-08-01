@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <div class="close-icon" ng-click="$ctrl.cancel()">
+    <i class="fa fa-times" aria-hidden="true"></i>
+  </div>
+</div>
+<div class="modal-body" id="modal-body">
+  <div>
+    <label>From</label>
+    <p ng-bind="$ctrl.task.recipient.name"></p>
+  </div>
+  <div>
+    <label>Title</label>
+    <p ng-bind="$ctrl.task.title"></p>
+  </div>
+  <div>
+    <label>Due date</label>
+    <p ng-bind="$ctrl.task.due_date | date : 'medium'"></p>
+  </div>
+  <div>
+    <label>Message</label>
+    <p ng-bind="$ctrl.task.message"></p>
+  </div>
+  <form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying">
+    <div class="form-group">
+      <label>Reply</label>
+      <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? 'Cancel' : 'Reply'"></button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying">Mark as done</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.taskReplyForm.$invalid">Send</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && !$ctrl.task.markedDone" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button>
+</div>
