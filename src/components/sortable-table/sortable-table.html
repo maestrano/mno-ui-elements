@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="rowItem in $ctrl.rowCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
-      <td ng-repeat="field in $ctrl.fields" mno-render-dynamic-attr data="rowItem" field="field"></td>
+      <td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr data="rowItem" field="field"></td>
     </tr>
   </tbody>
 </table>
