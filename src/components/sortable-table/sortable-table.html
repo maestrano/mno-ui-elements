@@ -16,7 +16,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="data in $ctrl.dataset | orderBy:$ctrl.sort.column:$ctrl.sort.descending">
-      <td ng-repeat="field in $ctrl.fields" mno-render-dynamic-attr data="data" field="field"></td>
+      <td ng-repeat="field in $ctrl.fields" ng-click="$ctrl.fieldOnClick(field, data)" mno-render-dynamic-attr data="data" field="field"></td>
     </tr>
   </tbody>
 </table>

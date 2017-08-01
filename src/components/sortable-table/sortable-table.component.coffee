@@ -15,6 +15,7 @@ angular.module('mnoUiElements')
   bindings: {
     fields: '<'
     dataset: '<'
+    rowOnClick: '&'
   }
   controller: ->
     ctrl = this
@@ -30,6 +31,11 @@ angular.module('mnoUiElements')
     ctrl.selectedSortClass = (column)->
       sortType = if ctrl.sort.descending then 'desc' else 'asc'
       (column == ctrl.sort.column && "mno-sort-#{sortType}") || ''
+
+    ctrl.fieldOnClick = (field, data)->
+      # Prevents propagation for custom fields
+      return if field.render
+      ctrl.rowOnClick({$event: {data: data} })
 
     ctrl
 })
