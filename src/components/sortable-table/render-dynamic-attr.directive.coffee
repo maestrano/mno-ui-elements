@@ -19,7 +19,7 @@ angular.module('mnoUiElements')
 
         # Custom render; compile provided html & scope to element
         if _.isFunction(scope.field.render)
-          customField = scope.field.render()
+          customField = scope.field.render(scope.rowItem)
           html = customField.template
           scope = angular.merge(scope, customField.scope)
 
