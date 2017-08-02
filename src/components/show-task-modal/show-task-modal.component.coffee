@@ -14,8 +14,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.reply = { message: '' }
 
     ctrl.done = ()->
-      ctrl.task.markedDone = true
-      ctrl.close()
+      ctrl.close($value: { done: !ctrl.task.markedDone })
 
     ctrl.send = (markDone = false)->
       ctrl.task.markedDone = markDone unless ctrl.task.markedDone
@@ -27,6 +26,12 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
     ctrl.toggleReplyForm = ->
       ctrl.isReplying = !ctrl.isReplying
       ctrl.reply.message = '' unless ctrl.isReplying
+
+    ctrl.canMarkAsDone = ->
+      ctrl.task.due_date?
+
+    ctrl.canSendAndMarkAsDone = ->
+      ctrl.canMarkAsDone() && !ctrl.task.markedDone
 
     ctrl
 })

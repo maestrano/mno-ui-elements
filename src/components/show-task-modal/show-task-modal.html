@@ -29,7 +29,7 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? 'Cancel' : 'Reply'"></button>
-  <button class="btn btn-success" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying">Mark as done</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()">Mark as {{$ctrl.task.markedDone ? 'not done' : 'done'}}</button>
   <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.taskReplyForm.$invalid">Send</button>
-  <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && !$ctrl.task.markedDone" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button>
 </div>
