@@ -1,0 +1,19 @@
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
+
+    .menu-item {
+      background-color: @mno-tasks-menu-btn-bg-color;
+      margin: 1px 7px;
+      color: @mno-tasks-menu-btn-text-color;
+      &:hover {
+        color: @mno-tasks-menu-btn-hover-text-color;
+        background-color: @mno-tasks-menu-btn-hover-bg-color;
+      }
+      &.selected {
+        color: @mno-tasks-menu-btn-selected-text-color;
+        background-color: @mno-tasks-menu-btn-selected-bg-color;
+      }
+    }
+  }
+}
