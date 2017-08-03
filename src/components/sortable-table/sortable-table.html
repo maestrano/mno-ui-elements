@@ -6,9 +6,16 @@
       </th>
     </tr>
   </thead>
-  <tbody>
+  <tbody ng-hide="$ctrl.isLoading">
     <tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
       <td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td>
+    </tr>
+  </tbody>
+  <tbody ng-show="$ctrl.isLoading">
+    <tr>
+      <td colspan="{{$ctrl.fields.length}}" class="text-center">
+        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+      </td>
     </tr>
   </tbody>
 </table>
