@@ -31,5 +31,8 @@ angular.module('mnoUiElements')
       rowCollectionChanges = _.get(changes, 'rowCollection.currentValue')
       ctrl.displayedCollection = angular.copy(rowCollectionChanges) if rowCollectionChanges
 
+    ctrl.hasCollectionItems = ->
+      !_.isEmpty(ctrl.displayedCollection)
+
     ctrl
 })
