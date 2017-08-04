@@ -15,6 +15,8 @@ angular.module('mnoUiElements')
       scope.$watchGroup(['data', 'field'], ->
         return unless scope.data? && scope.field?
 
+        element.click((ev)-> ev.stopPropagation()) if scope.field.stopPropagation
+
         # Custom render; compile provided html & scope to element
         if _.isFunction(scope.field.render)
           customField = scope.field.render()
