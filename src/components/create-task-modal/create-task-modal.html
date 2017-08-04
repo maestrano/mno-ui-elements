@@ -3,7 +3,7 @@
   <form name="$ctrl.createTaskForm">
     <div class="form-group">
       <label>To</label>
-      <input type="text" class="form-control" name="to" ng-model="$ctrl.newTask.recipient" uib-typeahead="recipient as recipient.user.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" required>
+      <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" required>
     </div>
     <div class="form-group">
       <label>Title</label>

@@ -9,10 +9,13 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     ctrl = this
 
     ctrl.$onInit = ->
-      ctrl.recipients = ctrl.resolve.recipients
+      ctrl.recipients = _.map(ctrl.resolve.recipients, (r)->
+        { id: r.id, name: r.user.name }
+      )
       ctrl.newTask = {}
 
     ctrl.ok = (isDraft = false)->
+      ctrl.newTask.orga_relation_id = ctrl.selectedRecipient.id
       ctrl.close($value: { isDraft: isDraft, newTask: ctrl.newTask})
 
     ctrl.cancel = ->
