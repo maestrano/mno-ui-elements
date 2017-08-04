@@ -1,6 +1,8 @@
 ###
 #   @desc A customisable table with column ascending / descending sorting
 #   @binding {Array<Object>} [rowCollection] Data to be represented across table body rows
+#   @binding {Function} [rowOnClick] On click callback for each table body row (`<tr>`)
+#   @binding {Function} [pipe] Callback given to the smart-table `st-pipe` directive
 #   @binding {Array<Object>} [fields] Table field options
 #   @binding {string} [field.header] The string to display as the header of the table column
 #   @binding {string} [field.attr] The rowCollection item attribute to render in this column (can use dot syntax e.g 'user.name')
@@ -17,10 +19,15 @@ angular.module('mnoUiElements')
   bindings: {
     rowCollection: '<'
     fields: '<'
-    rowOnClick: '&'
+    rowOnClick: '&?'
+    pipe: '&?'
   }
   controller: ->
     ctrl = this
+
+    ctrl.$onChanges = (changes)->
+      rowCollectionChanges = _.get(changes, 'rowCollection.currentValue')
+      ctrl.displayedCollection = angular.copy(rowCollectionChanges) if rowCollectionChanges
 
     ctrl
 })

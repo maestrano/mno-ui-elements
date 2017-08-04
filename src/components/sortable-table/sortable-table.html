@@ -1,4 +1,4 @@
-<table st-table="$ctrl.rowCollection" class="table table-hover table-responsive">
+<table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipe()" class="table table-hover table-responsive">
   <thead>
     <tr>
       <th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}">
@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="rowItem in $ctrl.rowCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
+    <tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
       <td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td>
     </tr>
   </tbody>
