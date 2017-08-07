@@ -3,7 +3,8 @@
 #   @binding {Object} [resolve.task] The task being render in the show modal
 #   @binding {string} [resolve.dueDateFormat] The date format for the task due date & reminder value
 #   @binding {Object} [resolve.currentUser] The current user object
-#   @binding {Function} [resolve.setReminderCb] Update the task with a reminder date
+#   @binding {Function} [resolve.setReminderCb] Called on click when a user sets a reminder for a Task, passing a timestamp of the reminder date.
+#   @binding {Function} [resolve.onReadTaskCb] Called on init passing a boolean for whether the current user has read the Task or not.
 ###
 angular.module('mnoUiElements').component('mnoShowTaskModal', {
   bindings: {
@@ -22,6 +23,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.isSettingReminder = false
       ctrl.reply = { message: '' }
       ctrl.reminder = { date: null }
+      ctrl.resolve.onReadTaskCb(hasBeenRead())
 
     ctrl.done = ()->
       ctrl.close($value: { done: !ctrl.task.markedDone })
@@ -34,11 +36,8 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.dismiss()
 
     ctrl.reminderDate = ->
-      recipient = _.find(ctrl.task.task_recipients, (orga_rel)->
-        orga_rel.user.id == ctrl.resolve.currentUser.id
-      )
-      return null unless recipient
-      recipient.reminder_date
+      recipient = getCurrentUserRecipient()
+      recipient && recipient.reminder_date
 
     ctrl.setReminderOnClick = ->
       return unless ctrl.canSetReminder()
@@ -76,6 +75,17 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.canSendAndMarkAsDone = ->
       ctrl.canMarkAsDone() && !ctrl.task.markedDone
+
+    # Private
+
+    # Finds the current user in the task_recipients list
+    getCurrentUserRecipient = ->
+      _.find(ctrl.task.task_recipients, (orga_rel)-> orga_rel.user.id == ctrl.resolve.currentUser.id)
+
+    # Whether the recipient has already read this Task
+    hasBeenRead = ->
+      r = getCurrentUserRecipient()
+      r && r.read_at?
 
     ctrl
 })
