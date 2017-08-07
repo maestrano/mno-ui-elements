@@ -26,8 +26,7 @@ angular.module('mnoUiElements')
         # Default render; select value from rowItem via field.attr & apply custom filters
         else
           value = _.get(scope.rowItem, scope.field.attr)
-          filter = scope.field.filter
-          str = if filter && _.isFunction(filter.run) then filter.run.apply(this, [value, filter.opts]) else value
+          str = if _.isFunction(scope.field.filter) then scope.field.filter(value) else value
           str = '-' unless str?
           html = "<span>#{str}</span>"
 
