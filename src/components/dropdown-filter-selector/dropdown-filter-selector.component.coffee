@@ -6,8 +6,4 @@ angular.module('mnoUiElements')
     selected: '<'
     onSelect: '&'
   }
-  controller: ->
-    ctrl = this
-
-    ctrl
 })
