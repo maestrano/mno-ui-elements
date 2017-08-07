@@ -10,7 +10,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.$onInit = ->
       ctrl.task = ctrl.resolve.task
-      ctrl.dateFormat = ctrl.resolve.dateFormat || 'medium'
+      ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium'
       ctrl.isReplying = false
       ctrl.reply = { message: '' }
 
