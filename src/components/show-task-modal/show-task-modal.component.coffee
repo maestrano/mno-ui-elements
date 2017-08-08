@@ -26,11 +26,17 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.resolve.onReadTaskCb(hasBeenRead())
 
     ctrl.done = ()->
-      ctrl.close($value: { done: !ctrl.task.markedDone })
+      ctrl.resolve.markAsDoneCb(!ctrl.task.markedDone).then(
+        ->
+          ctrl.close()
+      )
 
     ctrl.send = (markDone = false)->
-      ctrl.task.markedDone = markDone unless ctrl.task.markedDone
-      ctrl.close($value: { reply: ctrl.reply })
+      ctrl.task.markedDone = markDone if ctrl.canSendAndMarkAsDone()
+      ctrl.resolve.sendReplyCb(ctrl.reply).then(
+        ->
+          ctrl.close()
+      )
 
     ctrl.cancel = ->
       ctrl.dismiss()
@@ -41,10 +47,10 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.setReminderOnClick = ->
       return unless ctrl.canSetReminder()
-      ctrl.resolve.setReminderCb(ctrl.reminder.date).then((updatedTask)->
-        ctrl.task = updatedTask
-      ).finally(->
-        ctrl.toggleReminderForm(false)
+      ctrl.resolve.setReminderCb(ctrl.reminder.date).then(
+        (response)->
+          ctrl.task = response if response?
+          ctrl.toggleReminderForm(false)
       )
 
     ctrl.deleteReminderOnClick = ->

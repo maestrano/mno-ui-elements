@@ -14,9 +14,12 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
       )
       ctrl.newTask = {}
 
-    ctrl.ok = (isDraft = false)->
-      ctrl.newTask.orga_relation_id = ctrl.selectedRecipient.id
-      ctrl.close($value: { isDraft: isDraft, newTask: ctrl.newTask})
+    ctrl.ok = (status = 'sent')->
+      angular.merge(ctrl.newTask, status: status, orga_relation_id: ctrl.selectedRecipient.id)
+      ctrl.resolve.createTaskCb(ctrl.newTask).then(
+        ->
+          ctrl.close()
+      )
 
     ctrl.cancel = ->
       ctrl.dismiss()
