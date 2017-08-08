@@ -1,0 +1,5 @@
+<div class="tasks-menu">
+  <button ng-repeat="menu in $ctrl.menus" class="btn btn-default menu-item {{menu.name}}" ng-class="{ 'selected': menu.selected }" ng-click="$ctrl.menuOnClick(menu)">
+    <span ng-bind="menu.label"></span>
+  </button>
+</div>
