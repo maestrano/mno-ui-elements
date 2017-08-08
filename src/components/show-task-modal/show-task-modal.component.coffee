@@ -62,6 +62,9 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
     ctrl.showUpdateReminderButton = ->
       ctrl.canSetReminder() && !ctrl.isSettingReminder && ctrl.reminderDate()
 
+    ctrl.showReplyButton = ->
+      !isTaskOwner()
+
     ctrl.toggleReplyForm = ->
       ctrl.isReplying = !ctrl.isReplying
       # clear message on cancel reply
@@ -73,10 +76,10 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.reminder.date = moment(ctrl.reminderDate()).toDate() if ctrl.isSettingReminder
 
     ctrl.canSetReminder = ->
-      _.isFunction(ctrl.resolve.setReminderCb) && ctrl.task.due_date?
+      !isTaskOwner() && _.isFunction(ctrl.resolve.setReminderCb) && ctrl.task.due_date?
 
     ctrl.canMarkAsDone = ->
-      ctrl.task.due_date?
+      !isTaskOwner() && ctrl.task.due_date?
 
     ctrl.canSendAndMarkAsDone = ->
       ctrl.canMarkAsDone() && ctrl.task.status != 'done'
@@ -91,6 +94,9 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
     hasBeenRead = ->
       r = getCurrentUserRecipient()
       r && r.read_at?
+
+    isTaskOwner = ->
+      ctrl.resolve.currentUser.id == _.get(ctrl.task, 'owner.user.id')
 
     ctrl
 })
