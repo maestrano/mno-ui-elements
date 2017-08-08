@@ -31,9 +31,8 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
           ctrl.close()
       )
 
-    ctrl.send = (markDone = false)->
-      ctrl.task.markedDone = markDone if ctrl.canSendAndMarkAsDone()
-      ctrl.resolve.sendReplyCb(ctrl.reply).then(
+    ctrl.send = (markAsDone)->
+      ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(
         ->
           ctrl.close()
       )
@@ -80,7 +79,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.task.due_date?
 
     ctrl.canSendAndMarkAsDone = ->
-      ctrl.canMarkAsDone() && !ctrl.task.markedDone
+      ctrl.canMarkAsDone() && ctrl.task.status != 'done'
 
     # Private
 
