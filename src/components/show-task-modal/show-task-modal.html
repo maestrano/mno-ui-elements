@@ -5,8 +5,8 @@
 </div>
 <div class="modal-body" id="modal-body">
   <div>
-    <label>From</label>
-    <p ng-bind="$ctrl.task.owner.user.name"></p>
+    <label>To</label>
+    <p ng-bind="$ctrl.to"></p>
   </div>
   <div>
     <label>Title</label>
@@ -30,7 +30,7 @@
       <form name="$ctrl.reminderForm">
         <div class="form-group">
           <label>Reminder</label>
-          <input type="date" name="reminder" class="form-control" ng-model="$ctrl.reminder.date" required>
+          <input type="date" name="reminder" class="form-control" ng-model="$ctrl.reminder.date" required datetime-utc>
         </div>
         <button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button>
         <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button>
