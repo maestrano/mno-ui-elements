@@ -528,6 +528,32 @@ mno-kpi {
   }
 }
 
+/* App row component style */
+mno-row {
+  display: block;
+  border-bottom: 1px solid @mno-row-borders-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a.row-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: @mno-row-height;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: @mno-row-hover-bg-color;
+    }
+
+
+  }
+}
+
 /* Loading ellipsis component style */
 mno-loading-ellipsis {
   .mno-three-bounce {
@@ -557,40 +583,6 @@ mno-loading-ellipsis {
     } 40% {
         transform: scale(1.0);
     }
-  }
-}
-
-/* App row component style */
-mno-row {
-  display: block;
-  border-bottom: 1px solid @mno-row-borders-color;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  & > a.row-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: @mno-row-height;
-    padding-left: 10px;
-    padding-right: 10px;
-
-    &:hover {
-      text-decoration: none;
-      background-color: @mno-row-hover-bg-color;
-    }
-
-
-  }
-}
-
-mno-show-task-modal {
-  .due-date,
-  .reminder {
-    display: inline-block;
-    margin-right: 20px;
   }
 }
 
@@ -651,6 +643,14 @@ mno-section {
     position: absolute;
     top: -70px;
     right: 15px;
+  }
+}
+
+mno-show-task-modal {
+  .due-date,
+  .reminder {
+    display: inline-block;
+    margin-right: 20px;
   }
 }
 
