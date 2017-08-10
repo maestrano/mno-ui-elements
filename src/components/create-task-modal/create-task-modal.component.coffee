@@ -7,15 +7,16 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
   templateUrl: 'create-task-modal.html',
   controller: ()->
     ctrl = this
+
     ctrl.buttonDisabled = false
     ctrl.$onInit = ->
       ctrl.task = {}
       ctrl.isDraft = !_.isEmpty(ctrl.resolve.draftTask)
-      ctrl.recipients = ctrl.resolve.recipients
+      ctrl.recipients = _.map(ctrl.resolve.recipients, (orgaRel) -> {id: orgaRel.id, name: ctrl.resolve.recipientFormater(orgaRel)})
       if ctrl.isDraft
         draft = ctrl.resolve.draftTask
         recip = draft.task_recipients[0]
-        ctrl.selectedRecipient = recip
+        ctrl.selectedRecipient = {id: recip.orga_relation_id, name: ctrl.resolve.recipientFormater(recip)}
         ctrl.task = _.pick(draft, ['id', 'title', 'message'])
         ctrl.task.due_date = moment(draft.due_date).toDate() if draft.due_date?
 
