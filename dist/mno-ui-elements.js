@@ -58,7 +58,7 @@ angular.module('mnoUiElements', [
       close: '&',
       dismiss: '&'
     },
-    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="form-group"><label>Due Date (optional)</label> <input type="date" name="date" class="form-control" ng-model="$ctrl.task.due_date"></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.buttonDisabled" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.buttonDisabled" type="button" ng-click="$ctrl.ok()">Send</button></div>',
+    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="form-group"><label>Due Date (optional)</label> <input type="date" name="date" placeholder="example: 1985-09-17" class="form-control" ng-model="$ctrl.task.due_date"></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()">Send</button></div>',
     controller: function() {
       var ctrl;
       ctrl = this;
@@ -67,11 +67,19 @@ angular.module('mnoUiElements', [
         var draft, recip;
         ctrl.task = {};
         ctrl.isDraft = !_.isEmpty(ctrl.resolve.draftTask);
-        ctrl.recipients = ctrl.resolve.recipients;
+        ctrl.recipients = _.map(ctrl.resolve.recipients, function(orgaRel) {
+          return {
+            id: orgaRel.id,
+            name: ctrl.resolve.recipientFormater(orgaRel)
+          };
+        });
         if (ctrl.isDraft) {
           draft = ctrl.resolve.draftTask;
           recip = draft.task_recipients[0];
-          ctrl.selectedRecipient = recip;
+          ctrl.selectedRecipient = {
+            id: recip.orga_relation_id,
+            name: ctrl.resolve.recipientFormater(recip)
+          };
           ctrl.task = _.pick(draft, ['id', 'title', 'message']);
           if (draft.due_date != null) {
             return ctrl.task.due_date = moment(draft.due_date).toDate();
