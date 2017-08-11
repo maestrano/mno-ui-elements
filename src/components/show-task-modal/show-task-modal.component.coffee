@@ -18,6 +18,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.$onInit = ->
       ctrl.task = ctrl.resolve.task
+      ctrl.to = ctrl.resolve.recipientFormater(ctrl.task.task_recipients[0])
       ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium'
       ctrl.isReplying = false
       ctrl.isSettingReminder = false
@@ -73,7 +74,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
     ctrl.toggleReminderForm = (bool)->
       ctrl.isSettingReminder = bool
       # Set current reminder date to form model if available for update
-      ctrl.reminder.date = moment(ctrl.reminderDate()).toDate() if ctrl.isSettingReminder
+      ctrl.reminder.date = moment.utc(ctrl.reminderDate()).toDate() if ctrl.isSettingReminder
 
     ctrl.canSetReminder = ->
       !isTaskOwner() && _.isFunction(ctrl.resolve.setReminderCb) && ctrl.task.due_date?
