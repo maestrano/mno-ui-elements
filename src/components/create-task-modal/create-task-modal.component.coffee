@@ -8,7 +8,7 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
   controller: ()->
     ctrl = this
 
-    ctrl.buttonDisabled = false
+    ctrl.loading = false
     ctrl.$onInit = ->
       ctrl.task = {}
       ctrl.isDraft = !_.isEmpty(ctrl.resolve.draftTask)
@@ -21,7 +21,7 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
         ctrl.task.due_date = moment.utc(draft.due_date).toDate() if draft.due_date?
 
     ctrl.ok = (status = 'sent')->
-      ctrl.buttonDisabled = true
+      ctrl.loading = true
       angular.merge(ctrl.task, status: status, orga_relation_id: ctrl.selectedRecipient.id)
       cb = if ctrl.isDraft then ctrl.resolve.updateDraftCb else ctrl.resolve.createTaskCb
       cb(ctrl.task).then(

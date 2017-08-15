@@ -21,6 +21,6 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button>
-  <button class="btn btn-warning" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok('draft')">{{$ctrl.isDraft ? 'Update' : 'Save as'}} draft</button>
-  <button class="btn btn-success" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()" ng-disabled="">Send</button>
+  <button class="btn btn-warning" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok('draft')">{{$ctrl.isDraft ? 'Update' : 'Save as'}} draft</button>
+  <button class="btn btn-success" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()" ng-disabled="">Send</button>
 </div>
