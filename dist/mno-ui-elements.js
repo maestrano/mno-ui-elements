@@ -58,15 +58,21 @@ angular.module('mnoUiElements', [
       close: '&',
       dismiss: '&'
     },
-    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="form-group"><label>Due Date (optional)</label> <input type="date" name="date" class="form-control" ng-model="$ctrl.task.due_date" datetime-utc></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.buttonDisabled || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()">Send</button></div>',
+    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="row"><div class="col-xs-12 col-md-12"><label>Due Date (optional)</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.taskDueDate" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()">Send</button></div>',
     controller: function() {
       var ctrl;
       ctrl = this;
-      ctrl.buttonDisabled = false;
+      ctrl.loading = false;
       ctrl.$onInit = function() {
         var draft, recip;
         ctrl.task = {};
         ctrl.isDraft = !_.isEmpty(ctrl.resolve.draftTask);
+        ctrl.datepicker = {
+          options: {
+            format: 'dd MMMM yyyy'
+          },
+          opened: false
+        };
         ctrl.recipients = _.map(ctrl.resolve.recipients, function(orgaRel) {
           return {
             id: orgaRel.id,
@@ -82,7 +88,7 @@ angular.module('mnoUiElements', [
           };
           ctrl.task = _.pick(draft, ['id', 'title', 'message']);
           if (draft.due_date != null) {
-            return ctrl.task.due_date = moment.utc(draft.due_date).toDate();
+            return ctrl.taskDueDate = moment.utc(draft.due_date).toDate();
           }
         }
       };
@@ -91,11 +97,12 @@ angular.module('mnoUiElements', [
         if (status == null) {
           status = 'sent';
         }
-        ctrl.buttonDisabled = true;
+        ctrl.loading = true;
         angular.merge(ctrl.task, {
           status: status,
           orga_relation_id: ctrl.selectedRecipient.id
         });
+        ctrl.task.due_date = moment.utc(ctrl.taskDueDate).toISOString();
         cb = ctrl.isDraft ? ctrl.resolve.updateDraftCb : ctrl.resolve.createTaskCb;
         return cb(ctrl.task).then(function() {
           return ctrl.close();
@@ -104,8 +111,18 @@ angular.module('mnoUiElements', [
       ctrl.cancel = function() {
         return ctrl.dismiss();
       };
+      ctrl.openDatepicker = function() {
+        return ctrl.datepicker.opened = true;
+      };
       return ctrl;
     }
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);
@@ -142,13 +159,6 @@ angular.module('mnoUiElements', [
       var vm;
       vm = this;
     }
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);
@@ -224,7 +234,7 @@ angular.module('mnoUiElements', [
       close: '&',
       dismiss: '&'
     },
-    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label>To</label><p ng-bind="$ctrl.to"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="form-group"><label>Reminder</label> <input type="date" name="reminder" class="form-control" ng-model="$ctrl.reminder.date" required datetime-utc></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.taskReplyForm.$invalid">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button></div>',
+    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label>To</label><p ng-bind="$ctrl.to"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="row"><div class="col-xs-12 col-md-12"><label>Reminder</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.taskReplyForm.$invalid">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button></div>',
     controller: function() {
       var ctrl, getCurrentUserRecipient, hasBeenRead, isTaskOwner;
       ctrl = this;
@@ -234,6 +244,12 @@ angular.module('mnoUiElements', [
         ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium';
         ctrl.isReplying = false;
         ctrl.isSettingReminder = false;
+        ctrl.datepicker = {
+          options: {
+            format: 'dd MMMM yyyy'
+          },
+          opened: false
+        };
         ctrl.reply = {
           message: ''
         };
@@ -255,16 +271,21 @@ angular.module('mnoUiElements', [
       ctrl.cancel = function() {
         return ctrl.dismiss();
       };
+      ctrl.openDatepicker = function() {
+        return ctrl.datepicker.opened = true;
+      };
       ctrl.reminderDate = function() {
         var recipient;
         recipient = getCurrentUserRecipient();
         return recipient && recipient.reminder_date;
       };
       ctrl.setReminderOnClick = function() {
+        var reminderDate;
         if (!ctrl.canSetReminder()) {
           return;
         }
-        return ctrl.resolve.setReminderCb(ctrl.reminder.date).then(function(response) {
+        reminderDate = moment.utc(ctrl.reminder.date).toISOString();
+        return ctrl.resolve.setReminderCb(reminderDate).then(function(response) {
           if (response != null) {
             ctrl.task = response;
           }
