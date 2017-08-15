@@ -22,6 +22,10 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium'
       ctrl.isReplying = false
       ctrl.isSettingReminder = false
+      ctrl.datepicker = {
+        options: { format: 'dd MMMM yyyy' }
+        opened: false
+      }
       ctrl.reply = { message: '' }
       ctrl.reminder = { date: null }
       ctrl.resolve.onReadTaskCb(hasBeenRead())
@@ -40,6 +44,9 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.cancel = ->
       ctrl.dismiss()
+
+    ctrl.openDatepicker = ->
+      ctrl.datepicker.opened = true
 
     ctrl.reminderDate = ->
       recipient = getCurrentUserRecipient()

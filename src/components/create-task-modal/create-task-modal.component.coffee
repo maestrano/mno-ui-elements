@@ -12,6 +12,10 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     ctrl.$onInit = ->
       ctrl.task = {}
       ctrl.isDraft = !_.isEmpty(ctrl.resolve.draftTask)
+      ctrl.datepicker = {
+        options: { format: 'dd MMMM yyyy' }
+        opened: false
+      }
       ctrl.recipients = _.map(ctrl.resolve.recipients, (orgaRel) -> {id: orgaRel.id, name: ctrl.resolve.recipientFormater(orgaRel)})
       if ctrl.isDraft
         draft = ctrl.resolve.draftTask
@@ -31,6 +35,9 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
 
     ctrl.cancel = ->
       ctrl.dismiss()
+
+    ctrl.openDatepicker = ->
+      ctrl.datepicker.opened = true
 
     ctrl
 })
