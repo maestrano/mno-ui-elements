@@ -54,7 +54,8 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.setReminderOnClick = ->
       return unless ctrl.canSetReminder()
-      ctrl.resolve.setReminderCb(ctrl.reminder.date).then(
+      reminderDate = moment.utc(ctrl.reminder.date).toISOString()
+      ctrl.resolve.setReminderCb(reminderDate).then(
         (response)->
           ctrl.task = response if response?
           ctrl.toggleReminderForm(false)
