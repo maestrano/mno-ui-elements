@@ -164,6 +164,39 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  var MnoRowController;
+
+  angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
+    bindings: {
+      name: '@',
+      status: '@',
+      mnoRowClick: '&?',
+      mnoRowHref: '@?'
+    },
+    template: '<a ng-if="$ctrl.mnoRowClick" class="row-link" ng-click="ctrl.mnoRowClick()">\n  <span>{{$ctrl.name}}</span>\n  <span>{{$ctrl.status}}</span>\n  </a>\n  <a ng-if="$ctrl.mnoRowHref" class="row-link" ng-href="{{$ctrl.mnoRowHref}}">\n  <span>{{$ctrl.name}}</span>\n    <span>{{$ctrl.status}}</span>\n  </a>'
+  });
+
+  MnoRowController = function($state) {
+    var hasRowClick, hasRowHref;
+    this.mnoRowClick;
+    this.mnoRowHref;
+    this.name;
+    hasRowClick = this.mnoRowClick !== null;
+    hasRowHref = this.mnoRowHref !== null;
+    if ((hasRowClick != null ? hasRowClick : {
+      1: 0
+    }) + (hasRowHref != null ? hasRowHref : {
+      1: 0
+    }) + (typeof hasRowSref !== "undefined" && hasRowSref !== null ? hasRowSref : {
+      1: 0
+    }) > 1) {
+      throw Error('Must specify exactly one of mno-row-click, mno-row-href, ' + 'for mno-row directive');
+    }
+  };
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
     var NOTIFICATION_TYPE_MAPPING;
     NOTIFICATION_TYPE_MAPPING = {
@@ -172,6 +205,7 @@ angular.module('mnoUiElements', [
       status_change: 'info'
     };
     this.init = function() {
+      $log.debug("Notifications are enabled");
       return MnoeNotifications.get().then(function(response) {
         var i, len, message, method, notification, notification_type, notifications, onHidden, results, title;
         notifications = response.data.plain();
@@ -208,39 +242,6 @@ angular.module('mnoUiElements', [
     };
     return this;
   }]);
-
-}).call(this);
-
-(function() {
-  var MnoRowController;
-
-  angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
-    bindings: {
-      name: '@',
-      status: '@',
-      mnoRowClick: '&?',
-      mnoRowHref: '@?'
-    },
-    template: '<a ng-if="$ctrl.mnoRowClick" class="row-link" ng-click="ctrl.mnoRowClick()">\n  <span>{{$ctrl.name}}</span>\n  <span>{{$ctrl.status}}</span>\n  </a>\n  <a ng-if="$ctrl.mnoRowHref" class="row-link" ng-href="{{$ctrl.mnoRowHref}}">\n  <span>{{$ctrl.name}}</span>\n    <span>{{$ctrl.status}}</span>\n  </a>'
-  });
-
-  MnoRowController = function($state) {
-    var hasRowClick, hasRowHref;
-    this.mnoRowClick;
-    this.mnoRowHref;
-    this.name;
-    hasRowClick = this.mnoRowClick !== null;
-    hasRowHref = this.mnoRowHref !== null;
-    if ((hasRowClick != null ? hasRowClick : {
-      1: 0
-    }) + (hasRowHref != null ? hasRowHref : {
-      1: 0
-    }) + (typeof hasRowSref !== "undefined" && hasRowSref !== null ? hasRowSref : {
-      1: 0
-    }) > 1) {
-      throw Error('Must specify exactly one of mno-row-click, mno-row-href, ' + 'for mno-row directive');
-    }
-  };
 
 }).call(this);
 
