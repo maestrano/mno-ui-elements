@@ -8,6 +8,7 @@ angular.module 'mnoUiElements'
     }
 
     @init = () ->
+      $log.debug("Notifications are enabled")
       MnoeNotifications.get().then(
         (response)->
           notifications = response.data.plain()
