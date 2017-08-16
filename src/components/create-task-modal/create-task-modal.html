@@ -9,9 +9,16 @@
       <label>Title</label>
       <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required>
     </div>
-    <div class="form-group">
-      <label>Due Date (optional)</label>
-      <input type="date" name="date" class="form-control" ng-model="$ctrl.task.due_date">
+    <div class="row">
+      <div class="col-xs-12 col-md-12">
+        <label>Due Date (optional)</label>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.taskDueDate" ng-model-options="{timezone: 'utc'}" is-open="$ctrl.datepicker.opened" close-text="Close" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
     </div>
     <div class="form-group">
       <label>Message</label>
@@ -21,6 +28,6 @@
 </div>
 <div class="modal-footer">
   <button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button>
-  <button class="btn btn-warning" type="button" ng-click="$ctrl.ok('draft')">{{$ctrl.isDraft ? 'Update' : 'Save as'}} draft</button>
-  <button class="btn btn-success" type="button" ng-click="$ctrl.ok()" ng-disabled="$ctrl.createTaskForm.$invalid">Send</button>
+  <button class="btn btn-warning" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok('draft')">{{$ctrl.isDraft ? 'Update' : 'Save as'}} draft</button>
+  <button class="btn btn-success" ng-disabled="$ctrl.loading || $ctrl.createTaskForm.$invalid" type="button" ng-click="$ctrl.ok()" ng-disabled="">Send</button>
 </div>

@@ -5,8 +5,8 @@
 </div>
 <div class="modal-body" id="modal-body">
   <div>
-    <label>From</label>
-    <p ng-bind="$ctrl.task.owner.user.name"></p>
+    <label>To</label>
+    <p ng-bind="$ctrl.to"></p>
   </div>
   <div>
     <label>Title</label>
@@ -28,9 +28,16 @@
     <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button>
     <div ng-if="$ctrl.isSettingReminder">
       <form name="$ctrl.reminderForm">
-        <div class="form-group">
-          <label>Reminder</label>
-          <input type="date" name="reminder" class="form-control" ng-model="$ctrl.reminder.date" required>
+        <div class="row">
+          <div class="col-xs-12 col-md-12">
+            <label>Reminder</label>
+            <p class="input-group">
+              <input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: 'utc'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+          </div>
         </div>
         <button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button>
         <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button>
