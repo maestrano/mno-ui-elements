@@ -121,13 +121,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
   angular.module('mnoUiElements').component('mnoDropdownFilterSelector', {
     template:'<div class="btn-group" uib-dropdown ng-if="$ctrl.filters.length"><div id="split-button" class="btn btn-primary" ng-bind="$ctrl.selected.name"></div><button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span> <span class="sr-only"></span></button><ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button"><li role="menuitem" ng-repeat="filter in $ctrl.filters"><a ng-click="$ctrl.onSelect({$event: {filter: filter}})" ng-bind="filter.name"></a></li></ul></div>',
     bindings: {
@@ -160,6 +153,61 @@ angular.module('mnoUiElements', [
       vm = this;
     }
   });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
+    var NOTIFICATION_TYPE_MAPPING;
+    NOTIFICATION_TYPE_MAPPING = {
+      reminder: 'info',
+      due_date: 'warning',
+      status_change: 'info'
+    };
+    this.init = function() {
+      return MnoeNotifications.get().then(function(response) {
+        var i, len, message, method, notification, notification_type, notifications, onHidden, results, title;
+        notifications = response.data.plain();
+        results = [];
+        for (i = 0, len = notifications.length; i < len; i++) {
+          notification = notifications[i];
+          notification_type = notification.notification_type;
+          method = NOTIFICATION_TYPE_MAPPING[notification_type];
+          message = notification.message.split("\n").join("</br>");
+          title = notification.title;
+          onHidden = function() {
+            var params;
+            params = {
+              object_id: notification.object_id,
+              object_type: notification.object_type,
+              notification_type: notification_type
+            };
+            return MnoeNotifications.notified(params);
+          };
+          results.push(toastr[method](message, title, {
+            closeButton: true,
+            autoDismiss: false,
+            timeOut: null,
+            tapToDismiss: true,
+            extendedTimeOut: 1000000,
+            onHidden: onHidden,
+            allowHtml: true
+          }));
+        }
+        return results;
+      }, function(errors) {
+        return $log.error(errors);
+      });
+    };
+    return this;
+  }]);
 
 }).call(this);
 
