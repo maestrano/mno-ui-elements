@@ -164,6 +164,55 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
+    var NOTIFICATION_TYPE_MAPPING;
+    NOTIFICATION_TYPE_MAPPING = {
+      reminder: 'info',
+      due: 'warning',
+      completed: 'info'
+    };
+    this.init = function() {
+      $log.debug("Notifications are enabled");
+      return MnoeNotifications.get().then(function(response) {
+        var i, len, message, method, notification, notification_type, notifications, onHidden, results, title;
+        notifications = response.data.plain();
+        results = [];
+        for (i = 0, len = notifications.length; i < len; i++) {
+          notification = notifications[i];
+          notification_type = notification.notification_type;
+          method = NOTIFICATION_TYPE_MAPPING[notification_type];
+          message = notification.message.split("\n").join("</br>");
+          title = notification.title;
+          onHidden = function() {
+            var params;
+            params = {
+              object_id: notification.object_id,
+              object_type: notification.object_type,
+              notification_type: notification_type
+            };
+            return MnoeNotifications.notified(params);
+          };
+          results.push(toastr[method](message, title, {
+            closeButton: true,
+            autoDismiss: false,
+            tapToDismiss: true,
+            timeOut: 0,
+            extendedTimeOut: 0,
+            onHidden: onHidden,
+            allowHtml: true
+          }));
+        }
+        return results;
+      }, function(errors) {
+        return $log.error(errors);
+      });
+    };
+    return this;
+  }]);
+
+}).call(this);
+
+(function() {
   var MnoRowController;
 
   angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
@@ -193,55 +242,6 @@ angular.module('mnoUiElements', [
       throw Error('Must specify exactly one of mno-row-click, mno-row-href, ' + 'for mno-row directive');
     }
   };
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
-    var NOTIFICATION_TYPE_MAPPING;
-    NOTIFICATION_TYPE_MAPPING = {
-      reminder: 'info',
-      due_date: 'warning',
-      status_change: 'info'
-    };
-    this.init = function() {
-      $log.debug("Notifications are enabled");
-      return MnoeNotifications.get().then(function(response) {
-        var i, len, message, method, notification, notification_type, notifications, onHidden, results, title;
-        notifications = response.data.plain();
-        results = [];
-        for (i = 0, len = notifications.length; i < len; i++) {
-          notification = notifications[i];
-          notification_type = notification.notification_type;
-          method = NOTIFICATION_TYPE_MAPPING[notification_type];
-          message = notification.message.split("\n").join("</br>");
-          title = notification.title;
-          onHidden = function() {
-            var params;
-            params = {
-              object_id: notification.object_id,
-              object_type: notification.object_type,
-              notification_type: notification_type
-            };
-            return MnoeNotifications.notified(params);
-          };
-          results.push(toastr[method](message, title, {
-            closeButton: true,
-            autoDismiss: false,
-            timeOut: null,
-            tapToDismiss: true,
-            extendedTimeOut: 1000000,
-            onHidden: onHidden,
-            allowHtml: true
-          }));
-        }
-        return results;
-      }, function(errors) {
-        return $log.error(errors);
-      });
-    };
-    return this;
-  }]);
 
 }).call(this);
 
