@@ -3,8 +3,8 @@ angular.module 'mnoUiElements'
 
     NOTIFICATION_TYPE_MAPPING = {
       reminder: 'info',
-      due_date: 'warning',
-      status_change: 'info',
+      due: 'warning',
+      completed: 'info',
     }
 
     @init = () ->
@@ -23,9 +23,9 @@ angular.module 'mnoUiElements'
             toastr[method](message,title, {
               closeButton: true,
               autoDismiss: false,
-              timeOut: null,
               tapToDismiss: true,
-              extendedTimeOut: 1000000,
+              timeOut: 0,
+              extendedTimeOut: 0,
               onHidden: onHidden,
               allowHtml: true
             })
