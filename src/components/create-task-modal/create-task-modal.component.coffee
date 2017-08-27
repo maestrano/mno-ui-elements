@@ -27,7 +27,7 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     ctrl.ok = (status = 'sent')->
       ctrl.loading = true
       angular.merge(ctrl.task, status: status, orga_relation_id: ctrl.selectedRecipient.id)
-      ctrl.task.due_date = parseAsUtcDate(ctrl.taskDueDate)
+      ctrl.task.due_date = parseAsUtcDate(ctrl.taskDueDate) if _.isDate(ctrl.taskDueDate)
       cb = if ctrl.isDraft then ctrl.resolve.updateDraftCb else ctrl.resolve.createTaskCb
       cb(ctrl.task).then(
         ->
