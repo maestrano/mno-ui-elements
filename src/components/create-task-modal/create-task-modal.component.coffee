@@ -40,6 +40,9 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     ctrl.openDatepicker = ->
       ctrl.datepicker.opened = true
 
+    ctrl.isCreateTaskFormDisabled = ->
+      ctrl.loading || !(ctrl.createTaskForm.$valid && (r = ctrl.selectedRecipient) && r.id?)
+
     # Private
 
     # Strip time & zone from local date and create a UTC date at 00:00 hours.
