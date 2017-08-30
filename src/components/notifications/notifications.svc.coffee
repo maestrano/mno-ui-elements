@@ -12,7 +12,7 @@ angular.module 'mnoUiElements'
       MnoeNotifications.get().then(
         (response)->
           notifications = response.data.plain()
-          for notification in notifications
+          _.each(notifications, (notification)->
             notification_type = notification.notification_type
             method = NOTIFICATION_TYPE_MAPPING[notification_type]
             message = notification.message.split("\n").join("</br>")
@@ -29,6 +29,8 @@ angular.module 'mnoUiElements'
               onHidden: onHidden,
               allowHtml: true
             })
+            return
+          )
         (errors)->
           $log.error(errors)
       )
