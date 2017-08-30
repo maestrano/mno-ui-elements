@@ -18,7 +18,12 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.$onInit = ->
       ctrl.task = ctrl.resolve.task
-      ctrl.to = ctrl.resolve.recipientFormater(ctrl.task.task_recipients[0])
+      ctrl.person = if ctrl.resolve.isInbox
+        label: 'From'
+        value: ctrl.resolve.nameFormatter(ctrl.task.owner)
+      else
+        label: 'To'
+        value: ctrl.resolve.nameFormatter(ctrl.task.task_recipients[0])
       ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium'
       ctrl.isReplying = false
       ctrl.isSettingReminder = false
