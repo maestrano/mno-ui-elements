@@ -31,14 +31,31 @@ mno-section {
       color: @mno-section-description-color;
       line-height: 24px;
       font-size: 13px;
-      padding-right: 33%;
+    }
+  }
+
+  .right-column {
+    .inner-section-title {
+      font-size: 16px;
+      font-weight: bold;
+      .top-buffer-2;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
 
   /* If the screen is md+ */
-  @media screen and (min-width: @screen-sm-min) {
-    .form-inline .form-control, .form-control {
-      width: 60%;
+  @media screen and (min-width: @screen-md-min) {
+    .right-column > .form-inline .form-control,
+    .right-column > .form-control,
+    .right-column > mno-dynamic-input,
+    .right-column > text-angular,
+    .right-column > mno-multiple-string-field,
+    .ta-toolbar {
+      display: block;
+      width: 80%;
     }
   }
 
@@ -51,9 +68,18 @@ mno-section {
     }
   }
 
-  .section-right-button {
-    position: absolute;
-    top: -70px;
-    right: 15px;
+  form .form-group {
+    margin-bottom: 15px;
+  }
+
+  .section-button {
+    margin-bottom: 15px;
+
+    /* If the screen is md+ */
+    @media screen and (min-width: @screen-md-min) {
+      position: absolute;
+      top: -70px;
+      right: 15px;
+    }
   }
 }
