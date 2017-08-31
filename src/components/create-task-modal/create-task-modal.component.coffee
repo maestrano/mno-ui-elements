@@ -16,11 +16,11 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
         options: { format: 'dd MMMM yyyy' }
         opened: false
       }
-      ctrl.recipients = _.map(ctrl.resolve.recipients, (orgaRel) -> {id: orgaRel.id, name: ctrl.resolve.recipientFormater(orgaRel)})
+      ctrl.recipients = _.map(ctrl.resolve.recipients, (orgaRel) -> {id: orgaRel.id, name: ctrl.resolve.recipientFormatter(orgaRel)})
       if ctrl.isDraft
         draft = ctrl.resolve.draftTask
         recip = draft.task_recipients[0]
-        ctrl.selectedRecipient = {id: recip.orga_relation_id, name: ctrl.resolve.recipientFormater(recip)}
+        ctrl.selectedRecipient = {id: recip.orga_relation_id, name: ctrl.resolve.recipientFormatter(recip)}
         ctrl.task = _.pick(draft, ['id', 'title', 'message'])
         ctrl.taskDueDate = moment.utc(draft.due_date).toDate() if draft.due_date?
 
