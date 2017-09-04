@@ -1,0 +1,22 @@
+mno-multiple-string-field {
+  .mutiple-string-field {
+    display: flex;
+    justify-content: space-between;
+
+    pre {
+      margin: 0;
+    }
+
+    &.disabled {
+      pre, input {
+        width: 100%;
+      }
+    }
+
+    &:not(.disabled) {
+      pre, input {
+        width: ~"calc(100% - 45px)";
+      }
+    }
+  }
+}

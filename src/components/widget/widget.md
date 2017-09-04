@@ -43,7 +43,7 @@ Add any code you want to the body of your widget. You may also use the default s
 * `.no-padding` -
   Add this class to remove the default padding of your `mno-widget-body`.
 
-* `.large` or `.medium` -
+* `.xlarge`, `.large` or `.medium` -
   Add one of this class to apply a maximum height and display a scroll bar.
 
 E.g:

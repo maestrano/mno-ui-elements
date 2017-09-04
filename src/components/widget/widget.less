@@ -57,26 +57,26 @@ mno-widget {
       }
 
       mno-widget-body {
+        display: block;
+        padding: 15px;
+
+        &.xlarge {
+          height: 500px;
+          overflow-y: auto;
+        }
+
         &.large {
-          display: block;
           height: 350px;
           overflow-y: auto;
         }
 
         &.medium {
           height: 250px;
-          display: block;
           overflow-y: auto;
         }
 
         &.no-padding {
           padding: 0;
-          display: block;
-        }
-
-        &:not(.no-padding) {
-          padding: 15px;
-          display: block;
         }
       }
     }
