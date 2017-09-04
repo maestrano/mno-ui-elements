@@ -420,6 +420,7 @@ mno-admin {
       min-height: ~"calc(100% -" (@mno-admin-header-height + @mno-admin-footer-height) ~")";
       background: @mno-admin-content-bg-color;
       z-index: 100;
+      padding-bottom: 15px;
     }
 
     /* Footer */
@@ -560,6 +561,29 @@ mno-loading-ellipsis {
   }
 }
 
+mno-multiple-string-field {
+  .key-benefit {
+    display: flex;
+    justify-content: space-between;
+
+    pre {
+      margin: 0;
+    }
+
+    &.disabled {
+      pre, input {
+        width: 100%;
+      }
+    }
+
+    &:not(.disabled) {
+      pre, input {
+        width: ~"calc(100% - 45px)";
+      }
+    }
+  }
+}
+
 /* App row component style */
 mno-row {
   display: block;
@@ -619,14 +643,31 @@ mno-section {
       color: @mno-section-description-color;
       line-height: 24px;
       font-size: 13px;
-      padding-right: 33%;
+    }
+  }
+
+  .right-column {
+    .inner-section-title {
+      font-size: 16px;
+      font-weight: bold;
+      .top-buffer-2;
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
 
   /* If the screen is md+ */
-  @media screen and (min-width: @screen-sm-min) {
-    .form-inline .form-control, .form-control {
-      width: 60%;
+  @media screen and (min-width: @screen-md-min) {
+    .right-column > .form-inline .form-control,
+    .right-column > .form-control,
+    .right-column > mno-dynamic-input,
+    .right-column > text-angular,
+    .right-column > mno-multiple-string-field,
+    .ta-toolbar {
+      display: block;
+      width: 80%;
     }
   }
 
@@ -639,10 +680,19 @@ mno-section {
     }
   }
 
-  .section-right-button {
-    position: absolute;
-    top: -70px;
-    right: 15px;
+  form .form-group {
+    margin-bottom: 15px;
+  }
+
+  .section-button {
+    margin-bottom: 15px;
+
+    /* If the screen is md+ */
+    @media screen and (min-width: @screen-md-min) {
+      position: absolute;
+      top: -70px;
+      right: 15px;
+    }
   }
 }
 
@@ -651,6 +701,21 @@ mno-show-task-modal {
   .reminder {
     display: inline-block;
     margin-right: 20px;
+  }
+}
+
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
+
+    .menu-item {
+      margin: 1px 7px;
+      border: none;
+
+      &.selected {
+        color: @link-color;
+      }
+    }
   }
 }
 
@@ -685,21 +750,6 @@ mno-sortable-table {
 
     td .fa-spinner {
       font-size: 18px;
-    }
-  }
-}
-
-mno-tasks-menu {
-  .tasks-menu {
-    display: flex;
-
-    .menu-item {
-      margin: 1px 7px;
-      border: none;
-
-      &.selected {
-        color: @link-color;
-      }
     }
   }
 }
@@ -773,26 +823,26 @@ mno-widget {
       }
 
       mno-widget-body {
+        display: block;
+        padding: 15px;
+
+        &.xlarge {
+          height: 500px;
+          overflow-y: auto;
+        }
+
         &.large {
-          display: block;
           height: 350px;
           overflow-y: auto;
         }
 
         &.medium {
           height: 250px;
-          display: block;
           overflow-y: auto;
         }
 
         &.no-padding {
           padding: 0;
-          display: block;
-        }
-
-        &:not(.no-padding) {
-          padding: 15px;
-          display: block;
         }
       }
     }

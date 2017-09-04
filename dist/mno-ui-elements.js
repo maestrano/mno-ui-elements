@@ -144,6 +144,35 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoImageSelector', {
+    bindings: {
+      maxSize: '<',
+      defaultPreview: '@',
+      required: '@',
+      isDisabled: '='
+    },
+    require: {
+      form: '^form',
+      ngModel: 'ngModel'
+    },
+    template: '<input type="file" ngf-select ng-model="$ctrl.file" ng-change="$ctrl.updateParentModel()" name="logoFile"\n       ngf-pattern="\'image/*,!.svg\'" ngf-accept="\'image/*\'" ngf-max-size="$ctrl.maxSize" ngf-model-invalid="errorFile"\n       ng-disabled="$ctrl.isDisabled">\n\n<div class="top-buffer-1">\n  <img ng-show="$ctrl.file" ngf-thumbnail="$ctrl.file" class="img-thumbnail">\n  <img ng-show="!$ctrl.file && $ctrl.defaultPreview" ng-src="{{$ctrl.defaultPreview}}" class="img-thumbnail">\n</div>\n\n<div class="text-danger" ng-if="$ctrl.form.logoFile.$dirty || $ctrl.form.$submitted" ng-messages="$ctrl.form.logoFile.$error">\n  <p ng-message="maxSize" translate translate-value-size="{{vm.errorFile.size / 1000000|number:1}}MB" translate-value-max="{{$ctrl.maxSize}}">\n    devpl.component.mno_image_selector.file_too_large\n  </p>\n  <p ng-message="pattern" translate>\n    devpl.component.mno_image_selector.authorized_format\n  </p>\n</div>\n\n<div class="progress top-buffer-1" ng-show="$ctrl.file.progress >= 0">\n  <uib-progressbar value="$ctrl.file.progress">\n    <span ng-show="$ctrl.file.result">Upload successful</span>\n    <span ng-show="$ctrl.file.error">An error occurred</span>\n    <span ng-show="!$ctrl.file.result && !$ctrl.file.error">{{$ctrl.file.progress}}%</span>\n  </uib-progressbar>\n</div>',
+    controller: function() {
+      var ctrl;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        return ctrl.ngModel.$render = function() {
+          return ctrl.file = ctrl.ngModel.$viewValue;
+        };
+      };
+      ctrl.updateParentModel = function() {
+        return ctrl.ngModel.$setViewValue(ctrl.file);
+      };
+    }
+  });
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').component('mnoKpi', {
     template:'<div><div class="visual"><i class="fa" ng-class="vm.icon || \'fa-file-text-o\'"></i></div><div class="details"><div class="loader" ng-show="vm.loading" aria-hidden="true"><i class="fa fa-2x fa-spin fa-refresh"></i></div><div class="body" ng-hide="vm.loading">{{vm.unit}} {{vm.value}}</div><div class="desc">{{vm.description}}</div></div><div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more"><a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoUiSref" ui-sref="{{vm.mnoUiSref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoClick" ng-click="vm.mnoClick()">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a></div></div>',
     transclude: true,
@@ -170,6 +199,52 @@ angular.module('mnoUiElements', [
 (function() {
   angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
     template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoMultipleStringField', {
+    bindings: {
+      isDisabled: '='
+    },
+    require: {
+      form: '^form',
+      ngModel: 'ngModel'
+    },
+    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item key-benefit" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item key-benefit" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
+    controller: ["MnoConfirm", function(MnoConfirm) {
+      var ctrl;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        return ctrl.ngModel.$render = function() {
+          var viewValue;
+          if (ctrl.ngModel.$viewValue) {
+            viewValue = JSON.parse(ctrl.ngModel.$viewValue);
+          }
+          return ctrl.list = viewValue || [];
+        };
+      };
+      ctrl.addElement = function(element) {
+        if (_.isEmpty(element)) {
+          return;
+        }
+        ctrl.list.push(element);
+        ctrl.new_element = null;
+        return ctrl.ngModel.$setViewValue(ctrl.list);
+      };
+      ctrl.removeElement = function(index) {
+        var opts;
+        opts = {
+          headerText: 'Delete entry',
+          bodyText: 'Are you sure you want to delete this entry?'
+        };
+        return MnoConfirm.showModal(opts).then(function() {
+          ctrl.list.splice(index, 1);
+          return ctrl.ngModel.$setViewValue(ctrl.list);
+        });
+      };
+    }]
   });
 
 }).call(this);
@@ -222,6 +297,31 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoSection', {
+    bindings: {
+      heading: '@',
+      description: '@',
+      required: '=',
+      large: '<'
+    },
+    transclude: {
+      'headerContentSlot': '?headerContent'
+    },
+    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('sectionTitle', []).component('mnoSectionTitle', {
+    transclude: true,
+    require: '^mnoSection',
+    template: '<div class="mno-section-title" ng-transclude></div>'
+  });
+
+}).call(this);
+
+(function() {
   var MnoRowController;
 
   angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
@@ -251,27 +351,6 @@ angular.module('mnoUiElements', [
       throw Error('Must specify exactly one of mno-row-click, mno-row-href, ' + 'for mno-row directive');
     }
   };
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoSection', {
-    bindings: {
-      title: '@',
-      description: '@'
-    },
-    transclude: true,
-    template: '<div class="section row">\n  <div class="col-md-4 left-column">\n    <div class="title">{{$ctrl.title}}</div>\n    <div class="description">{{$ctrl.description}}</div>\n  </div>\n  <div class="col-md-8" ng-transclude></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('sectionTitle', []).component('mnoSectionTitle', {
-    transclude: true,
-    require: '^mnoSection',
-    template: '<div class="mno-section-title" ng-transclude></div>'
-  });
 
 }).call(this);
 
