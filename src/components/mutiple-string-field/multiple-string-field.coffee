@@ -13,14 +13,14 @@ angular.module('mnoUiElements')
   template: '''
     <ul class="list-group">
       <!-- List of elements -->
-      <li class="list-group-item key-benefit" ng-class="{'disabled' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">
+      <li class="list-group-item mutiple-string-field" ng-class="{'disabled' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">
         <pre>{{elem}}</pre>
         <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">
           <i class="fa fa-times"></i>
         </button>
       </li>
       <!-- New element form -->
-      <li class="list-group-item key-benefit" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">
+      <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">
         <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">
         <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">
           <i class="fa fa-plus"></i>
