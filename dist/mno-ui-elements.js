@@ -212,7 +212,7 @@ angular.module('mnoUiElements', [
       form: '^form',
       ngModel: 'ngModel'
     },
-    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item key-benefit" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item key-benefit" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
+    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item mutiple-string-field" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
     controller: ["MnoConfirm", function(MnoConfirm) {
       var ctrl;
       ctrl = this;
@@ -297,31 +297,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoSection', {
-    bindings: {
-      heading: '@',
-      description: '@',
-      required: '=',
-      large: '<'
-    },
-    transclude: {
-      'headerContentSlot': '?headerContent'
-    },
-    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('sectionTitle', []).component('mnoSectionTitle', {
-    transclude: true,
-    require: '^mnoSection',
-    template: '<div class="mno-section-title" ng-transclude></div>'
-  });
-
-}).call(this);
-
-(function() {
   var MnoRowController;
 
   angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
@@ -351,6 +326,31 @@ angular.module('mnoUiElements', [
       throw Error('Must specify exactly one of mno-row-click, mno-row-href, ' + 'for mno-row directive');
     }
   };
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoSection', {
+    bindings: {
+      heading: '@',
+      description: '@',
+      required: '=',
+      large: '<'
+    },
+    transclude: {
+      'headerContentSlot': '?headerContent'
+    },
+    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('sectionTitle', []).component('mnoSectionTitle', {
+    transclude: true,
+    require: '^mnoSection',
+    template: '<div class="mno-section-title" ng-transclude></div>'
+  });
 
 }).call(this);
 
