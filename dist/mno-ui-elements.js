@@ -52,6 +52,47 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoDropdownFilterSelector', {
+    template:'<div class="btn-group" uib-dropdown ng-if="$ctrl.filters.length"><div id="split-button" class="btn btn-primary" ng-bind="$ctrl.selected.name"></div><button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span> <span class="sr-only"></span></button><ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button"><li role="menuitem" ng-repeat="filter in $ctrl.filters"><a ng-click="$ctrl.onSelect({$event: {filter: filter}})" ng-bind="filter.name"></a></li></ul></div>',
+    bindings: {
+      filters: '<',
+      selected: '<',
+      onSelect: '&'
+    }
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoImageSelector', {
+    bindings: {
+      maxSize: '<',
+      defaultPreview: '@',
+      required: '@',
+      isDisabled: '='
+    },
+    require: {
+      form: '^form',
+      ngModel: 'ngModel'
+    },
+    template: '<input type="file" ngf-select ng-model="$ctrl.file" ng-change="$ctrl.updateParentModel()" name="logoFile"\n       ngf-pattern="\'image/*,!.svg\'" ngf-accept="\'image/*\'" ngf-max-size="$ctrl.maxSize" ngf-model-invalid="errorFile"\n       ng-disabled="$ctrl.isDisabled">\n\n<div class="top-buffer-1">\n  <img ng-show="$ctrl.file" ngf-thumbnail="$ctrl.file" class="img-thumbnail">\n  <img ng-show="!$ctrl.file && $ctrl.defaultPreview" ng-src="{{$ctrl.defaultPreview}}" class="img-thumbnail">\n</div>\n\n<div class="text-danger" ng-if="$ctrl.form.logoFile.$dirty || $ctrl.form.$submitted" ng-messages="$ctrl.form.logoFile.$error">\n  <p ng-message="maxSize" translate translate-value-size="{{vm.errorFile.size / 1000000|number:1}}MB" translate-value-max="{{$ctrl.maxSize}}">\n    devpl.component.mno_image_selector.file_too_large\n  </p>\n  <p ng-message="pattern" translate>\n    devpl.component.mno_image_selector.authorized_format\n  </p>\n</div>\n\n<div class="progress top-buffer-1" ng-show="$ctrl.file.progress >= 0">\n  <uib-progressbar value="$ctrl.file.progress">\n    <span ng-show="$ctrl.file.result">Upload successful</span>\n    <span ng-show="$ctrl.file.error">An error occurred</span>\n    <span ng-show="!$ctrl.file.result && !$ctrl.file.error">{{$ctrl.file.progress}}%</span>\n  </uib-progressbar>\n</div>',
+    controller: function() {
+      var ctrl;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        return ctrl.ngModel.$render = function() {
+          return ctrl.file = ctrl.ngModel.$viewValue;
+        };
+      };
+      ctrl.updateParentModel = function() {
+        return ctrl.ngModel.$setViewValue(ctrl.file);
+      };
+    }
+  });
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     bindings: {
       resolve: '<',
@@ -132,42 +173,53 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoDropdownFilterSelector', {
-    template:'<div class="btn-group" uib-dropdown ng-if="$ctrl.filters.length"><div id="split-button" class="btn btn-primary" ng-bind="$ctrl.selected.name"></div><button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span> <span class="sr-only"></span></button><ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button"><li role="menuitem" ng-repeat="filter in $ctrl.filters"><a ng-click="$ctrl.onSelect({$event: {filter: filter}})" ng-bind="filter.name"></a></li></ul></div>',
+  angular.module('mnoUiElements').component('mnoMultipleStringField', {
     bindings: {
-      filters: '<',
-      selected: '<',
-      onSelect: '&'
-    }
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoImageSelector', {
-    bindings: {
-      maxSize: '<',
-      defaultPreview: '@',
-      required: '@',
-      isDisabled: '='
+      isDisabled: '=',
+      command: '<?'
     },
     require: {
       form: '^form',
       ngModel: 'ngModel'
     },
-    template: '<input type="file" ngf-select ng-model="$ctrl.file" ng-change="$ctrl.updateParentModel()" name="logoFile"\n       ngf-pattern="\'image/*,!.svg\'" ngf-accept="\'image/*\'" ngf-max-size="$ctrl.maxSize" ngf-model-invalid="errorFile"\n       ng-disabled="$ctrl.isDisabled">\n\n<div class="top-buffer-1">\n  <img ng-show="$ctrl.file" ngf-thumbnail="$ctrl.file" class="img-thumbnail">\n  <img ng-show="!$ctrl.file && $ctrl.defaultPreview" ng-src="{{$ctrl.defaultPreview}}" class="img-thumbnail">\n</div>\n\n<div class="text-danger" ng-if="$ctrl.form.logoFile.$dirty || $ctrl.form.$submitted" ng-messages="$ctrl.form.logoFile.$error">\n  <p ng-message="maxSize" translate translate-value-size="{{vm.errorFile.size / 1000000|number:1}}MB" translate-value-max="{{$ctrl.maxSize}}">\n    devpl.component.mno_image_selector.file_too_large\n  </p>\n  <p ng-message="pattern" translate>\n    devpl.component.mno_image_selector.authorized_format\n  </p>\n</div>\n\n<div class="progress top-buffer-1" ng-show="$ctrl.file.progress >= 0">\n  <uib-progressbar value="$ctrl.file.progress">\n    <span ng-show="$ctrl.file.result">Upload successful</span>\n    <span ng-show="$ctrl.file.error">An error occurred</span>\n    <span ng-show="!$ctrl.file.result && !$ctrl.file.error">{{$ctrl.file.progress}}%</span>\n  </uib-progressbar>\n</div>',
-    controller: function() {
+    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item mutiple-string-field" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
+    controller: ["MnoConfirm", function(MnoConfirm) {
       var ctrl;
       ctrl = this;
       ctrl.$onInit = function() {
         return ctrl.ngModel.$render = function() {
-          return ctrl.file = ctrl.ngModel.$viewValue;
+          var viewValue;
+          if (ctrl.ngModel.$viewValue) {
+            viewValue = JSON.parse(ctrl.ngModel.$viewValue);
+          }
+          return ctrl.list = viewValue || [];
         };
       };
-      ctrl.updateParentModel = function() {
-        return ctrl.ngModel.$setViewValue(ctrl.file);
+      ctrl.$onChanges = function(changes) {
+        if (changes.command.currentValue === 'submit') {
+          return this.addElement(ctrl.new_element);
+        }
       };
-    }
+      ctrl.addElement = function(element) {
+        if (_.isEmpty(element)) {
+          return;
+        }
+        ctrl.list.push(element);
+        ctrl.new_element = null;
+        return ctrl.ngModel.$setViewValue(ctrl.list);
+      };
+      ctrl.removeElement = function(index) {
+        var opts;
+        opts = {
+          headerText: 'Delete entry',
+          bodyText: 'Are you sure you want to delete this entry?'
+        };
+        return MnoConfirm.showModal(opts).then(function() {
+          ctrl.list.splice(index, 1);
+          return ctrl.ngModel.$setViewValue(ctrl.list);
+        });
+      };
+    }]
   });
 
 }).call(this);
@@ -200,99 +252,6 @@ angular.module('mnoUiElements', [
   angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
     template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoMultipleStringField', {
-    bindings: {
-      isDisabled: '='
-    },
-    require: {
-      form: '^form',
-      ngModel: 'ngModel'
-    },
-    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item mutiple-string-field" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
-    controller: ["MnoConfirm", function(MnoConfirm) {
-      var ctrl;
-      ctrl = this;
-      ctrl.$onInit = function() {
-        return ctrl.ngModel.$render = function() {
-          var viewValue;
-          if (ctrl.ngModel.$viewValue) {
-            viewValue = JSON.parse(ctrl.ngModel.$viewValue);
-          }
-          return ctrl.list = viewValue || [];
-        };
-      };
-      ctrl.addElement = function(element) {
-        if (_.isEmpty(element)) {
-          return;
-        }
-        ctrl.list.push(element);
-        ctrl.new_element = null;
-        return ctrl.ngModel.$setViewValue(ctrl.list);
-      };
-      ctrl.removeElement = function(index) {
-        var opts;
-        opts = {
-          headerText: 'Delete entry',
-          bodyText: 'Are you sure you want to delete this entry?'
-        };
-        return MnoConfirm.showModal(opts).then(function() {
-          ctrl.list.splice(index, 1);
-          return ctrl.ngModel.$setViewValue(ctrl.list);
-        });
-      };
-    }]
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
-    var NOTIFICATION_TYPE_MAPPING;
-    NOTIFICATION_TYPE_MAPPING = {
-      reminder: 'info',
-      due: 'warning',
-      completed: 'info'
-    };
-    this.init = function() {
-      $log.debug("Notifications are enabled");
-      return MnoeNotifications.get().then(function(response) {
-        var notifications;
-        notifications = response.data.plain();
-        return _.each(notifications, function(notification) {
-          var message, method, notification_type, onHidden, title;
-          notification_type = notification.notification_type;
-          method = NOTIFICATION_TYPE_MAPPING[notification_type];
-          message = notification.message.split("\n").join("</br>");
-          title = notification.title;
-          onHidden = function() {
-            var params;
-            params = {
-              object_id: notification.object_id,
-              object_type: notification.object_type,
-              notification_type: notification_type
-            };
-            return MnoeNotifications.notified(params);
-          };
-          toastr[method](message, title, {
-            closeButton: true,
-            autoDismiss: false,
-            tapToDismiss: true,
-            timeOut: 0,
-            extendedTimeOut: 0,
-            onHidden: onHidden,
-            allowHtml: true
-          });
-        });
-      }, function(errors) {
-        return $log.error(errors);
-      });
-    };
-    return this;
-  }]);
 
 }).call(this);
 
@@ -351,6 +310,53 @@ angular.module('mnoUiElements', [
     require: '^mnoSection',
     template: '<div class="mno-section-title" ng-transclude></div>'
   });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
+    var NOTIFICATION_TYPE_MAPPING;
+    NOTIFICATION_TYPE_MAPPING = {
+      reminder: 'info',
+      due: 'warning',
+      completed: 'info'
+    };
+    this.init = function() {
+      $log.debug("Notifications are enabled");
+      return MnoeNotifications.get().then(function(response) {
+        var notifications;
+        notifications = response.data.plain();
+        return _.each(notifications, function(notification) {
+          var message, method, notification_type, onHidden, title;
+          notification_type = notification.notification_type;
+          method = NOTIFICATION_TYPE_MAPPING[notification_type];
+          message = notification.message.split("\n").join("</br>");
+          title = notification.title;
+          onHidden = function() {
+            var params;
+            params = {
+              object_id: notification.object_id,
+              object_type: notification.object_type,
+              notification_type: notification_type
+            };
+            return MnoeNotifications.notified(params);
+          };
+          toastr[method](message, title, {
+            closeButton: true,
+            autoDismiss: false,
+            tapToDismiss: true,
+            timeOut: 0,
+            extendedTimeOut: 0,
+            onHidden: onHidden,
+            allowHtml: true
+          });
+        });
+      }, function(errors) {
+        return $log.error(errors);
+      });
+    };
+    return this;
+  }]);
 
 }).call(this);
 
