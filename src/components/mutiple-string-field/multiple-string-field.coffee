@@ -5,6 +5,7 @@ angular.module('mnoUiElements')
 .component('mnoMultipleStringField', {
   bindings: {
     isDisabled: '='
+    command: '<?'
   },
   require: {
     form: '^form'
@@ -36,6 +37,10 @@ angular.module('mnoUiElements')
       ctrl.ngModel.$render = () ->
         viewValue = JSON.parse(ctrl.ngModel.$viewValue) if ctrl.ngModel.$viewValue
         ctrl.list = viewValue || []
+
+    ctrl.$onChanges = (changes) ->
+      # Watch command binding to trigger corresponding events
+      this.addElement(ctrl.new_element) if changes.command.currentValue == 'submit'
 
     ctrl.addElement = (element) ->
       return if _.isEmpty(element)
