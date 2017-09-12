@@ -1,29 +1,21 @@
 angular.module 'mnoUiElements'
-  .service 'Notifications', ($log, toastr, MnoeNotifications) ->
+  .service 'Notifications', ($log, toastr) ->
 
-    @init = () ->
+    @init = (notifications, notifiedCallback) ->
       $log.debug("Notifications are enabled")
-      MnoeNotifications.get().then(
-        (response)->
-          notifications = response.data.plain()
-          _.each(notifications, (notification)->
-            MnoeNotifications.formatNotification(notification).then((result) ->
-              onHidden = ->
-                params = {object_id: notification.object_id, object_type: notification.object_type, notification_type: notification_type}
-                MnoeNotifications.notified(params)
-              toastr[result.method](result.message, result.title, {
-                closeButton: true,
-                autoDismiss: false,
-                tapToDismiss: true,
-                timeOut: 0,
-                extendedTimeOut: 0,
-                onHidden: onHidden,
-                allowHtml: true
-              })
-            )
-          )
-        (errors)->
-          $log.error(errors)
+      _.each(notifications, (notification) ->
+        onHidden = ->
+          params = {object_id: notification.object_id, object_type: notification.object_type, notification_type: notification_type}
+          notifiedCallback(params)
+        toastr[notification.method](notification.message, notification.title, {
+          closeButton: true,
+          autoDismiss: false,
+          tapToDismiss: true,
+          timeOut: 0,
+          extendedTimeOut: 0,
+          onHidden: onHidden,
+          allowHtml: true
+        })
       )
 
     return @
