@@ -263,11 +263,7 @@ angular.module('mnoUiElements', [
         var onHidden;
         onHidden = function() {
           var params;
-          params = {
-            object_id: notification.object_id,
-            object_type: notification.object_type,
-            notification_type: notification_type
-          };
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
           return notifiedCallback(params);
         };
         return toastr[notification.method](notification.message, notification.title, {
