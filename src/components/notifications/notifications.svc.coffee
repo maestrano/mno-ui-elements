@@ -5,7 +5,7 @@ angular.module 'mnoUiElements'
       $log.debug("Notifications are enabled")
       _.each(notifications, (notification) ->
         onHidden = ->
-          params = {object_id: notification.object_id, object_type: notification.object_type, notification_type: notification_type}
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
           notifiedCallback(params)
         toastr[notification.method](notification.message, notification.title, {
           closeButton: true,
