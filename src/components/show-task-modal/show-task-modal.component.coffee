@@ -13,7 +13,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
     dismiss: '&'
   },
   templateUrl: 'show-task-modal.html',
-  controller: ()->
+  controller: (MnoDateHelper)->
     ctrl = this
 
     ctrl.$onInit = ->
@@ -59,7 +59,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.setReminderOnClick = ->
       return unless ctrl.canSetReminder()
-      reminderDate = parseAsUTCDate(ctrl.reminder.date)
+      reminderDate = MnoDateHelper.parseAsUTCDate(ctrl.reminder.date)
       ctrl.resolve.setReminderCb(reminderDate).then(
         (response)->
           ctrl.task = response if response?
@@ -111,11 +111,6 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     isTaskOwner = ->
       ctrl.resolve.currentUser.id == _.get(ctrl.task, 'owner.user.id')
-
-    # Strip time & zone from local date and create a UTC date at 00:00 hours.
-    parseAsUTCDate = (date) ->
-      dateStr = moment(date).format('YYYY-MM-DD')
-      moment.utc(dateStr).toISOString()
 
     ctrl
 })

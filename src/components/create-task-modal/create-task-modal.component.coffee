@@ -5,7 +5,7 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     dismiss: '&'
   },
   templateUrl: 'create-task-modal.html',
-  controller: ()->
+  controller: (MnoDateHelper)->
     ctrl = this
 
     ctrl.loading = false
@@ -27,7 +27,7 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     ctrl.ok = (status = 'sent')->
       ctrl.loading = true
       angular.merge(ctrl.task, status: status, orga_relation_id: ctrl.selectedRecipient.id)
-      ctrl.task.due_date = parseAsUTCDate(ctrl.taskDueDate) if _.isDate(ctrl.taskDueDate)
+      ctrl.task.due_date = MnoDateHelper.parseAsUTCDate(ctrl.taskDueDate) if _.isDate(ctrl.taskDueDate)
       cb = if ctrl.isDraft then ctrl.resolve.updateDraftCb else ctrl.resolve.createTaskCb
       cb(ctrl.task).then(
         ->
@@ -42,13 +42,6 @@ angular.module('mnoUiElements').component('mnoCreateTaskModal', {
 
     ctrl.isCreateTaskFormDisabled = ->
       ctrl.loading || !(ctrl.createTaskForm.$valid && (r = ctrl.selectedRecipient) && r.id?)
-
-    # Private
-
-    # Strip time & zone from local date and create a UTC date at 00:00 hours.
-    parseAsUTCDate = (date) ->
-      dateStr = moment(date).format('YYYY-MM-DD')
-      moment.utc(dateStr).toISOString()
 
     ctrl
 })
