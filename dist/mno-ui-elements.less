@@ -704,6 +704,21 @@ mno-show-task-modal {
   }
 }
 
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
+
+    .menu-item {
+      margin: 1px 7px;
+      border: none;
+
+      &.selected {
+        color: @link-color;
+      }
+    }
+  }
+}
+
 mno-sortable-table {
   [st-table]{
     [st-sort] {
@@ -735,21 +750,6 @@ mno-sortable-table {
 
     td .fa-spinner {
       font-size: 18px;
-    }
-  }
-}
-
-mno-tasks-menu {
-  .tasks-menu {
-    display: flex;
-
-    .menu-item {
-      margin: 1px 7px;
-      border: none;
-
-      &.selected {
-        color: @link-color;
-      }
     }
   }
 }
