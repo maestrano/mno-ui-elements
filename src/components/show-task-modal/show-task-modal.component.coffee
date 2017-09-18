@@ -42,6 +42,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       )
 
     ctrl.send = (markAsDone)->
+      ctrl.loading = true
       ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(
         ->
           ctrl.close()
@@ -97,6 +98,9 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
 
     ctrl.canSendAndMarkAsDone = ->
       ctrl.canMarkAsDone() && ctrl.task.status != 'done'
+
+    ctrl.isFormDisabled = ->
+      ctrl.loading || ctrl.taskReplyForm.$invalid
 
     # Private
 
