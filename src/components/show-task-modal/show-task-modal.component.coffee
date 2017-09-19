@@ -46,7 +46,7 @@ angular.module('mnoUiElements').component('mnoShowTaskModal', {
       ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(
         ->
           ctrl.close()
-      )
+      ).finally(-> ctrl.loading = false)
 
     ctrl.cancel = ->
       ctrl.dismiss()
