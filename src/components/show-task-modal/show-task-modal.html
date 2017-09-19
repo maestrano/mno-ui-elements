@@ -58,6 +58,6 @@
 <div class="modal-footer">
   <button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ 'btn-default': $ctrl.isReplying, 'btn-primary': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? 'Cancel' : 'Reply'"></button>
   <button class="btn" ng-class="{ 'btn-success': !$ctrl.task.markedDone, 'btn-warning': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()">Mark as {{$ctrl.task.markedDone ? 'not done' : 'done'}}</button>
-  <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.taskReplyForm.$invalid">Send</button>
-  <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.taskReplyForm.$invalid">Send & mark as done</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.isFormDisabled()">Send</button>
+  <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.isFormDisabled()">Send & mark as done</button>
 </div>

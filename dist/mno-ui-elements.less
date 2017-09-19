@@ -585,32 +585,6 @@ mno-multiple-string-field {
 }
 
 /* App row component style */
-mno-row {
-  display: block;
-  border-bottom: 1px solid @mno-row-borders-color;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  & > a.row-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: @mno-row-height;
-    padding-left: 10px;
-    padding-right: 10px;
-
-    &:hover {
-      text-decoration: none;
-      background-color: @mno-row-hover-bg-color;
-    }
-
-
-  }
-}
-
-/* App row component style */
 mno-section {
   display: block;
   border-bottom: 1px solid @mno-section-border-bottom-color;
@@ -693,6 +667,32 @@ mno-section {
       top: -70px;
       right: 15px;
     }
+  }
+}
+
+/* App row component style */
+mno-row {
+  display: block;
+  border-bottom: 1px solid @mno-row-borders-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a.row-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: @mno-row-height;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: @mno-row-hover-bg-color;
+    }
+
+
   }
 }
 
