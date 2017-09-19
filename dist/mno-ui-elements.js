@@ -18,79 +18,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
-    this.init = function(notifications, notifiedCallback) {
-      $log.debug("Notifications are enabled");
-      return _.each(notifications, function(notification) {
-        var onHidden;
-        onHidden = function() {
-          var params;
-          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
-          return notifiedCallback(params);
-        };
-        return toastr[notification.method](notification.message, notification.title, {
-          closeButton: true,
-          autoDismiss: false,
-          tapToDismiss: true,
-          timeOut: 0,
-          extendedTimeOut: 0,
-          onHidden: onHidden,
-          allowHtml: true
-        });
-      });
-    };
-    return this;
-  }]);
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoAdmin', {
-    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
-    transclude: {
-      header: 'mnoAdminHeader',
-      navigation: 'mnoAdminNav',
-      content: 'mnoAdminContent',
-      footer: '?mnoAdminFooter'
-    },
-    bindings: {
-      logo: '@?',
-      name: '@?',
-      hideFooter: '='
-    },
-    controller: ["$scope", function($scope) {
-      var vm;
-      vm = this;
-      vm.$onInit = function() {
-        vm.toggled = false;
-        return vm.reduced = window.innerWidth > 992 ? false : true;
-      };
-      vm.reduceSidebar = function() {
-        if (!vm.toggled) {
-          return vm.reduced = !vm.reduced;
-        }
-      };
-      vm.toggleSidebar = function() {
-        vm.toggled = !vm.toggled;
-        return vm.reduced = !vm.toggled;
-      };
-      $scope.$watch((function() {
-        return window.innerWidth;
-      }), function(newValue) {
-        if (newValue) {
-          vm.toggled = false;
-          return vm.reduced = window.innerWidth < 1200;
-        }
-      });
-      window.onresize = function() {
-        return $scope.$apply();
-      };
-    }]
-  });
-
-}).call(this);
-
-(function() {
   angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     bindings: {
       resolve: '<',
@@ -160,6 +87,79 @@ angular.module('mnoUiElements', [
         return ctrl.loading || !(ctrl.createTaskForm.$valid && (r = ctrl.selectedRecipient) && (r.id != null));
       };
       return ctrl;
+    }]
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
+    this.init = function(notifications, notifiedCallback) {
+      $log.debug("Notifications are enabled");
+      return _.each(notifications, function(notification) {
+        var onHidden;
+        onHidden = function() {
+          var params;
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
+          return notifiedCallback(params);
+        };
+        return toastr[notification.method](notification.message, notification.title, {
+          closeButton: true,
+          autoDismiss: false,
+          tapToDismiss: true,
+          timeOut: 0,
+          extendedTimeOut: 0,
+          onHidden: onHidden,
+          allowHtml: true
+        });
+      });
+    };
+    return this;
+  }]);
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoAdmin', {
+    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
+    transclude: {
+      header: 'mnoAdminHeader',
+      navigation: 'mnoAdminNav',
+      content: 'mnoAdminContent',
+      footer: '?mnoAdminFooter'
+    },
+    bindings: {
+      logo: '@?',
+      name: '@?',
+      hideFooter: '='
+    },
+    controller: ["$scope", function($scope) {
+      var vm;
+      vm = this;
+      vm.$onInit = function() {
+        vm.toggled = false;
+        return vm.reduced = window.innerWidth > 992 ? false : true;
+      };
+      vm.reduceSidebar = function() {
+        if (!vm.toggled) {
+          return vm.reduced = !vm.reduced;
+        }
+      };
+      vm.toggleSidebar = function() {
+        vm.toggled = !vm.toggled;
+        return vm.reduced = !vm.toggled;
+      };
+      $scope.$watch((function() {
+        return window.innerWidth;
+      }), function(newValue) {
+        if (newValue) {
+          vm.toggled = false;
+          return vm.reduced = window.innerWidth < 1200;
+        }
+      });
+      window.onresize = function() {
+        return $scope.$apply();
+      };
     }]
   });
 
@@ -322,31 +322,6 @@ angular.module('mnoUiElements', [
 
 }).call(this);
 
-(function() {
-  angular.module('mnoUiElements').component('mnoSection', {
-    bindings: {
-      heading: '@',
-      description: '@',
-      required: '=',
-      large: '<'
-    },
-    transclude: {
-      'headerContentSlot': '?headerContent'
-    },
-    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('sectionTitle', []).component('mnoSectionTitle', {
-    transclude: true,
-    require: '^mnoSection',
-    template: '<div class="mno-section-title" ng-transclude></div>'
-  });
-
-}).call(this);
-
 
 /*
  *   @desc Modal for displaying a Task, with the ability to set a reminder for the Task.
@@ -403,6 +378,8 @@ angular.module('mnoUiElements', [
         ctrl.loading = true;
         return ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(function() {
           return ctrl.close();
+        })["finally"](function() {
+          return ctrl.loading = false;
         });
       };
       ctrl.cancel = function() {
@@ -481,6 +458,31 @@ angular.module('mnoUiElements', [
       };
       return ctrl;
     }]
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoSection', {
+    bindings: {
+      heading: '@',
+      description: '@',
+      required: '=',
+      large: '<'
+    },
+    transclude: {
+      'headerContentSlot': '?headerContent'
+    },
+    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('sectionTitle', []).component('mnoSectionTitle', {
+    transclude: true,
+    require: '^mnoSection',
+    template: '<div class="mno-section-title" ng-transclude></div>'
   });
 
 }).call(this);

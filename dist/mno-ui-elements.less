@@ -529,29 +529,6 @@ mno-kpi {
   }
 }
 
-mno-multiple-string-field {
-  .mutiple-string-field {
-    display: flex;
-    justify-content: space-between;
-
-    pre {
-      margin: 0;
-    }
-
-    &.disabled {
-      pre, input {
-        width: 100%;
-      }
-    }
-
-    &:not(.disabled) {
-      pre, input {
-        width: ~"calc(100% - 45px)";
-      }
-    }
-  }
-}
-
 /* Loading ellipsis component style */
 mno-loading-ellipsis {
   .mno-three-bounce {
@@ -584,29 +561,26 @@ mno-loading-ellipsis {
   }
 }
 
-/* App row component style */
-mno-row {
-  display: block;
-  border-bottom: 1px solid @mno-row-borders-color;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  & > a.row-link {
+mno-multiple-string-field {
+  .mutiple-string-field {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    height: @mno-row-height;
-    padding-left: 10px;
-    padding-right: 10px;
 
-    &:hover {
-      text-decoration: none;
-      background-color: @mno-row-hover-bg-color;
+    pre {
+      margin: 0;
     }
 
+    &.disabled {
+      pre, input {
+        width: 100%;
+      }
+    }
 
+    &:not(.disabled) {
+      pre, input {
+        width: ~"calc(100% - 45px)";
+      }
+    }
   }
 }
 
@@ -696,11 +670,52 @@ mno-section {
   }
 }
 
+/* App row component style */
+mno-row {
+  display: block;
+  border-bottom: 1px solid @mno-row-borders-color;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  & > a.row-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: @mno-row-height;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+      background-color: @mno-row-hover-bg-color;
+    }
+
+
+  }
+}
+
 mno-show-task-modal {
   .due-date,
   .reminder {
     display: inline-block;
     margin-right: 20px;
+  }
+}
+
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
+
+    .menu-item {
+      margin: 1px 7px;
+      border: none;
+
+      &.selected {
+        color: @link-color;
+      }
+    }
   }
 }
 
@@ -735,21 +750,6 @@ mno-sortable-table {
 
     td .fa-spinner {
       font-size: 18px;
-    }
-  }
-}
-
-mno-tasks-menu {
-  .tasks-menu {
-    display: flex;
-
-    .menu-item {
-      margin: 1px 7px;
-      border: none;
-
-      &.selected {
-        color: @link-color;
-      }
     }
   }
 }
