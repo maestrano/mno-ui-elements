@@ -6,13 +6,59 @@ angular.module('mnoUiElements', [
 
 }());
 (function() {
-  angular.module('mnoUiElements').service('MnoDateHelper', function() {
-    this.parseAsUTCDate = function(date) {
-      var dateStr;
-      dateStr = moment(date).format('YYYY-MM-DD');
-      return moment.utc(dateStr).toISOString();
-    };
-    return this;
+  angular.module('mnoUiElements').component('mnoAdmin', {
+    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
+    transclude: {
+      header: 'mnoAdminHeader',
+      navigation: 'mnoAdminNav',
+      content: 'mnoAdminContent',
+      footer: '?mnoAdminFooter'
+    },
+    bindings: {
+      logo: '@?',
+      name: '@?',
+      hideFooter: '='
+    },
+    controller: ["$scope", function($scope) {
+      var vm;
+      vm = this;
+      vm.$onInit = function() {
+        vm.toggled = false;
+        return vm.reduced = window.innerWidth > 992 ? false : true;
+      };
+      vm.reduceSidebar = function() {
+        if (!vm.toggled) {
+          return vm.reduced = !vm.reduced;
+        }
+      };
+      vm.toggleSidebar = function() {
+        vm.toggled = !vm.toggled;
+        return vm.reduced = !vm.toggled;
+      };
+      $scope.$watch((function() {
+        return window.innerWidth;
+      }), function(newValue) {
+        if (newValue) {
+          vm.toggled = false;
+          return vm.reduced = window.innerWidth < 1200;
+        }
+      });
+      window.onresize = function() {
+        return $scope.$apply();
+      };
+    }]
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoDropdownFilterSelector', {
+    template:'<div class="btn-group" uib-dropdown ng-if="$ctrl.filters.length"><div id="split-button" class="btn btn-primary" ng-bind="$ctrl.selected.name"></div><button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span> <span class="sr-only"></span></button><ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button"><li role="menuitem" ng-repeat="filter in $ctrl.filters"><a ng-click="$ctrl.onSelect({$event: {filter: filter}})" ng-bind="filter.name"></a></li></ul></div>',
+    bindings: {
+      filters: '<',
+      selected: '<',
+      onSelect: '&'
+    }
   });
 
 }).call(this);
@@ -24,7 +70,7 @@ angular.module('mnoUiElements', [
       close: '&',
       dismiss: '&'
     },
-    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" typeahead-editable="false" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="row"><div class="col-xs-12 col-md-12"><label>Due Date (optional)</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.taskDueDate" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.isCreateTaskFormDisabled()" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.isCreateTaskFormDisabled()" type="button" ng-click="$ctrl.ok()">Send</button></div>',
+    template:'<div class="modal-header"></div><div class="modal-body" id="modal-body"><form name="$ctrl.createTaskForm"><div class="form-group"><label>To</label> <input type="text" class="form-control" name="to" ng-model="$ctrl.selectedRecipient" uib-typeahead="recipient as recipient.name for recipient in $ctrl.recipients | filter:{name:$viewValue}" typeahead-min-length="0" autocomplete="off" typeahead-editable="false" required></div><div class="form-group"><label>Title</label> <input type="text" name="title" class="form-control" ng-model="$ctrl.task.title" required></div><div class="row"><div class="col-xs-12 col-md-12"><label>Due Date (optional)</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.taskDueDate" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><div class="form-group"><label>Message</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.task.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn btn-default" ng-disabled="$ctrl.loading" type="button" ng-click="$ctrl.cancel()">Discard</button> <button class="btn btn-warning" ng-disabled="$ctrl.isCreateTaskFormDisabled()" type="button" ng-click="$ctrl.ok(\'draft\')">{{$ctrl.isDraft ? \'Update\' : \'Save as\'}} draft</button> <button class="btn btn-success" ng-disabled="$ctrl.isCreateTaskFormDisabled()" type="button" ng-click="$ctrl.ok()">Send</button></div>',
     controller: ["MnoDateHelper", function(MnoDateHelper) {
       var ctrl;
       ctrl = this;
@@ -93,91 +139,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
-    this.init = function(notifications, notifiedCallback) {
-      $log.debug("Notifications are enabled");
-      return _.each(notifications, function(notification) {
-        var onHidden;
-        onHidden = function() {
-          var params;
-          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
-          return notifiedCallback(params);
-        };
-        return toastr[notification.method](notification.message, notification.title, {
-          closeButton: true,
-          autoDismiss: false,
-          tapToDismiss: true,
-          timeOut: 0,
-          extendedTimeOut: 0,
-          onHidden: onHidden,
-          allowHtml: true
-        });
-      });
-    };
-    return this;
-  }]);
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoAdmin', {
-    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
-    transclude: {
-      header: 'mnoAdminHeader',
-      navigation: 'mnoAdminNav',
-      content: 'mnoAdminContent',
-      footer: '?mnoAdminFooter'
-    },
-    bindings: {
-      logo: '@?',
-      name: '@?',
-      hideFooter: '='
-    },
-    controller: ["$scope", function($scope) {
-      var vm;
-      vm = this;
-      vm.$onInit = function() {
-        vm.toggled = false;
-        return vm.reduced = window.innerWidth > 992 ? false : true;
-      };
-      vm.reduceSidebar = function() {
-        if (!vm.toggled) {
-          return vm.reduced = !vm.reduced;
-        }
-      };
-      vm.toggleSidebar = function() {
-        vm.toggled = !vm.toggled;
-        return vm.reduced = !vm.toggled;
-      };
-      $scope.$watch((function() {
-        return window.innerWidth;
-      }), function(newValue) {
-        if (newValue) {
-          vm.toggled = false;
-          return vm.reduced = window.innerWidth < 1200;
-        }
-      });
-      window.onresize = function() {
-        return $scope.$apply();
-      };
-    }]
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoDropdownFilterSelector', {
-    template:'<div class="btn-group" uib-dropdown ng-if="$ctrl.filters.length"><div id="split-button" class="btn btn-primary" ng-bind="$ctrl.selected.name"></div><button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span> <span class="sr-only"></span></button><ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button"><li role="menuitem" ng-repeat="filter in $ctrl.filters"><a ng-click="$ctrl.onSelect({$event: {filter: filter}})" ng-bind="filter.name"></a></li></ul></div>',
-    bindings: {
-      filters: '<',
-      selected: '<',
-      onSelect: '&'
-    }
-  });
-
-}).call(this);
-
-(function() {
   angular.module('mnoUiElements').component('mnoImageSelector', {
     bindings: {
       maxSize: '<',
@@ -226,13 +187,6 @@ angular.module('mnoUiElements', [
       var vm;
       vm = this;
     }
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);
@@ -290,6 +244,13 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
   var MnoRowController;
 
   angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
@@ -322,6 +283,31 @@ angular.module('mnoUiElements', [
 
 }).call(this);
 
+(function() {
+  angular.module('mnoUiElements').component('mnoSection', {
+    bindings: {
+      heading: '@',
+      description: '@',
+      required: '=',
+      large: '<'
+    },
+    transclude: {
+      'headerContentSlot': '?headerContent'
+    },
+    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('sectionTitle', []).component('mnoSectionTitle', {
+    transclude: true,
+    require: '^mnoSection',
+    template: '<div class="mno-section-title" ng-transclude></div>'
+  });
+
+}).call(this);
+
 
 /*
  *   @desc Modal for displaying a Task, with the ability to set a reminder for the Task.
@@ -339,7 +325,7 @@ angular.module('mnoUiElements', [
       close: '&',
       dismiss: '&'
     },
-    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label ng-bind="$ctrl.person.label"></label><p ng-bind="$ctrl.person.value"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="row"><div class="col-xs-12 col-md-12"><label>Reminder</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.isFormDisabled()">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.isFormDisabled()">Send & mark as done</button></div>',
+    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label ng-bind="$ctrl.person.label"></label><p ng-bind="$ctrl.person.value"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="row"><div class="col-xs-12 col-md-12"><label>Reminder</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'" ng-disabled="$ctrl.loading"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()" ng-disabled="$ctrl.loading">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.isFormDisabled()">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.isFormDisabled()">Send & mark as done</button></div>',
     controller: ["MnoDateHelper", function(MnoDateHelper) {
       var ctrl, getCurrentUserRecipient, hasBeenRead, isTaskOwner;
       ctrl = this;
@@ -458,31 +444,6 @@ angular.module('mnoUiElements', [
       };
       return ctrl;
     }]
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoSection', {
-    bindings: {
-      heading: '@',
-      description: '@',
-      required: '=',
-      large: '<'
-    },
-    transclude: {
-      'headerContentSlot': '?headerContent'
-    },
-    template: '<div class="section row">\n  <div class="left-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-4\'">\n    <div class="heading">{{$ctrl.heading}}<span ng-if="$ctrl.required">&nbsp;*</span></div>\n    <div class="description">{{$ctrl.description}}</div>\n    <span ng-transclude="headerContentSlot"></span>\n  </div>\n  <div class="right-column" ng-class="$ctrl.large ? \'col-xs-12\' : \'col-md-8\'" ng-transclude></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('sectionTitle', []).component('mnoSectionTitle', {
-    transclude: true,
-    require: '^mnoSection',
-    template: '<div class="mno-section-title" ng-transclude></div>'
   });
 
 }).call(this);
@@ -639,5 +600,44 @@ angular.module('mnoUiElements', [
       vm = this;
     }
   });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('MnoDateHelper', function() {
+    this.parseAsUTCDate = function(date) {
+      var dateStr;
+      dateStr = moment(date).format('YYYY-MM-DD');
+      return moment.utc(dateStr).toISOString();
+    };
+    return this;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
+    this.init = function(notifications, notifiedCallback) {
+      $log.debug("Notifications are enabled");
+      return _.each(notifications, function(notification) {
+        var onHidden;
+        onHidden = function() {
+          var params;
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
+          return notifiedCallback(params);
+        };
+        return toastr[notification.method](notification.message, notification.title, {
+          closeButton: true,
+          autoDismiss: false,
+          tapToDismiss: true,
+          timeOut: 0,
+          extendedTimeOut: 0,
+          onHidden: onHidden,
+          allowHtml: true
+        });
+      });
+    };
+    return this;
+  }]);
 
 }).call(this);
