@@ -490,6 +490,29 @@ angular.module('mnoUiElements', [
         });
       }
     };
+  }]).directive('mnoRenderDynamicHeader', ["$compile", function($compile) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        return scope.$watchGroup(['field'], function() {
+          var customField, html;
+          if (scope.field == null) {
+            return;
+          }
+          if (_.isFunction(scope.field.render)) {
+            customField = scope.field.render(scope.field.data);
+            html = customField.template;
+            scope = angular.merge(scope, customField.scope);
+          } else {
+            html = scope.field.render;
+            if (html == null) {
+              html = "<span>-</span>";
+            }
+          }
+          return element.append($compile(html)(scope));
+        });
+      }
+    };
   }]);
 
 }).call(this);
@@ -512,10 +535,11 @@ angular.module('mnoUiElements', [
 
 (function() {
   angular.module('mnoUiElements').component('mnoSortableTable', {
-    template:'<table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipe()" class="table table-responsive" ng-class="{ \'table-hover\': !$ctrl.loading && $ctrl.hasCollectionItems() }"><thead><tr><th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}"><span ng-bind="field.header"></span></th></tr></thead><tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()"><tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})"><td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td></tr></tbody><tbody ng-show="$ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></td></tr></tbody><tbody ng-hide="$ctrl.hasCollectionItems() || $ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><span>No results</span></td></tr></tbody></table>',
+    template:'<table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipe()" class="table table-responsive" ng-class="{ \'table-hover\': !$ctrl.loading && $ctrl.hasCollectionItems() }"><thead><tr><th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}"><span ng-bind="field.header"></span></th></tr><tr><th ng-repeat="field in $ctrl.subHeaders" mno-render-dynamic-header field="field"></th></tr></thead><tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()"><tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})"><td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td></tr></tbody><tbody ng-show="$ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></td></tr></tbody><tbody ng-hide="$ctrl.hasCollectionItems() || $ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><span>No results</span></td></tr></tbody></table>',
     bindings: {
       rowCollection: '<',
       fields: '<',
+      subHeaders: '<',
       rowOnClick: '&?',
       pipe: '&?',
       isLoading: '<?'

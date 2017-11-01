@@ -18,6 +18,7 @@ angular.module('mnoUiElements')
   bindings: {
     rowCollection: '<'
     fields: '<'
+    subHeaders: '<'
     rowOnClick: '&?'
     pipe: '&?'
     isLoading: '<?'
