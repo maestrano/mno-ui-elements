@@ -490,9 +490,23 @@ angular.module('mnoUiElements', [
         });
       }
     };
-  }]).directive('mnoRenderDynamicHeader', ["$compile", function($compile) {
+  }]);
+
+}).call(this);
+
+
+/*
+ *   @desc Accompanies the mnoSortableTable component, assisting in the rendering of dynamic attributes and custom html.
+ *   @binding {Object} [field] a mnoSortableTable fields configuration object (see sortable-table cmp)
+ */
+
+(function() {
+  angular.module('mnoUiElements').directive('mnoRenderDynamicHeader', ["$compile", function($compile) {
     return {
       restrict: 'A',
+      scope: {
+        field: '<'
+      },
       link: function(scope, element, attrs) {
         return scope.$watchGroup(['field'], function() {
           var customField, html;
