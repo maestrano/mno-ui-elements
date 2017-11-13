@@ -5,6 +5,10 @@
         <span ng-bind="field.header"></span>
       </th>
     </tr>
+    <tr>
+      <th ng-repeat="field in $ctrl.subHeaders" mno-render-dynamic-header field="field">
+      </th>
+    </tr>
   </thead>
   <tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()">
     <tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
