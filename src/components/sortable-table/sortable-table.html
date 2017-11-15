@@ -1,7 +1,7 @@
 <table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipe()" class="table table-responsive" ng-class="{ 'table-hover': !$ctrl.loading && $ctrl.hasCollectionItems() }">
   <thead>
     <tr>
-      <th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}">
+      <th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}" ng-style="{{field.style}}" st-sort-default="{{field.sort_default}}" st-skip-natural="{{field.skip_natural}}">
         <span ng-bind="field.header"></span>
       </th>
     </tr>
