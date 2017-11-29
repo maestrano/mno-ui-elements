@@ -10,6 +10,7 @@
 #   @binding {string} [field.sort_default] Sort the table by default using this column (null, true" or "reverse")
 #   @binding {string} [field.skip_natural] Skip the natural order when switching sort state
 #   @binding {string} [field.attr] The rowCollection item attribute to render in this column (can use dot syntax e.g 'user.name')
+#   @binding {boolean} [field.doNotSort] OPTIONAL Will prevent sorting for this column
 #   @binding {Function} [field.filter] A callback passing the rowItem value, use as a way to filter the values (e.g apply $filter in the parent scope on specific rowItems)
 #   @binding {Function} [field.render] Render a custom attribute in the table body cell - return object: `{template: 'a html template', scope: { myScopedMethod: foo }}`
 #   @binding {boolean} [field.stopPropagation] Whether top prevent click event propagation for the field (useful for custom actions)
@@ -32,6 +33,9 @@ angular.module('mnoUiElements')
     ctrl.$onChanges = (changes)->
       rowCollectionChanges = _.get(changes, 'rowCollection.currentValue')
       ctrl.displayedCollection = angular.copy(rowCollectionChanges) if rowCollectionChanges
+
+    ctrl.$onInit = () ->
+      ctrl.pipeCb = if ctrl.pipe? then (tableState) -> ctrl.pipe({tableState}) else undefined
 
     ctrl.hasCollectionItems = ->
       !_.isEmpty(ctrl.displayedCollection)
