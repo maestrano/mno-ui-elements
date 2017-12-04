@@ -6,6 +6,45 @@ angular.module('mnoUiElements', [
 
 }());
 (function() {
+  angular.module('mnoUiElements').service('MnoDateHelper', function() {
+    this.parseAsUTCDate = function(date) {
+      var dateStr;
+      dateStr = moment(date).format('YYYY-MM-DD');
+      return moment.utc(dateStr).toISOString();
+    };
+    return this;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
+    this.init = function(notifications, notifiedCallback) {
+      $log.debug("Notifications are enabled");
+      return _.each(notifications, function(notification) {
+        var onHidden;
+        onHidden = function() {
+          var params;
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
+          return notifiedCallback(params);
+        };
+        return toastr[notification.method](notification.message, notification.title, {
+          closeButton: true,
+          autoDismiss: false,
+          tapToDismiss: true,
+          timeOut: 0,
+          extendedTimeOut: 0,
+          onHidden: onHidden,
+          allowHtml: true
+        });
+      });
+    };
+    return this;
+  }]);
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').component('mnoAdmin', {
     template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
     transclude: {
@@ -139,6 +178,30 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoKpi', {
+    template:'<div><div class="visual"><i class="fa" ng-class="vm.icon || \'fa-file-text-o\'"></i></div><div class="details"><div class="loader" ng-show="vm.loading" aria-hidden="true"><i class="fa fa-2x fa-spin fa-refresh"></i></div><div class="body" ng-hide="vm.loading">{{vm.unit}} {{vm.value}}</div><div class="desc">{{vm.description}}</div></div><div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more"><a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoUiSref" ui-sref="{{vm.mnoUiSref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoClick" ng-click="vm.mnoClick()">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a></div></div>',
+    transclude: true,
+    controllerAs: "vm",
+    bindings: {
+      description: '@',
+      loading: '=',
+      value: '@',
+      icon: '@?',
+      unit: '@?',
+      mnoClick: '&?',
+      mnoHref: '@?',
+      mnoUiSref: '@?',
+      linkText: '@?'
+    },
+    controller: function() {
+      var vm;
+      vm = this;
+    }
+  });
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').component('mnoImageSelector', {
     bindings: {
       maxSize: '<',
@@ -168,25 +231,8 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoKpi', {
-    template:'<div><div class="visual"><i class="fa" ng-class="vm.icon || \'fa-file-text-o\'"></i></div><div class="details"><div class="loader" ng-show="vm.loading" aria-hidden="true"><i class="fa fa-2x fa-spin fa-refresh"></i></div><div class="body" ng-hide="vm.loading">{{vm.unit}} {{vm.value}}</div><div class="desc">{{vm.description}}</div></div><div ng-if="vm.mnoHref || vm.mnoUiSref || vm.mnoClick" class="more"><a ng-if="vm.mnoHref" ng-href="{{vm.mnoHref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoUiSref" ui-sref="{{vm.mnoUiSref}}">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a> <a ng-if="vm.mnoClick" ng-click="vm.mnoClick()">{{vm.linkText || "View more"}} <i class="fa fa-arrow-circle-o-right"></i></a></div></div>',
-    transclude: true,
-    controllerAs: "vm",
-    bindings: {
-      description: '@',
-      loading: '=',
-      value: '@',
-      icon: '@?',
-      unit: '@?',
-      mnoClick: '&?',
-      mnoHref: '@?',
-      mnoUiSref: '@?',
-      linkText: '@?'
-    },
-    controller: function() {
-      var vm;
-      vm = this;
-    }
+  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
   });
 
 }).call(this);
@@ -244,9 +290,49 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
-  });
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", "MnoeNotifications", function($log, toastr, MnoeNotifications) {
+    var NOTIFICATION_TYPE_MAPPING;
+    NOTIFICATION_TYPE_MAPPING = {
+      reminder: 'info',
+      due: 'warning',
+      completed: 'info'
+    };
+    this.init = function() {
+      $log.debug("Notifications are enabled");
+      return MnoeNotifications.get().then(function(response) {
+        var notifications;
+        notifications = response.data.plain();
+        return _.each(notifications, function(notification) {
+          var message, method, notification_type, onHidden, title;
+          notification_type = notification.notification_type;
+          method = NOTIFICATION_TYPE_MAPPING[notification_type];
+          message = notification.message.split("\n").join("</br>");
+          title = notification.title;
+          onHidden = function() {
+            var params;
+            params = {
+              object_id: notification.object_id,
+              object_type: notification.object_type,
+              notification_type: notification_type
+            };
+            return MnoeNotifications.notified(params);
+          };
+          toastr[method](message, title, {
+            closeButton: true,
+            autoDismiss: false,
+            tapToDismiss: true,
+            timeOut: 0,
+            extendedTimeOut: 0,
+            onHidden: onHidden,
+            allowHtml: true
+          });
+        });
+      }, function(errors) {
+        return $log.error(errors);
+      });
+    };
+    return this;
+  }]);
 
 }).call(this);
 
@@ -540,7 +626,11 @@ angular.module('mnoUiElements', [
  *   @binding {boolean} [isLoading] Hide collection rows and display loading spinner
  *   @binding {Array<Object>} [fields] Table field options
  *   @binding {string} [field.header] The string to display as the header of the table column
+ *   @binding {string} [field.style] The style to apply to the header of the table column
+ *   @binding {string} [field.sort_default] Sort the table by default using this column (null, true" or "reverse")
+ *   @binding {string} [field.skip_natural] Skip the natural order when switching sort state
  *   @binding {string} [field.attr] The rowCollection item attribute to render in this column (can use dot syntax e.g 'user.name')
+ *   @binding {boolean} [field.doNotSort] OPTIONAL Will prevent sorting for this column
  *   @binding {Function} [field.filter] A callback passing the rowItem value, use as a way to filter the values (e.g apply $filter in the parent scope on specific rowItems)
  *   @binding {Function} [field.render] Render a custom attribute in the table body cell - return object: `{template: 'a html template', scope: { myScopedMethod: foo }}`
  *   @binding {boolean} [field.stopPropagation] Whether top prevent click event propagation for the field (useful for custom actions)
@@ -549,7 +639,7 @@ angular.module('mnoUiElements', [
 
 (function() {
   angular.module('mnoUiElements').component('mnoSortableTable', {
-    template:'<table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipe()" class="table table-responsive" ng-class="{ \'table-hover\': !$ctrl.loading && $ctrl.hasCollectionItems() }"><thead><tr><th ng-repeat="field in $ctrl.fields" st-sort="{{field.attr}}"><span ng-bind="field.header"></span></th></tr><tr><th ng-repeat="field in $ctrl.subHeaders" mno-render-dynamic-header field="field"></th></tr></thead><tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()"><tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})"><td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td></tr></tbody><tbody ng-show="$ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></td></tr></tbody><tbody ng-hide="$ctrl.hasCollectionItems() || $ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><span>No results</span></td></tr></tbody></table>',
+    template:'<table st-table="$ctrl.displayedCollection" st-safe-src="$ctrl.rowCollection" st-pipe="$ctrl.pipeCb" class="table table-responsive" ng-class="{ \'table-hover\': !$ctrl.loading && $ctrl.hasCollectionItems() }"><thead><tr><th ng-repeat="field in $ctrl.fields" st-sort="{{field.doNotSort? undefined : field.attr}}" ng-style="{{field.style}}" st-sort-default="{{field.sort_default}}" st-skip-natural="{{field.skip_natural}}"><span ng-bind="field.header"></span></th></tr><tr><th ng-repeat="field in $ctrl.subHeaders" mno-render-dynamic-header field="field"></th></tr></thead><tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()"><tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})"><td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td></tr></tbody><tbody ng-show="$ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i></td></tr></tbody><tbody ng-hide="$ctrl.hasCollectionItems() || $ctrl.isLoading"><tr><td colspan="{{$ctrl.fields.length}}" class="text-center"><span>No results</span></td></tr></tbody></table>',
     bindings: {
       rowCollection: '<',
       fields: '<',
@@ -567,6 +657,13 @@ angular.module('mnoUiElements', [
         if (rowCollectionChanges) {
           return ctrl.displayedCollection = angular.copy(rowCollectionChanges);
         }
+      };
+      ctrl.$onInit = function() {
+        return ctrl.pipeCb = ctrl.pipe != null ? function(tableState) {
+          return ctrl.pipe({
+            tableState: tableState
+          });
+        } : void 0;
       };
       ctrl.hasCollectionItems = function() {
         return !_.isEmpty(ctrl.displayedCollection);
@@ -638,44 +735,5 @@ angular.module('mnoUiElements', [
       vm = this;
     }
   });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('MnoDateHelper', function() {
-    this.parseAsUTCDate = function(date) {
-      var dateStr;
-      dateStr = moment(date).format('YYYY-MM-DD');
-      return moment.utc(dateStr).toISOString();
-    };
-    return this;
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
-    this.init = function(notifications, notifiedCallback) {
-      $log.debug("Notifications are enabled");
-      return _.each(notifications, function(notification) {
-        var onHidden;
-        onHidden = function() {
-          var params;
-          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
-          return notifiedCallback(params);
-        };
-        return toastr[notification.method](notification.message, notification.title, {
-          closeButton: true,
-          autoDismiss: false,
-          tapToDismiss: true,
-          timeOut: 0,
-          extendedTimeOut: 0,
-          onHidden: onHidden,
-          allowHtml: true
-        });
-      });
-    };
-    return this;
-  }]);
 
 }).call(this);
