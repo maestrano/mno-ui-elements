@@ -9,10 +9,10 @@ Please note that using Mno UI Elements requires the use of **Angular 1.5.x** or 
 
 ### Downloading the library
 
-* Add the following depency to your bower.json or package.json
+* Add the following dependency to your bower.json
 
 ```json
-"mno-enterprise-angular": "git@github.com:maestrano/mno-ui-elements.git#master"
+"mno-ui-elements": "git@github.com:maestrano/mno-ui-elements.git#master"
 ```
 
 ### Adding dependency to your project
@@ -37,4 +37,3 @@ At the moment the following components have been tested and documented.
 The following components have been started and need to be tested
 * mno-row
 * mno-section
-
