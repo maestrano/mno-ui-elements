@@ -107,7 +107,7 @@ ul.sidebar {
   position: absolute;
   top: 0;
   bottom: 0;
-  padding: 0;
+  padding: 0 0 @mno-admin-sidebar-footer-height 0;
   margin: 0;
   list-style: none;
   text-indent: 20px;
@@ -217,7 +217,7 @@ ul.sidebar {
 
 .sidebar-footer {
   position: absolute;
-  height: 40px;
+  height: @mno-admin-sidebar-footer-height;
   bottom: 0;
   width: 100%;
   padding: 0;
@@ -278,6 +278,7 @@ ul.sidebar {
 
 @mno-admin-sidebar-full-width: 250px;
 @mno-admin-sidebar-reduced-width: 70px;
+@mno-admin-sidebar-footer-height: 40px;
 
 /* mno-admin */
 @mno-admin-header-height: 60px;
@@ -561,6 +562,29 @@ mno-loading-ellipsis {
   }
 }
 
+mno-multiple-string-field {
+  .mutiple-string-field {
+    display: flex;
+    justify-content: space-between;
+
+    pre {
+      margin: 0;
+    }
+
+    &.disabled {
+      pre, input {
+        width: 100%;
+      }
+    }
+
+    &:not(.disabled) {
+      pre, input {
+        width: ~"calc(100% - 45px)";
+      }
+    }
+  }
+}
+
 /* App row component style */
 mno-row {
   display: block;
@@ -584,29 +608,6 @@ mno-row {
     }
 
 
-  }
-}
-
-mno-multiple-string-field {
-  .mutiple-string-field {
-    display: flex;
-    justify-content: space-between;
-
-    pre {
-      margin: 0;
-    }
-
-    &.disabled {
-      pre, input {
-        width: 100%;
-      }
-    }
-
-    &:not(.disabled) {
-      pre, input {
-        width: ~"calc(100% - 45px)";
-      }
-    }
   }
 }
 
@@ -704,6 +705,21 @@ mno-show-task-modal {
   }
 }
 
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
+
+    .menu-item {
+      margin: 1px 7px;
+      border: none;
+
+      &.selected {
+        color: @link-color;
+      }
+    }
+  }
+}
+
 mno-sortable-table {
   [st-table]{
     [st-sort] {
@@ -735,21 +751,6 @@ mno-sortable-table {
 
     td .fa-spinner {
       font-size: 18px;
-    }
-  }
-}
-
-mno-tasks-menu {
-  .tasks-menu {
-    display: flex;
-
-    .menu-item {
-      margin: 1px 7px;
-      border: none;
-
-      &.selected {
-        color: @link-color;
-      }
     }
   }
 }

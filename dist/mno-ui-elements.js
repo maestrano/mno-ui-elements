@@ -6,6 +6,91 @@ angular.module('mnoUiElements', [
 
 }());
 (function() {
+  angular.module('mnoUiElements').service('MnoDateHelper', function() {
+    this.parseAsUTCDate = function(date) {
+      var dateStr;
+      dateStr = moment(date).format('YYYY-MM-DD');
+      return moment.utc(dateStr).toISOString();
+    };
+    return this;
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
+    this.init = function(notifications, notifiedCallback) {
+      $log.debug("Notifications are enabled");
+      return _.each(notifications, function(notification) {
+        var onHidden;
+        onHidden = function() {
+          var params;
+          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
+          return notifiedCallback(params);
+        };
+        return toastr[notification.method](notification.message, notification.title, {
+          closeButton: true,
+          autoDismiss: false,
+          tapToDismiss: true,
+          timeOut: 0,
+          extendedTimeOut: 0,
+          onHidden: onHidden,
+          allowHtml: true
+        });
+      });
+    };
+    return this;
+  }]);
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoAdmin', {
+    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
+    transclude: {
+      header: 'mnoAdminHeader',
+      navigation: 'mnoAdminNav',
+      content: 'mnoAdminContent',
+      footer: '?mnoAdminFooter'
+    },
+    bindings: {
+      logo: '@?',
+      name: '@?',
+      hideFooter: '='
+    },
+    controller: ["$scope", function($scope) {
+      var vm;
+      vm = this;
+      vm.$onInit = function() {
+        vm.toggled = false;
+        return vm.reduced = window.innerWidth > 992 ? false : true;
+      };
+      vm.reduceSidebar = function() {
+        if (!vm.toggled) {
+          return vm.reduced = !vm.reduced;
+        }
+      };
+      vm.toggleSidebar = function() {
+        vm.toggled = !vm.toggled;
+        return vm.reduced = !vm.toggled;
+      };
+      $scope.$watch((function() {
+        return window.innerWidth;
+      }), function(newValue) {
+        if (newValue) {
+          vm.toggled = false;
+          return vm.reduced = window.innerWidth < 1200;
+        }
+      });
+      window.onresize = function() {
+        return $scope.$apply();
+      };
+    }]
+  });
+
+}).call(this);
+
+(function() {
   angular.module('mnoUiElements').component('mnoCreateTaskModal', {
     bindings: {
       resolve: '<',
@@ -93,52 +178,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoAdmin', {
-    template:'<div id="sidebar-wrapper" ng-class="{\'reduced\': $ctrl.reduced}"><ul class="sidebar"><li class="sidebar-main"><a ng-click="$ctrl.reduceSidebar()"><span ng-if="!$ctrl.logo">{{$ctrl.name}}</span> <img class="sidebar-logo visible-sm visible-xs" src="{{$ctrl.logo}}"> <span class="menu-icon glyphicon glyphicon-transfer hidden-sm hidden-xs"></span></a></li><div ng-transclude="navigation"></div></ul><div class="sidebar-footer"></div></div><div id="content-wrapper" ng-class="{\'open\': $ctrl.toggled, \'reduced\': $ctrl.reduced}"><header class="header"><a class="header-sidebar-toggle visible-sm visible-xs" ng-click="$ctrl.toggleSidebar()"><div id="hamburger-toggle" ng-class="{\'open\': $ctrl.toggled}"><span></span> <span></span> <span></span></div></a><div ng-transclude="header"></div></header><div class="page-content"><div class="container" ng-transclude="content"></div></div><footer ng-if="!$ctrl.hideFooter"><div ng-transclude="footer"></div></footer></div>',
-    transclude: {
-      header: 'mnoAdminHeader',
-      navigation: 'mnoAdminNav',
-      content: 'mnoAdminContent',
-      footer: '?mnoAdminFooter'
-    },
-    bindings: {
-      logo: '@?',
-      name: '@?',
-      hideFooter: '='
-    },
-    controller: ["$scope", function($scope) {
-      var vm;
-      vm = this;
-      vm.$onInit = function() {
-        vm.toggled = false;
-        return vm.reduced = window.innerWidth > 992 ? false : true;
-      };
-      vm.reduceSidebar = function() {
-        if (!vm.toggled) {
-          return vm.reduced = !vm.reduced;
-        }
-      };
-      vm.toggleSidebar = function() {
-        vm.toggled = !vm.toggled;
-        return vm.reduced = !vm.toggled;
-      };
-      $scope.$watch((function() {
-        return window.innerWidth;
-      }), function(newValue) {
-        if (newValue) {
-          vm.toggled = false;
-          return vm.reduced = window.innerWidth < 1200;
-        }
-      });
-      window.onresize = function() {
-        return $scope.$apply();
-      };
-    }]
-  });
-
-}).call(this);
-
-(function() {
   angular.module('mnoUiElements').component('mnoImageSelector', {
     bindings: {
       maxSize: '<',
@@ -192,6 +231,65 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
+  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
+    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
+  });
+
+}).call(this);
+
+(function() {
+  angular.module('mnoUiElements').component('mnoMultipleStringField', {
+    bindings: {
+      isDisabled: '=',
+      command: '<?'
+    },
+    require: {
+      form: '^form',
+      ngModel: 'ngModel'
+    },
+    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item mutiple-string-field" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
+    controller: ["MnoConfirm", function(MnoConfirm) {
+      var ctrl;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        return ctrl.ngModel.$render = function() {
+          var viewValue;
+          if (ctrl.ngModel.$viewValue) {
+            viewValue = JSON.parse(ctrl.ngModel.$viewValue);
+          }
+          return ctrl.list = viewValue || [];
+        };
+      };
+      ctrl.$onChanges = function(changes) {
+        if (changes.command.currentValue === 'submit') {
+          return this.addElement(ctrl.new_element);
+        }
+      };
+      ctrl.addElement = function(element) {
+        if (_.isEmpty(element)) {
+          return;
+        }
+        ctrl.list.push(element);
+        ctrl.new_element = null;
+        return ctrl.ngModel.$setViewValue(ctrl.list);
+      };
+      ctrl.removeElement = function(index) {
+        var opts;
+        opts = {
+          headerText: 'Delete entry',
+          bodyText: 'Are you sure you want to delete this entry?'
+        };
+        return MnoConfirm.showModal(opts).then(function() {
+          ctrl.list.splice(index, 1);
+          return ctrl.ngModel.$setViewValue(ctrl.list);
+        });
+      };
+    }]
+  });
+
+}).call(this);
+
+(function() {
   var MnoRowController;
 
   angular.module('mnoUiElements').controller('MnoRowController', MnoRowController).component('mnoRow', {
@@ -225,13 +323,6 @@ angular.module('mnoUiElements', [
 }).call(this);
 
 (function() {
-  angular.module('mnoUiElements').component('mnoLoadingEllipsis', {
-    template: '<div class="mno-three-bounce">\n  <div class="mno-bounce1"></div>\n  <div class="mno-bounce2"></div>\n  <div class="mno-bounce3"></div>\n</div>'
-  });
-
-}).call(this);
-
-(function() {
   angular.module('mnoUiElements').component('mnoSection', {
     bindings: {
       heading: '@',
@@ -252,6 +343,146 @@ angular.module('mnoUiElements', [
     transclude: true,
     require: '^mnoSection',
     template: '<div class="mno-section-title" ng-transclude></div>'
+  });
+
+}).call(this);
+
+
+/*
+ *   @desc Modal for displaying a Task, with the ability to set a reminder for the Task.
+ *   @binding {Object} [resolve.task] The task being render in the show modal
+ *   @binding {string} [resolve.dueDateFormat] The date format for the task due date & reminder value
+ *   @binding {Object} [resolve.currentUser] The current user object
+ *   @binding {Function} [resolve.setReminderCb] Called on click when a user sets a reminder for a Task, passing a timestamp of the reminder date.
+ *   @binding {Function} [resolve.onReadTaskCb] Called on init passing a boolean for whether the current user has read the Task or not.
+ */
+
+(function() {
+  angular.module('mnoUiElements').component('mnoShowTaskModal', {
+    bindings: {
+      resolve: '<',
+      close: '&',
+      dismiss: '&'
+    },
+    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label ng-bind="$ctrl.person.label"></label><p ng-bind="$ctrl.person.value"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="row"><div class="col-xs-12 col-md-12"><label>Reminder</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'" ng-disabled="$ctrl.loading"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()" ng-disabled="$ctrl.loading">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.isFormDisabled()">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.isFormDisabled()">Send & mark as done</button></div>',
+    controller: ["MnoDateHelper", function(MnoDateHelper) {
+      var ctrl, getCurrentUserRecipient, hasBeenRead, isTaskOwner;
+      ctrl = this;
+      ctrl.$onInit = function() {
+        ctrl.task = ctrl.resolve.task;
+        ctrl.person = ctrl.resolve.isInbox ? {
+          label: 'From',
+          value: ctrl.resolve.nameFormatter(ctrl.task.owner)
+        } : {
+          label: 'To',
+          value: ctrl.resolve.nameFormatter(ctrl.task.task_recipients[0])
+        };
+        ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium';
+        ctrl.isReplying = false;
+        ctrl.isSettingReminder = false;
+        ctrl.datepicker = {
+          options: {
+            format: 'dd MMMM yyyy'
+          },
+          opened: false
+        };
+        ctrl.reply = {
+          message: ''
+        };
+        ctrl.reminder = {
+          date: null
+        };
+        return ctrl.resolve.onReadTaskCb(hasBeenRead());
+      };
+      ctrl.done = function() {
+        return ctrl.resolve.markAsDoneCb(!ctrl.task.markedDone).then(function() {
+          return ctrl.close();
+        });
+      };
+      ctrl.send = function(markAsDone) {
+        ctrl.loading = true;
+        return ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(function() {
+          return ctrl.close();
+        })["finally"](function() {
+          return ctrl.loading = false;
+        });
+      };
+      ctrl.cancel = function() {
+        return ctrl.dismiss();
+      };
+      ctrl.openDatepicker = function() {
+        return ctrl.datepicker.opened = true;
+      };
+      ctrl.reminderDate = function() {
+        var recipient;
+        recipient = getCurrentUserRecipient();
+        return recipient && recipient.reminder_date;
+      };
+      ctrl.setReminderOnClick = function() {
+        var reminderDate;
+        if (!ctrl.canSetReminder()) {
+          return;
+        }
+        reminderDate = MnoDateHelper.parseAsUTCDate(ctrl.reminder.date);
+        return ctrl.resolve.setReminderCb(reminderDate).then(function(response) {
+          if (response != null) {
+            ctrl.task = response;
+          }
+          return ctrl.toggleReminderForm(false);
+        });
+      };
+      ctrl.deleteReminderOnClick = function() {
+        ctrl.reminder.date = null;
+        return ctrl.setReminderOnClick();
+      };
+      ctrl.showAddReminderButton = function() {
+        return ctrl.canSetReminder() && !ctrl.isSettingReminder && !ctrl.reminderDate();
+      };
+      ctrl.showUpdateReminderButton = function() {
+        return ctrl.canSetReminder() && !ctrl.isSettingReminder && ctrl.reminderDate();
+      };
+      ctrl.showReplyButton = function() {
+        return !isTaskOwner();
+      };
+      ctrl.toggleReplyForm = function() {
+        ctrl.isReplying = !ctrl.isReplying;
+        if (!ctrl.isReplying) {
+          return ctrl.reply.message = '';
+        }
+      };
+      ctrl.toggleReminderForm = function(bool) {
+        ctrl.isSettingReminder = bool;
+        if (ctrl.isSettingReminder) {
+          return ctrl.reminder.date = moment.utc(ctrl.reminderDate()).toDate();
+        }
+      };
+      ctrl.canSetReminder = function() {
+        return !isTaskOwner() && _.isFunction(ctrl.resolve.setReminderCb) && (ctrl.task.due_date != null);
+      };
+      ctrl.canMarkAsDone = function() {
+        return !isTaskOwner() && (ctrl.task.due_date != null);
+      };
+      ctrl.canSendAndMarkAsDone = function() {
+        return ctrl.canMarkAsDone() && ctrl.task.status !== 'done';
+      };
+      ctrl.isFormDisabled = function() {
+        return ctrl.loading || ctrl.taskReplyForm.$invalid;
+      };
+      getCurrentUserRecipient = function() {
+        return _.find(ctrl.task.task_recipients, function(orga_rel) {
+          return orga_rel.user.id === ctrl.resolve.currentUser.id;
+        });
+      };
+      hasBeenRead = function() {
+        var r;
+        r = getCurrentUserRecipient();
+        return r && (r.read_at != null);
+      };
+      isTaskOwner = function() {
+        return ctrl.resolve.currentUser.id === _.get(ctrl.task, 'owner.user.id');
+      };
+      return ctrl;
+    }]
   });
 
 }).call(this);
@@ -457,236 +688,5 @@ angular.module('mnoUiElements', [
       vm = this;
     }
   });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('MnoDateHelper', function() {
-    this.parseAsUTCDate = function(date) {
-      var dateStr;
-      dateStr = moment(date).format('YYYY-MM-DD');
-      return moment.utc(dateStr).toISOString();
-    };
-    return this;
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').component('mnoMultipleStringField', {
-    bindings: {
-      isDisabled: '=',
-      command: '<?'
-    },
-    require: {
-      form: '^form',
-      ngModel: 'ngModel'
-    },
-    template: '<ul class="list-group">\n  <!-- List of elements -->\n  <li class="list-group-item mutiple-string-field" ng-class="{\'disabled\' : $ctrl.isDisabled}" ng-repeat="elem in $ctrl.list track by $index">\n    <pre>{{elem}}</pre>\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.removeElement($index)" ng-if="!$ctrl.isDisabled">\n      <i class="fa fa-times"></i>\n    </button>\n  </li>\n  <!-- New element form -->\n  <li class="list-group-item mutiple-string-field" ng-if="!$ctrl.isDisabled" ng-hide="$ctrl.list.length >= 5">\n    <input type="text" ng-model="$ctrl.new_element" class="form-control" ng-disabled="$ctrl.isDisabled">\n    <button class="btn btn-sm btn-default" type="button" ng-click="$ctrl.addElement($ctrl.new_element)" ng-disabled="!$ctrl.new_element || $ctrl.isDisabled">\n      <i class="fa fa-plus"></i>\n    </button>\n  </li>\n</ul>',
-    controller: ["MnoConfirm", function(MnoConfirm) {
-      var ctrl;
-      ctrl = this;
-      ctrl.$onInit = function() {
-        return ctrl.ngModel.$render = function() {
-          var viewValue;
-          if (ctrl.ngModel.$viewValue) {
-            viewValue = JSON.parse(ctrl.ngModel.$viewValue);
-          }
-          return ctrl.list = viewValue || [];
-        };
-      };
-      ctrl.$onChanges = function(changes) {
-        if (changes.command.currentValue === 'submit') {
-          return this.addElement(ctrl.new_element);
-        }
-      };
-      ctrl.addElement = function(element) {
-        if (_.isEmpty(element)) {
-          return;
-        }
-        ctrl.list.push(element);
-        ctrl.new_element = null;
-        return ctrl.ngModel.$setViewValue(ctrl.list);
-      };
-      ctrl.removeElement = function(index) {
-        var opts;
-        opts = {
-          headerText: 'Delete entry',
-          bodyText: 'Are you sure you want to delete this entry?'
-        };
-        return MnoConfirm.showModal(opts).then(function() {
-          ctrl.list.splice(index, 1);
-          return ctrl.ngModel.$setViewValue(ctrl.list);
-        });
-      };
-    }]
-  });
-
-}).call(this);
-
-
-/*
- *   @desc Modal for displaying a Task, with the ability to set a reminder for the Task.
- *   @binding {Object} [resolve.task] The task being render in the show modal
- *   @binding {string} [resolve.dueDateFormat] The date format for the task due date & reminder value
- *   @binding {Object} [resolve.currentUser] The current user object
- *   @binding {Function} [resolve.setReminderCb] Called on click when a user sets a reminder for a Task, passing a timestamp of the reminder date.
- *   @binding {Function} [resolve.onReadTaskCb] Called on init passing a boolean for whether the current user has read the Task or not.
- */
-
-(function() {
-  angular.module('mnoUiElements').component('mnoShowTaskModal', {
-    bindings: {
-      resolve: '<',
-      close: '&',
-      dismiss: '&'
-    },
-    template:'<div class="modal-header"><div class="close" ng-click="$ctrl.cancel()"><i class="fa fa-times" aria-hidden="true"></i></div></div><div class="modal-body" id="modal-body"><div><label ng-bind="$ctrl.person.label"></label><p ng-bind="$ctrl.person.value"></p></div><div><label>Title</label><p ng-bind="$ctrl.task.title"></p></div><div ng-if="$ctrl.task.due_date"><div class="due-date"><label>Due date</label><p ng-bind="$ctrl.task.due_date | date : $ctrl.dueDateFormat"></p></div><button class="btn btn-primary" type="button" ng-if="$ctrl.showAddReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Add reminder</button></div><div><div ng-if="$ctrl.reminderDate()" class="reminder"><label>Reminder</label><p ng-bind="$ctrl.reminderDate() | date: $ctrl.dueDateFormat"></p></div><button class="btn btn-warning" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.toggleReminderForm(true)">Update reminder</button> <button class="btn btn-danger" type="button" ng-if="$ctrl.showUpdateReminderButton()" ng-click="$ctrl.deleteReminderOnClick()">Delete reminder</button><div ng-if="$ctrl.isSettingReminder"><form name="$ctrl.reminderForm"><div class="row"><div class="col-xs-12 col-md-12"><label>Reminder</label><p class="input-group"><input type="text" class="form-control" uib-datepicker-popup="{{$ctrl.datepicker.options.format}}" ng-model="$ctrl.reminder.date" ng-model-options="{timezone: \'utc\'}" is-open="$ctrl.datepicker.opened" close-text="Close" ng-required="true"> <span class="input-group-btn"><button type="button" class="btn btn-default" ng-click="$ctrl.openDatepicker()"><i class="glyphicon glyphicon-calendar"></i></button></span></p></div></div><button class="btn btn-default" ng-click="$ctrl.toggleReminderForm(false)">Cancel</button> <button class="btn btn-success" ng-click="$ctrl.setReminderOnClick()" ng-disabled="$ctrl.reminderForm.$invalid">Set Reminder</button></form></div></div><div><label>Message</label><p ng-bind="$ctrl.task.message"></p></div><form name="$ctrl.taskReplyForm" ng-if="$ctrl.isReplying"><div class="form-group"><label>Reply</label> <textarea class="form-control" name="message" rows="3" ng-model="$ctrl.reply.message" required></textarea></div></form></div><div class="modal-footer"><button class="btn" ng-if="$ctrl.showReplyButton()" ng-class="{ \'btn-default\': $ctrl.isReplying, \'btn-primary\': !$ctrl.isReplying }" type="button" ng-click="$ctrl.toggleReplyForm()" ng-bind="$ctrl.isReplying ? \'Cancel\' : \'Reply\'" ng-disabled="$ctrl.loading"></button> <button class="btn" ng-class="{ \'btn-success\': !$ctrl.task.markedDone, \'btn-warning\': $ctrl.task.markedDone }" type="button" ng-click="$ctrl.done()" ng-if="!$ctrl.isReplying && $ctrl.canMarkAsDone()" ng-disabled="$ctrl.loading">Mark as {{$ctrl.task.markedDone ? \'not done\' : \'done\'}}</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send()" ng-if="$ctrl.isReplying" ng-disabled="$ctrl.isFormDisabled()">Send</button> <button class="btn btn-success" type="button" ng-click="$ctrl.send(true)" ng-if="$ctrl.isReplying && $ctrl.canSendAndMarkAsDone()" ng-disabled="$ctrl.isFormDisabled()">Send & mark as done</button></div>',
-    controller: ["MnoDateHelper", function(MnoDateHelper) {
-      var ctrl, getCurrentUserRecipient, hasBeenRead, isTaskOwner;
-      ctrl = this;
-      ctrl.$onInit = function() {
-        ctrl.task = ctrl.resolve.task;
-        ctrl.person = ctrl.resolve.isInbox ? {
-          label: 'From',
-          value: ctrl.resolve.nameFormatter(ctrl.task.owner)
-        } : {
-          label: 'To',
-          value: ctrl.resolve.nameFormatter(ctrl.task.task_recipients[0])
-        };
-        ctrl.dueDateFormat = ctrl.resolve.dueDateFormat || 'medium';
-        ctrl.isReplying = false;
-        ctrl.isSettingReminder = false;
-        ctrl.datepicker = {
-          options: {
-            format: 'dd MMMM yyyy'
-          },
-          opened: false
-        };
-        ctrl.reply = {
-          message: ''
-        };
-        ctrl.reminder = {
-          date: null
-        };
-        return ctrl.resolve.onReadTaskCb(hasBeenRead());
-      };
-      ctrl.done = function() {
-        return ctrl.resolve.markAsDoneCb(!ctrl.task.markedDone).then(function() {
-          return ctrl.close();
-        });
-      };
-      ctrl.send = function(markAsDone) {
-        ctrl.loading = true;
-        return ctrl.resolve.sendReplyCb(ctrl.reply, markAsDone).then(function() {
-          return ctrl.close();
-        })["finally"](function() {
-          return ctrl.loading = false;
-        });
-      };
-      ctrl.cancel = function() {
-        return ctrl.dismiss();
-      };
-      ctrl.openDatepicker = function() {
-        return ctrl.datepicker.opened = true;
-      };
-      ctrl.reminderDate = function() {
-        var recipient;
-        recipient = getCurrentUserRecipient();
-        return recipient && recipient.reminder_date;
-      };
-      ctrl.setReminderOnClick = function() {
-        var reminderDate;
-        if (!ctrl.canSetReminder()) {
-          return;
-        }
-        reminderDate = MnoDateHelper.parseAsUTCDate(ctrl.reminder.date);
-        return ctrl.resolve.setReminderCb(reminderDate).then(function(response) {
-          if (response != null) {
-            ctrl.task = response;
-          }
-          return ctrl.toggleReminderForm(false);
-        });
-      };
-      ctrl.deleteReminderOnClick = function() {
-        ctrl.reminder.date = null;
-        return ctrl.setReminderOnClick();
-      };
-      ctrl.showAddReminderButton = function() {
-        return ctrl.canSetReminder() && !ctrl.isSettingReminder && !ctrl.reminderDate();
-      };
-      ctrl.showUpdateReminderButton = function() {
-        return ctrl.canSetReminder() && !ctrl.isSettingReminder && ctrl.reminderDate();
-      };
-      ctrl.showReplyButton = function() {
-        return !isTaskOwner();
-      };
-      ctrl.toggleReplyForm = function() {
-        ctrl.isReplying = !ctrl.isReplying;
-        if (!ctrl.isReplying) {
-          return ctrl.reply.message = '';
-        }
-      };
-      ctrl.toggleReminderForm = function(bool) {
-        ctrl.isSettingReminder = bool;
-        if (ctrl.isSettingReminder) {
-          return ctrl.reminder.date = moment.utc(ctrl.reminderDate()).toDate();
-        }
-      };
-      ctrl.canSetReminder = function() {
-        return !isTaskOwner() && _.isFunction(ctrl.resolve.setReminderCb) && (ctrl.task.due_date != null);
-      };
-      ctrl.canMarkAsDone = function() {
-        return !isTaskOwner() && (ctrl.task.due_date != null);
-      };
-      ctrl.canSendAndMarkAsDone = function() {
-        return ctrl.canMarkAsDone() && ctrl.task.status !== 'done';
-      };
-      ctrl.isFormDisabled = function() {
-        return ctrl.loading || ctrl.taskReplyForm.$invalid;
-      };
-      getCurrentUserRecipient = function() {
-        return _.find(ctrl.task.task_recipients, function(orga_rel) {
-          return orga_rel.user.id === ctrl.resolve.currentUser.id;
-        });
-      };
-      hasBeenRead = function() {
-        var r;
-        r = getCurrentUserRecipient();
-        return r && (r.read_at != null);
-      };
-      isTaskOwner = function() {
-        return ctrl.resolve.currentUser.id === _.get(ctrl.task, 'owner.user.id');
-      };
-      return ctrl;
-    }]
-  });
-
-}).call(this);
-
-(function() {
-  angular.module('mnoUiElements').service('Notifications', ["$log", "toastr", function($log, toastr) {
-    this.init = function(notifications, notifiedCallback) {
-      $log.debug("Notifications are enabled");
-      return _.each(notifications, function(notification) {
-        var onHidden;
-        onHidden = function() {
-          var params;
-          params = _.pick(notification, ['object_id', 'object_type', 'notification_type']);
-          return notifiedCallback(params);
-        };
-        return toastr[notification.method](notification.message, notification.title, {
-          closeButton: true,
-          autoDismiss: false,
-          tapToDismiss: true,
-          timeOut: 0,
-          extendedTimeOut: 0,
-          onHidden: onHidden,
-          allowHtml: true
-        });
-      });
-    };
-    return this;
-  }]);
 
 }).call(this);
