@@ -104,16 +104,17 @@ ul.sidebar .sidebar-list a:hover,
 }
 
 ul.sidebar {
-  position: absolute;
+  position: relative;
   top: 0;
   bottom: 0;
-  padding: 0 0 @mno-admin-sidebar-footer-height 0;
+  padding: 0;
   margin: 0;
   list-style: none;
   text-indent: 20px;
   overflow-x: hidden;
   overflow-y: auto;
   background: @mno-admin-sidebar-base-color;
+  height: 100vh;
 
   li {
     a {
@@ -216,7 +217,7 @@ ul.sidebar {
 }
 
 .sidebar-footer {
-  position: absolute;
+  position: relative;
   height: @mno-admin-sidebar-footer-height;
   bottom: 0;
   width: 100%;
@@ -705,21 +706,6 @@ mno-show-task-modal {
   }
 }
 
-mno-tasks-menu {
-  .tasks-menu {
-    display: flex;
-
-    .menu-item {
-      margin: 1px 7px;
-      border: none;
-
-      &.selected {
-        color: @link-color;
-      }
-    }
-  }
-}
-
 mno-sortable-table {
   [st-table]{
     [st-sort] {
@@ -755,13 +741,18 @@ mno-sortable-table {
   }
 }
 
-mno-validation {
-  .checked {
-    color: @mno-validation-checked-color;
-  }
+mno-tasks-menu {
+  .tasks-menu {
+    display: flex;
 
-  .unchecked {
-    color: @mno-validation-unchecked-color;
+    .menu-item {
+      margin: 1px 7px;
+      border: none;
+
+      &.selected {
+        color: @link-color;
+      }
+    }
   }
 }
 
@@ -866,5 +857,15 @@ mno-widget {
         padding: 10px;
       }
     }
+  }
+}
+
+mno-validation {
+  .checked {
+    color: @mno-validation-checked-color;
+  }
+
+  .unchecked {
+    color: @mno-validation-unchecked-color;
   }
 }
