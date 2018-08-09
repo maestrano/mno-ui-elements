@@ -12,7 +12,7 @@
   </thead>
   <tbody ng-hide="$ctrl.isLoading || !$ctrl.hasCollectionItems()">
     <tr ng-repeat="rowItem in $ctrl.displayedCollection" ng-click="$ctrl.rowOnClick({$event: { rowItem: rowItem }})">
-      <td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr row-item="rowItem" field="field"></td>
+      <td ng-repeat="field in $ctrl.fields" ng-class="field.class" mno-render-dynamic-attr bindings="$ctrl.bindings" row-item="rowItem" field="field"></td>
     </tr>
   </tbody>
   <tbody ng-show="$ctrl.isLoading">

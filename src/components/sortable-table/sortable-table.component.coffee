@@ -26,6 +26,7 @@ angular.module('mnoUiElements')
     rowOnClick: '&?'
     pipe: '&?'
     isLoading: '<?'
+    bindings: '<'
   }
   controller: ->
     ctrl = this

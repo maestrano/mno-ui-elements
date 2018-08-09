@@ -10,6 +10,7 @@ angular.module('mnoUiElements')
     scope: {
       rowItem: '<'
       field: '<'
+      bindings: '<'
     }
     link: (scope, element, attrs)->
       scope.$watchGroup(['rowItem', 'field'], ->
@@ -19,7 +20,7 @@ angular.module('mnoUiElements')
 
         # Custom render; compile provided html & scope to element
         if _.isFunction(scope.field.render)
-          customField = scope.field.render(scope.rowItem)
+          customField = scope.field.render(scope.rowItem, scope.bindings)
           html = customField.template
           scope = angular.merge(scope, customField.scope)
 
