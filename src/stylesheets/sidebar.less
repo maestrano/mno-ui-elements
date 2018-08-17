@@ -21,9 +21,8 @@ ul.sidebar {
   list-style: none;
   text-indent: 20px;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: hidden;
   background: @mno-admin-sidebar-base-color;
-  height: 100vh;
 
   li {
     a {
@@ -35,6 +34,8 @@ ul.sidebar {
     }
   }
   .sidebar-main {
+    position: fixed;
+    top: 0px;
     height: 65px;
     a {
       font-size: 18px;
@@ -56,6 +57,12 @@ ul.sidebar {
       margin-left: 10px;
       float: left;
     }
+  }
+  .sidebar-yield {
+    margin-top: 65px;
+    height: calc(100vh - 105px);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .sidebar-title {
     color: @mno-admin-sidebar-title-color;
